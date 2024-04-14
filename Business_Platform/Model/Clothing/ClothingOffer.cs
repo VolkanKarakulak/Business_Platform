@@ -4,6 +4,14 @@ namespace Business_Platform.Model.Clothing
 {
     public class ClothingOffer
     {
+        public enum OfferStatus
+        {
+            Pending, // Beklemede
+            Accepted, // Kabul Edildi
+            Rejected // Reddedildi      
+        }
+
+        public int Id { get; set; }
         public double OfferPrice { get; set; }
         public DateTime OfferDate { get; set; }
         public long UserId { get; set; }
@@ -15,6 +23,6 @@ namespace Business_Platform.Model.Clothing
         [ForeignKey("ClothingProductId")]
         public ClothingProduct? ClothingProduct { get; set; }
 
-
+        public OfferStatus Status { get; set; } // Teklifin durumu
     }
 }
