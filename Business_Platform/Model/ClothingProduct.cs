@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Business_Platform.Model
 {
@@ -17,12 +19,26 @@ namespace Business_Platform.Model
         [Column(TypeName = "nvarchar(200)")]
         public string? Description { get; set; }
 
+        [DisplayName("Image")]
+        [StringLength(150)]
+        public string? ImageFileName { get; set; }
+
         public int ClothingTypeId { get; set; }
 
         [ForeignKey("ClothingTypeId")]
         public ClothingType? ClothingType { get; set; }
 
+        public int AppUserId { get; set; }
 
+        [ForeignKey("AppUserId")]
+        public AppUser? AppUser { get; set; } // Ürün Satıcısı
+
+        public byte StateId { get; set; }
+
+        [ForeignKey("StateId")]
+        public State? State { get; set; }
+
+        public List<ProductComment>? ProductComments { get; set; }
 
 
 

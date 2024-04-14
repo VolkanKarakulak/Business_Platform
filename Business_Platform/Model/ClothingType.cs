@@ -8,6 +8,6 @@
 
         public string Description { get; set; } = "";
 
-
+        public List<ClothingProduct>? ClothingProducts { get; set; }
     }
 }
