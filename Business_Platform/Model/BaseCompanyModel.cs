@@ -28,6 +28,8 @@ namespace Business_Platform.Model
         [Column(TypeName = "char(5)")]
         [DataType(DataType.PostalCode)]
         public string PostalCode { get; set; } = "";
+        [Column(TypeName = "smalldatetime")]
+        public DateTime RegisterDate { get; set; }
 
         public int CompanyCategoryId { get; set; }
 

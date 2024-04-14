@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Business_Platform.Model
+namespace Business_Platform.Model.Clothing
 {
     public class ClothingProduct
     {
@@ -15,6 +15,14 @@ namespace Business_Platform.Model
 
         [Range(0, float.MaxValue)]
         public float Price { get; set; }
+
+        public string Size { get; set; } = ""; // Ayrı bir model oluşturabilir
+
+        public string Color { get; set; } = ""; // Ayrı bir model oluşturabilir
+
+        public string Pattern { get; set; } = ""; // Ayrı bir model oluşturabilir
+
+        public string FabricType { get; set; } = ""; // Ayrı bir model oluşturabilir
 
         [Column(TypeName = "nvarchar(200)")]
         public string? Description { get; set; }
@@ -38,7 +46,7 @@ namespace Business_Platform.Model
         [ForeignKey("StateId")]
         public State? State { get; set; }
 
-        public List<ProductComment>? ProductComments { get; set; }
+        public List<ClothingProductComment>? ProductComments { get; set; }
 
 
 

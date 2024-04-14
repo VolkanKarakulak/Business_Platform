@@ -1,4 +1,4 @@
-﻿namespace Business_Platform.Model
+﻿namespace Business_Platform.Model.Clothing
 {
     public class ClothingType
     {
