@@ -4,5 +4,6 @@ namespace Business_Platform.Model
 {
     public class AppUser : IdentityUser<long>
     {
+
     }
 }

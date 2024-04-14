@@ -21,7 +21,7 @@ namespace Business_Platform.Model
 
         [Column(TypeName = "nvarchar(200)")]
         public string? Description { get; set; }
-        public int AppUserId { get; set; }
+        public long AppUserId { get; set; }
 
         [ForeignKey("AppUserId")]
         public AppUser? AppUser { get; set; } // Ürün Satıcısı
