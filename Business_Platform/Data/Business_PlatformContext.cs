@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Model.Clothing;
-using Business_Platform.Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Business_Platform.Model.Identity;
 
 namespace Business_Platform.Data
 {
@@ -17,11 +17,8 @@ namespace Business_Platform.Data
         }
 
         public DbSet<Business_Platform.Model.Clothing.ClothingCompany> ClothingCompanies { get; set; } = default!;
-
         public DbSet<Business_Platform.Model.CompanyCategory>? CompanyCategories { get; set; }
-
         public DbSet<Business_Platform.Model.State>? States { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -50,5 +47,6 @@ namespace Business_Platform.Data
 
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<Business_Platform.Model.Clothing.ClothingCompanyBranch>? ClothingCompanyBranch { get; set; }
     }
 }

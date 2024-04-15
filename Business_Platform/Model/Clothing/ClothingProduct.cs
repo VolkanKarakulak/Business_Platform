@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Business_Platform.Model.BaseModel;
+using Business_Platform.Model.Identity;
 
 namespace Business_Platform.Model.Clothing
 {
@@ -45,6 +46,7 @@ namespace Business_Platform.Model.Clothing
 
         public List<ClothingProductComment>? ProductComments { get; set; }
         public List<ClothingProductOffer>? ClothingOffer { get; set; }
+        public List<ClothingCompBranchProduct>? ClothingCompBranchProducts { get; set; }
 
     }
 }

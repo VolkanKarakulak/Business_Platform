@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Business_Platform.Model
+namespace Business_Platform.Model.Identity
 {
     public class AppUser : IdentityUser<long>
     {

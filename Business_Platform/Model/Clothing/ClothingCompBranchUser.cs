@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Business_Platform.Model.Identity;
 
 namespace Business_Platform.Model.Clothing
 {

@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Business_Platform.Model;
 using Business_Platform.Data;
+using Business_Platform.Model.Identity;
 
 
 namespace BusinessPlatform.Controllers

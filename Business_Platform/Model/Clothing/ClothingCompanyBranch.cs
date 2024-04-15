@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Business_Platform.Model.BaseModel;
+using Business_Platform.Model.Identity;
 
 namespace Business_Platform.Model.Clothing
 {
@@ -17,5 +18,7 @@ namespace Business_Platform.Model.Clothing
 
         [ForeignKey("ClothingCompanyId")]
         public ClothingCompany? ClothingCompany { get; set; }
+
+        public List<ClothingCompBranchProduct>? ClothingCompBranchProducts { get; set; }
     }
 }

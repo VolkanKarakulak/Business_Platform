@@ -1,5 +1,5 @@
 ﻿using Business_Platform.Data;
-using Business_Platform.Model;
+using Business_Platform.Model.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
