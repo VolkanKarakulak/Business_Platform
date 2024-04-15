@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Business_Platform.Migrations
 {
-    [DbContext(typeof(BusinessPlatformContext))]
-    partial class BusinessPlatformContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(Business_PlatformContext))]
+    partial class Business_PlatformContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -225,7 +225,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ClothingCompanyBranches");
+                    b.ToTable("ClothingCompanyBranch");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompBranchUser", b =>
@@ -312,7 +312,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("ClothingProducts");
+                    b.ToTable("ClothingProduct");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProductComment", b =>
@@ -336,7 +336,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("ClothingProductId");
 
-                    b.ToTable("ClothingProductComments");
+                    b.ToTable("ClothingProductComment");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProductOffer", b =>
@@ -373,7 +373,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ClothingProductOffers");
+                    b.ToTable("ClothingProductOffer");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingType", b =>
@@ -394,7 +394,7 @@ namespace Business_Platform.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClothingTypes");
+                    b.ToTable("ClothingType");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.CompanyCategory", b =>
@@ -557,7 +557,7 @@ namespace Business_Platform.Migrations
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompanyBranch", b =>
                 {
                     b.HasOne("Business_Platform.Model.Clothing.ClothingCompany", "ClothingCompany")
-                        .WithMany()
+                        .WithMany("Branches")
                         .HasForeignKey("ClothingCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -733,6 +733,8 @@ namespace Business_Platform.Migrations
 
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompany", b =>
                 {
+                    b.Navigation("Branches");
+
                     b.Navigation("Offers");
 
                     b.Navigation("Products");

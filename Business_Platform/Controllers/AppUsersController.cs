@@ -21,7 +21,7 @@ namespace BusinessPlatform.Controllers
     {
         //private readonly BusinessPlatformContext _context;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly BusinessPlatformContext _context;
+        private readonly Business_PlatformContext _context;
 
         public struct LogInModel
         {
@@ -35,7 +35,7 @@ namespace BusinessPlatform.Controllers
             public string CurrentPassword { get; set; }
             public string NewPassword { get; set; }
         }
-        public AppUsersController(SignInManager<AppUser> signInManager, BusinessPlatformContext context)
+        public AppUsersController(SignInManager<AppUser> signInManager, Business_PlatformContext context)
         {
             _signInManager = signInManager;
             _context = context;

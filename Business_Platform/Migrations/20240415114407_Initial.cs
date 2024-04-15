@@ -52,7 +52,7 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingTypes",
+                name: "ClothingType",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -62,7 +62,7 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingTypes", x => x.Id);
+                    table.PrimaryKey("PK_ClothingType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,71 +198,69 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BaseCompanyModel",
+                name: "ClothingCompanies",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyCategoryId = table.Column<int>(type: "int", nullable: false),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     EMail = table.Column<string>(type: "varchar(100)", nullable: false),
                     PostalCode = table.Column<string>(type: "char(5)", maxLength: 5, nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
-                    CompanyCategoryId = table.Column<int>(type: "int", nullable: false),
-                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    RegisterDate = table.Column<DateTime>(type: "smalldatetime", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BaseCompanyModel", x => x.Id);
+                    table.PrimaryKey("PK_ClothingCompanies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BaseCompanyModel_CompanyCategories_CompanyCategoryId",
+                        name: "FK_ClothingCompanies_CompanyCategories_CompanyCategoryId",
                         column: x => x.CompanyCategoryId,
                         principalTable: "CompanyCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BaseCompanyModel_States_StateId",
+                        name: "FK_ClothingCompanies_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "BaseBranchModel",
+                name: "ClothingCompanyBranch",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    ClothingCompanyId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Email = table.Column<string>(type: "varchar(100)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BranchCode = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClothingCompanyId = table.Column<int>(type: "int", nullable: true)
+                    BranchCode = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BaseBranchModel", x => x.Id);
+                    table.PrimaryKey("PK_ClothingCompanyBranch", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BaseBranchModel_AspNetUsers_UserId",
+                        name: "FK_ClothingCompanyBranch_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BaseBranchModel_BaseCompanyModel_ClothingCompanyId",
+                        name: "FK_ClothingCompanyBranch_ClothingCompanies_ClothingCompanyId",
                         column: x => x.ClothingCompanyId,
-                        principalTable: "BaseCompanyModel",
+                        principalTable: "ClothingCompanies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BaseBranchModel_States_StateId",
+                        name: "FK_ClothingCompanyBranch_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id");
@@ -286,14 +284,14 @@ namespace Business_Platform.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClothingCompBranchUser_BaseBranchModel_ClothingCompBranchId",
+                        name: "FK_ClothingCompBranchUser_ClothingCompanyBranch_ClothingCompBranchId",
                         column: x => x.ClothingCompBranchId,
-                        principalTable: "BaseBranchModel",
+                        principalTable: "ClothingCompanyBranch",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingProducts",
+                name: "ClothingProduct",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -314,40 +312,40 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingProducts", x => x.Id);
+                    table.PrimaryKey("PK_ClothingProduct", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClothingProducts_AspNetUsers_AppUserId",
+                        name: "FK_ClothingProduct_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ClothingProducts_BaseBranchModel_ClothingCompanyBranchId",
-                        column: x => x.ClothingCompanyBranchId,
-                        principalTable: "BaseBranchModel",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_ClothingProducts_BaseCompanyModel_ClothingCompanyId",
+                        name: "FK_ClothingProduct_ClothingCompanies_ClothingCompanyId",
                         column: x => x.ClothingCompanyId,
-                        principalTable: "BaseCompanyModel",
+                        principalTable: "ClothingCompanies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ClothingProducts_ClothingTypes_ClothingTypeId",
+                        name: "FK_ClothingProduct_ClothingCompanyBranch_ClothingCompanyBranchId",
+                        column: x => x.ClothingCompanyBranchId,
+                        principalTable: "ClothingCompanyBranch",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ClothingProduct_ClothingType_ClothingTypeId",
                         column: x => x.ClothingTypeId,
-                        principalTable: "ClothingTypes",
+                        principalTable: "ClothingType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ClothingProducts_States_StateId",
+                        name: "FK_ClothingProduct_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingProductComments",
+                name: "ClothingProductComment",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -358,17 +356,17 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingProductComments", x => x.Id);
+                    table.PrimaryKey("PK_ClothingProductComment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClothingProductComments_ClothingProducts_ClothingProductId",
+                        name: "FK_ClothingProductComment_ClothingProduct_ClothingProductId",
                         column: x => x.ClothingProductId,
-                        principalTable: "ClothingProducts",
+                        principalTable: "ClothingProduct",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingProductOffers",
+                name: "ClothingProductOffer",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -382,24 +380,24 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingProductOffers", x => x.Id);
+                    table.PrimaryKey("PK_ClothingProductOffer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClothingProductOffers_AspNetUsers_UserId",
+                        name: "FK_ClothingProductOffer_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ClothingProductOffers_BaseCompanyModel_ClothingCompanyId",
+                        name: "FK_ClothingProductOffer_ClothingCompanies_ClothingCompanyId",
                         column: x => x.ClothingCompanyId,
-                        principalTable: "BaseCompanyModel",
+                        principalTable: "ClothingCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ClothingProductOffers_ClothingProducts_ClothingProductId",
+                        name: "FK_ClothingProductOffer_ClothingProduct_ClothingProductId",
                         column: x => x.ClothingProductId,
-                        principalTable: "ClothingProducts",
+                        principalTable: "ClothingProduct",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -442,29 +440,29 @@ namespace Business_Platform.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BaseBranchModel_ClothingCompanyId",
-                table: "BaseBranchModel",
-                column: "ClothingCompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BaseBranchModel_StateId",
-                table: "BaseBranchModel",
-                column: "StateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BaseBranchModel_UserId",
-                table: "BaseBranchModel",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BaseCompanyModel_CompanyCategoryId",
-                table: "BaseCompanyModel",
+                name: "IX_ClothingCompanies_CompanyCategoryId",
+                table: "ClothingCompanies",
                 column: "CompanyCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BaseCompanyModel_StateId",
-                table: "BaseCompanyModel",
+                name: "IX_ClothingCompanies_StateId",
+                table: "ClothingCompanies",
                 column: "StateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClothingCompanyBranch_ClothingCompanyId",
+                table: "ClothingCompanyBranch",
+                column: "ClothingCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClothingCompanyBranch_StateId",
+                table: "ClothingCompanyBranch",
+                column: "StateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClothingCompanyBranch_UserId",
+                table: "ClothingCompanyBranch",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClothingCompBranchUser_ClothingCompBranchId",
@@ -472,49 +470,49 @@ namespace Business_Platform.Migrations
                 column: "ClothingCompBranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProductComments_ClothingProductId",
-                table: "ClothingProductComments",
-                column: "ClothingProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClothingProductOffers_ClothingCompanyId",
-                table: "ClothingProductOffers",
-                column: "ClothingCompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClothingProductOffers_ClothingProductId",
-                table: "ClothingProductOffers",
-                column: "ClothingProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClothingProductOffers_UserId",
-                table: "ClothingProductOffers",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClothingProducts_AppUserId",
-                table: "ClothingProducts",
+                name: "IX_ClothingProduct_AppUserId",
+                table: "ClothingProduct",
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProducts_ClothingCompanyBranchId",
-                table: "ClothingProducts",
+                name: "IX_ClothingProduct_ClothingCompanyBranchId",
+                table: "ClothingProduct",
                 column: "ClothingCompanyBranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProducts_ClothingCompanyId",
-                table: "ClothingProducts",
+                name: "IX_ClothingProduct_ClothingCompanyId",
+                table: "ClothingProduct",
                 column: "ClothingCompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProducts_ClothingTypeId",
-                table: "ClothingProducts",
+                name: "IX_ClothingProduct_ClothingTypeId",
+                table: "ClothingProduct",
                 column: "ClothingTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProducts_StateId",
-                table: "ClothingProducts",
+                name: "IX_ClothingProduct_StateId",
+                table: "ClothingProduct",
                 column: "StateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClothingProductComment_ClothingProductId",
+                table: "ClothingProductComment",
+                column: "ClothingProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClothingProductOffer_ClothingCompanyId",
+                table: "ClothingProductOffer",
+                column: "ClothingCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClothingProductOffer_ClothingProductId",
+                table: "ClothingProductOffer",
+                column: "ClothingProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClothingProductOffer_UserId",
+                table: "ClothingProductOffer",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -538,28 +536,28 @@ namespace Business_Platform.Migrations
                 name: "ClothingCompBranchUser");
 
             migrationBuilder.DropTable(
-                name: "ClothingProductComments");
+                name: "ClothingProductComment");
 
             migrationBuilder.DropTable(
-                name: "ClothingProductOffers");
+                name: "ClothingProductOffer");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ClothingProducts");
+                name: "ClothingProduct");
 
             migrationBuilder.DropTable(
-                name: "BaseBranchModel");
+                name: "ClothingCompanyBranch");
 
             migrationBuilder.DropTable(
-                name: "ClothingTypes");
+                name: "ClothingType");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "BaseCompanyModel");
+                name: "ClothingCompanies");
 
             migrationBuilder.DropTable(
                 name: "CompanyCategories");
