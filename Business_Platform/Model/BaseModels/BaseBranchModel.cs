@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Business_Platform.Model
+namespace Business_Platform.Model.BaseModel
 {
-    public class BaseCompanyModel
+    public class BaseBranchModel
     {
         public int Id { get; set; }
 
@@ -22,25 +22,17 @@ namespace Business_Platform.Model
 
         [EmailAddress]
         [Column(TypeName = "varchar(100)")]
-        public string EMail { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string? City { get; set; }
+        public int BranchCode { get; set; } // Ayrı bir model oluşturabilir
+        public long UserId { get; set; }
 
-        [StringLength(5, MinimumLength = 1)]
-        [Column(TypeName = "char(5)")]
-        [DataType(DataType.PostalCode)]
-        public string PostalCode { get; set; } = "";
-        [Column(TypeName = "smalldatetime")]
-        public DateTime RegisterDate { get; set; }
-
-        public int CompanyCategoryId { get; set; }
-
-        [ForeignKey("CompanyCategoryId")]
-        public CompanyCategory? CompanyCategory { get; set; } 
-
+        [ForeignKey("UserId")]
+        public AppUser? AppUser { get; set; }
         public byte StateId { get; set; }
 
         [ForeignKey("StateId")]
         public State? State { get; set; }
-      
+
     }
 }
-

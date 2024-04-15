@@ -1,4 +1,6 @@
-﻿namespace Business_Platform.Model.Clothing
+﻿using Business_Platform.Model.BaseModel;
+
+namespace Business_Platform.Model.Clothing
 {
     public class ClothingCompany : BaseCompanyModel
     {

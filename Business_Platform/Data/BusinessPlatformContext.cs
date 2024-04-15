@@ -1,4 +1,5 @@
 ﻿using Business_Platform.Model;
+using Business_Platform.Model.BaseModel;
 using Business_Platform.Model.Clothing;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace Business_Platform.Model
+namespace Business_Platform.Model.BaseModel
 {
     public class BaseProductModel
     {

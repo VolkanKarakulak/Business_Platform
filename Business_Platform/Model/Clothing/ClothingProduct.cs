@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Business_Platform.Model.BaseModel;
 
 namespace Business_Platform.Model.Clothing
 {
