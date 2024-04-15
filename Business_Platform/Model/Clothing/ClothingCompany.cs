@@ -5,6 +5,6 @@
 
         public List<ClothingProduct>? Products { get; set; }
 
-        public List<ClothingOffer>? Offers { get; set; }
+        public List<ClothingProductOffer>? Offers { get; set; }
     }
 }

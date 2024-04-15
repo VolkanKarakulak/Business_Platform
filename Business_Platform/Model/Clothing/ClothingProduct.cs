@@ -21,7 +21,7 @@ namespace Business_Platform.Model.Clothing
         public ClothingType? ClothingType { get; set; }
 
         public List<ClothingProductComment>? ProductComments { get; set; }
-        public List<ClothingOffer>? ClothingOffer { get; set; }
+        public List<ClothingProductOffer>? ClothingOffer { get; set; }
 
 
 

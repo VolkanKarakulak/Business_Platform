@@ -20,7 +20,7 @@ namespace Business_Platform.Data
         public DbSet<Like>? Likes { get; set; }
         public DbSet<ClothingCompany>? ClothingCompanies { get; set; }
         public DbSet<ClothingCompanyBranch>? ClothingCompanyBranches { get; set;}
-        public DbSet<ClothingOffer>? ClothingOffers { get; set; }
+        public DbSet<ClothingProductOffer>? ClothingOffers { get; set; }
         public DbSet<ClothingProduct>? ClothingProducts { get; set;}
         public DbSet<ClothingProductComment>? ClothingProductComments { get; set; }
         public DbSet<ClothingType>? ClothingTypes { get; set;}

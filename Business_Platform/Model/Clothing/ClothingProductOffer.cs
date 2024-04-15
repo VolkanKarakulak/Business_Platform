@@ -2,7 +2,7 @@
 
 namespace Business_Platform.Model.Clothing
 {
-    public class ClothingOffer
+    public class ClothingProductOffer
     {
         public enum OfferStatus
         {

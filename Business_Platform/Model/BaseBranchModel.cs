@@ -10,6 +10,10 @@ namespace Business_Platform.Model
         public string PhoneNumber { get; set; } = "";
         public string? City { get; set; }
         public int BranchCode { get; set; }
+        public long UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public AppUser? AppUser { get; set; }
         public byte StateId { get; set; }
 
         [ForeignKey("StateId")]
