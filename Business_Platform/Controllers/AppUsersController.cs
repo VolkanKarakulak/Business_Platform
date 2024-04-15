@@ -19,7 +19,7 @@ namespace BusinessPlatform.Controllers
     [ApiController]
     public class AppUsersController : ControllerBase
     {
-        //private readonly BusinessPlatformContext _context;
+        //private readonly Business_PlatformContext _context;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly Business_PlatformContext _context;
 
@@ -44,7 +44,7 @@ namespace BusinessPlatform.Controllers
         // GET: api/AppUsers
         [HttpGet]
         //[Authorize(Roles = "Admin")]
-        public ActionResult<List<AppUser>> GetUsers(bool includePassive = true)
+        public ActionResult<List<AppUser>> GetUsers()
         {
             IQueryable<AppUser> users = _signInManager.UserManager.Users;
 
@@ -106,19 +106,27 @@ namespace BusinessPlatform.Controllers
                 return BadRequest();
             }
 
-           return Ok("User Account Created");
+            IdentityResult identityResult = _signInManager.UserManager.CreateAsync(appUser, appUser.PassWord).Result;
+
+            if (identityResult != IdentityResult.Success)
+            {
+                return identityResult.Errors.FirstOrDefault()!.Description;
+            }
+
+
+            return Ok("User Account Created");
 
         }
 
-        [HttpPut("ActivateUser")]
-        //[Authorize(Roles = "Admin")]
-        public ActionResult ActivateUser(long id)
-        {
-            AppUser? appUser = _signInManager.UserManager.FindByIdAsync(id.ToString()).Result;
+        //[HttpPut("ActivateUser")]
+        ////[Authorize(Roles = "Admin")]
+        //public ActionResult ActivateUser(long id)
+        //{
+        //    AppUser? appUser = _signInManager.UserManager.FindByIdAsync(id.ToString()).Result;
 
-            _signInManager.UserManager.UpdateAsync(appUser).Wait();
-            return Ok("User Aktivated");
-        }
+        //    _signInManager.UserManager.UpdateAsync(appUser).Wait();
+        //    return Ok("User Aktivated");
+        //}
 
 
         [HttpPost("ChangePassword")]
@@ -158,6 +166,29 @@ namespace BusinessPlatform.Controllers
             _signInManager.UserManager.UpdateAsync(user).Wait();
             return Ok("User Deactivated");
         }
+
+        [HttpPost("Login")] 
+        public ActionResult LogIn(string userName, string passWord)
+        {
+            Microsoft.AspNetCore.Identity.SignInResult signInResult;
+            AppUser appUser = _signInManager.UserManager.FindByNameAsync(userName).Result;
+
+            if (appUser == null)
+            {
+                return RedirectToAction("LogIn");
+            }
+
+            signInResult = _signInManager.PasswordSignInAsync(appUser, passWord, false, false).Result;
+            if (!signInResult.Succeeded)
+            {
+               
+                ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı adı veya parola.");
+                return BadRequest();
+            }
+
+            return Ok("Succesful Login");
+        }
+
 
         [HttpPost("Logout")]
         //[Authorize]
