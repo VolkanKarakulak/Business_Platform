@@ -20,6 +20,11 @@ namespace Business_Platform.Model.Clothing
         public AppUser? AppUser { get; set; }
         public int ClothingProductId {  get; set; }
 
+        public int ClothingCompanyId { get; set; }
+
+        [ForeignKey("ClothingCompanyId")]
+        public ClothingCompany? ClothingCompany { get; set; }
+
         [ForeignKey("ClothingProductId")]
         public ClothingProduct? ClothingProduct { get; set; }
 

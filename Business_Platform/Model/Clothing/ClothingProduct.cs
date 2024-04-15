@@ -8,6 +8,7 @@ namespace Business_Platform.Model.Clothing
 {
     public class ClothingProduct : BaseProductModel
     {
+
         public string Size { get; set; } = ""; // Ayrı bir model oluşturabilir
 
         public string Color { get; set; } = ""; // Ayrı bir model oluşturabilir
@@ -18,13 +19,32 @@ namespace Business_Platform.Model.Clothing
 
         public int ClothingTypeId { get; set; }
 
+        [Column(TypeName = "nvarchar(200)")]
+        public string? Description { get; set; }
+        public long AppUserId { get; set; }
+
+        [ForeignKey("AppUserId")]
+        public AppUser? AppUser { get; set; } // Ürün Satıcısı
+
+        public byte StateId { get; set; }
+
+        [ForeignKey("StateId")]
+        public State? State { get; set; }
+
         [ForeignKey("ClothingTypeId")]
         public ClothingType? ClothingType { get; set; }
+        public int ClothingCompanyId { get; set; }
+
+        [ForeignKey("ClothingCompanyId")]
+        public ClothingCompany? ClothingCompany { get; set; }
+
+        public int ClothingCompanyBranchId { get; set; }
+
+        [ForeignKey("ClothingCompanyBranchId")]
+        public ClothingCompanyBranch? ClothingCompanyBranch { get; set; }
 
         public List<ClothingProductComment>? ProductComments { get; set; }
         public List<ClothingProductOffer>? ClothingOffer { get; set; }
-
-
 
     }
 }

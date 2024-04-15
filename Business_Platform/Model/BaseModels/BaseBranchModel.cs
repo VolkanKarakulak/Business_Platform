@@ -25,14 +25,7 @@ namespace Business_Platform.Model.BaseModel
         public string Email { get; set; } = "";
         public string? City { get; set; }
         public int BranchCode { get; set; } // Ayrı bir model oluşturabilir
-        public long UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public AppUser? AppUser { get; set; }
-        public byte StateId { get; set; }
-
-        [ForeignKey("StateId")]
-        public State? State { get; set; }
+       
 
     }
 }

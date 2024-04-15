@@ -31,16 +31,7 @@ namespace Business_Platform.Model.BaseModel
         [Column(TypeName = "smalldatetime")]
         public DateTime RegisterDate { get; set; }
 
-        public int CompanyCategoryId { get; set; }
-
-        [ForeignKey("CompanyCategoryId")]
-        public CompanyCategory? CompanyCategory { get; set; }
-
-        public byte StateId { get; set; }
-
-        [ForeignKey("StateId")]
-        public State? State { get; set; }
-
+     
     }
 }
 

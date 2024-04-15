@@ -19,18 +19,5 @@ namespace Business_Platform.Model.BaseModel
         [StringLength(150)]
         public string? ImageFileName { get; set; }
 
-        [Column(TypeName = "nvarchar(200)")]
-        public string? Description { get; set; }
-        public long AppUserId { get; set; }
-
-        [ForeignKey("AppUserId")]
-        public AppUser? AppUser { get; set; } // Ürün Satıcısı
-
-        public byte StateId { get; set; }
-
-        [ForeignKey("StateId")]
-        public State? State { get; set; }
-
-
     }
 }

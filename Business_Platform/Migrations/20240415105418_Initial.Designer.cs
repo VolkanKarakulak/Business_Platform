@@ -4,6 +4,7 @@ using Business_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(BusinessPlatformContext))]
-    partial class BusinessPlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20240415105418_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,7 +127,61 @@ namespace Business_Platform.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompany", b =>
+            modelBuilder.Entity("Business_Platform.Model.BaseModel.BaseBranchModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("BranchCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BaseBranchModel");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BaseBranchModel");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.BaseModel.BaseCompanyModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -140,6 +196,10 @@ namespace Business_Platform.Migrations
 
                     b.Property<int>("CompanyCategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EMail")
                         .IsRequired()
@@ -172,60 +232,9 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("ClothingCompanies");
-                });
+                    b.ToTable("BaseCompanyModel");
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompanyBranch", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<int>("BranchCode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ClothingCompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<byte>("StateId")
-                        .HasColumnType("tinyint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClothingCompanyId");
-
-                    b.HasIndex("StateId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ClothingCompanyBranches");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BaseCompanyModel");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompBranchUser", b =>
@@ -537,31 +546,25 @@ namespace Business_Platform.Migrations
 
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompany", b =>
                 {
-                    b.HasOne("Business_Platform.Model.CompanyCategory", "CompanyCategory")
-                        .WithMany()
-                        .HasForeignKey("CompanyCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("Business_Platform.Model.BaseModel.BaseCompanyModel");
 
-                    b.HasOne("Business_Platform.Model.State", "State")
-                        .WithMany()
-                        .HasForeignKey("StateId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("CompanyCategory");
-
-                    b.Navigation("State");
+                    b.HasDiscriminator().HasValue("ClothingCompany");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompanyBranch", b =>
                 {
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingCompany", "ClothingCompany")
-                        .WithMany()
-                        .HasForeignKey("ClothingCompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("Business_Platform.Model.BaseModel.BaseBranchModel");
 
+                    b.Property<int>("ClothingCompanyId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ClothingCompanyId");
+
+                    b.HasDiscriminator().HasValue("ClothingCompanyBranch");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.BaseModel.BaseBranchModel", b =>
+                {
                     b.HasOne("Business_Platform.Model.State", "State")
                         .WithMany()
                         .HasForeignKey("StateId")
@@ -576,7 +579,24 @@ namespace Business_Platform.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("ClothingCompany");
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.BaseModel.BaseCompanyModel", b =>
+                {
+                    b.HasOne("Business_Platform.Model.CompanyCategory", "CompanyCategory")
+                        .WithMany()
+                        .HasForeignKey("CompanyCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("CompanyCategory");
 
                     b.Navigation("State");
                 });
@@ -731,11 +751,15 @@ namespace Business_Platform.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompany", b =>
+            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompanyBranch", b =>
                 {
-                    b.Navigation("Offers");
+                    b.HasOne("Business_Platform.Model.Clothing.ClothingCompany", "ClothingCompany")
+                        .WithMany()
+                        .HasForeignKey("ClothingCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Products");
+                    b.Navigation("ClothingCompany");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProduct", b =>
@@ -748,6 +772,13 @@ namespace Business_Platform.Migrations
             modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingType", b =>
                 {
                     b.Navigation("ClothingProducts");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompany", b =>
+                {
+                    b.Navigation("Offers");
+
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
