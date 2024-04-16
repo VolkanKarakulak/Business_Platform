@@ -20,14 +20,15 @@ namespace Business_Platform.Data
         public DbSet<Business_Platform.Model.CompanyCategory>? CompanyCategories { get; set; }
         public DbSet<Business_Platform.Model.State>? States { get; set; }
         public DbSet<Business_Platform.Model.Office.OfficeStock>? OfficeStocks { get; set; }
-        public DbSet<Business_Platform.Model.Office.OfficeCompanyBranch>? OfficeCompanyBranch { get; set; }
-        public DbSet<Business_Platform.Model.Office.OfficeProduct>? OfficeProduct { get; set; }
+        public DbSet<Business_Platform.Model.Office.OfficeCompanyBranch>? OfficeCompanyBranches { get; set; }
+        public DbSet<Business_Platform.Model.Office.OfficeProduct>? OfficeProducts { get; set; }
+        public DbSet<Business_Platform.Model.Office.OfficeProdBranchProduct>? OfficeProdBranchProducts { get; set; }
+        public DbSet<Business_Platform.Model.Office.OfficeProductOffer>? OfficeProductOffers { get; set; }
+        public DbSet<Business_Platform.Model.Office.ManageOffer>? ManageOffers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-            modelBuilder.Entity<OfficeCompanyBranch>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
 
             //modelBuilder.Entity<OfficeProductOffer>().HasOne(u => u.).WithMany().OnDelete(DeleteBehavior.NoAction);
             //modelBuilder.Entity<OfficeCompany>()
@@ -42,20 +43,17 @@ namespace Business_Platform.Data
             //.HasForeignKey(co => co.OfficeCompanyId)
             //.OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<OfficeProductOffer>().HasOne(u => u.AppUser).WithMany().HasForeignKey(u => u.UserId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<OfficeCompany>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<OfficeProduct>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<OfficeCompBranchUser>().HasKey(u => new { u.UserId, u.OfficeCompanyBranchId });
+            modelBuilder.Entity<OfficeCompanyBranch>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<OfficeCompBranchUser>().HasOne(u => u.OfficeCompanyBranch).WithMany().OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<OfficeCompBranchUser>().HasKey(u => new { u.UserId, u.OfficeCompanyBranchId });
+           //modelBuilder.Entity<OfferAdmin>().HasKey(a => new { a.OfficeProductOfferId, a.OfficeCompBranchUserId });
+            
 
 
             base.OnModelCreating(modelBuilder);
         }
-
-
-        public DbSet<Business_Platform.Model.Office.OfficeProdBranchProduct>? OfficeProdBranchProduct { get; set; }
-
-
-        public DbSet<Business_Platform.Model.Office.OfficeProductOffer>? OfficeProductOffer { get; set; }
     }
 }

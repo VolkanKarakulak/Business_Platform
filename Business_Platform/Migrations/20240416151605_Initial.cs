@@ -229,12 +229,11 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfficeCompanyBranch",
+                name: "OfficeCompanyBranches",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     StateId = table.Column<byte>(type: "tinyint", nullable: false),
                     OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
@@ -246,21 +245,15 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OfficeCompanyBranch", x => x.Id);
+                    table.PrimaryKey("PK_OfficeCompanyBranches", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OfficeCompanyBranch_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_OfficeCompanyBranch_OfficeCompanies_OfficeCompanyId",
+                        name: "FK_OfficeCompanyBranches_OfficeCompanies_OfficeCompanyId",
                         column: x => x.OfficeCompanyId,
                         principalTable: "OfficeCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OfficeCompanyBranch_States_StateId",
+                        name: "FK_OfficeCompanyBranches_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id");
@@ -270,9 +263,8 @@ namespace Business_Platform.Migrations
                 name: "OfficeCompBranchUser",
                 columns: table => new
                 {
-                    OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    OfficeCompBranchId = table.Column<int>(type: "int", nullable: true)
+                    OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -284,14 +276,14 @@ namespace Business_Platform.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OfficeCompBranchUser_OfficeCompanyBranch_OfficeCompBranchId",
-                        column: x => x.OfficeCompBranchId,
-                        principalTable: "OfficeCompanyBranch",
+                        name: "FK_OfficeCompBranchUser_OfficeCompanyBranches_OfficeCompanyBranchId",
+                        column: x => x.OfficeCompanyBranchId,
+                        principalTable: "OfficeCompanyBranches",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfficeProduct",
+                name: "OfficeProducts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -311,39 +303,39 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OfficeProduct", x => x.Id);
+                    table.PrimaryKey("PK_OfficeProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OfficeProduct_AspNetUsers_AppUserId",
+                        name: "FK_OfficeProducts_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_OfficeProduct_OfficeCompanies_OfficeCompanyId",
+                        name: "FK_OfficeProducts_OfficeCompanies_OfficeCompanyId",
                         column: x => x.OfficeCompanyId,
                         principalTable: "OfficeCompanies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_OfficeProduct_OfficeCompanyBranch_OfficeCompanyBranchId",
+                        name: "FK_OfficeProducts_OfficeCompanyBranches_OfficeCompanyBranchId",
                         column: x => x.OfficeCompanyBranchId,
-                        principalTable: "OfficeCompanyBranch",
+                        principalTable: "OfficeCompanyBranches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_OfficeProduct_OfficeProductType_OfficeTypeId",
+                        name: "FK_OfficeProducts_OfficeProductType_OfficeTypeId",
                         column: x => x.OfficeTypeId,
                         principalTable: "OfficeProductType",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_OfficeProduct_States_StateId",
+                        name: "FK_OfficeProducts_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfficeProdBranchProduct",
+                name: "OfficeProdBranchProducts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -354,17 +346,17 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OfficeProdBranchProduct", x => x.Id);
+                    table.PrimaryKey("PK_OfficeProdBranchProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OfficeProdBranchProduct_OfficeCompanyBranch_OfficeCompanyBranchId",
+                        name: "FK_OfficeProdBranchProducts_OfficeCompanyBranches_OfficeCompanyBranchId",
                         column: x => x.OfficeCompanyBranchId,
-                        principalTable: "OfficeCompanyBranch",
+                        principalTable: "OfficeCompanyBranches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OfficeProdBranchProduct_OfficeProduct_OfficeProductId",
+                        name: "FK_OfficeProdBranchProducts_OfficeProducts_OfficeProductId",
                         column: x => x.OfficeProductId,
-                        principalTable: "OfficeProduct",
+                        principalTable: "OfficeProducts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -383,15 +375,15 @@ namespace Business_Platform.Migrations
                 {
                     table.PrimaryKey("PK_OfficeProductComment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OfficeProductComment_OfficeProduct_OfficeProductId",
+                        name: "FK_OfficeProductComment_OfficeProducts_OfficeProductId",
                         column: x => x.OfficeProductId,
-                        principalTable: "OfficeProduct",
+                        principalTable: "OfficeProducts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfficeProductOffer",
+                name: "OfficeProductOffers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -405,22 +397,23 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OfficeProductOffer", x => x.Id);
+                    table.PrimaryKey("PK_OfficeProductOffers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OfficeProductOffer_AspNetUsers_UserId",
+                        name: "FK_OfficeProductOffers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OfficeProductOffer_OfficeCompanies_OfficeCompanyId",
+                        name: "FK_OfficeProductOffers_OfficeCompanies_OfficeCompanyId",
                         column: x => x.OfficeCompanyId,
                         principalTable: "OfficeCompanies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OfficeProductOffer_OfficeProduct_OfficeProductId",
+                        name: "FK_OfficeProductOffers_OfficeProducts_OfficeProductId",
                         column: x => x.OfficeProductId,
-                        principalTable: "OfficeProduct",
+                        principalTable: "OfficeProducts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -438,9 +431,9 @@ namespace Business_Platform.Migrations
                 {
                     table.PrimaryKey("PK_OfficeStocks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OfficeStocks_OfficeProduct_OfficeProductId",
+                        name: "FK_OfficeStocks_OfficeProducts_OfficeProductId",
                         column: x => x.OfficeProductId,
-                        principalTable: "OfficeProduct",
+                        principalTable: "OfficeProducts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -495,59 +488,29 @@ namespace Business_Platform.Migrations
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfficeCompanyBranch_OfficeCompanyId",
-                table: "OfficeCompanyBranch",
+                name: "IX_OfficeCompanyBranches_OfficeCompanyId",
+                table: "OfficeCompanyBranches",
                 column: "OfficeCompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfficeCompanyBranch_StateId",
-                table: "OfficeCompanyBranch",
+                name: "IX_OfficeCompanyBranches_StateId",
+                table: "OfficeCompanyBranches",
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfficeCompanyBranch_UserId",
-                table: "OfficeCompanyBranch",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfficeCompBranchUser_OfficeCompBranchId",
+                name: "IX_OfficeCompBranchUser_OfficeCompanyBranchId",
                 table: "OfficeCompBranchUser",
-                column: "OfficeCompBranchId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfficeProdBranchProduct_OfficeCompanyBranchId",
-                table: "OfficeProdBranchProduct",
                 column: "OfficeCompanyBranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfficeProdBranchProduct_OfficeProductId",
-                table: "OfficeProdBranchProduct",
+                name: "IX_OfficeProdBranchProducts_OfficeCompanyBranchId",
+                table: "OfficeProdBranchProducts",
+                column: "OfficeCompanyBranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeProdBranchProducts_OfficeProductId",
+                table: "OfficeProdBranchProducts",
                 column: "OfficeProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfficeProduct_AppUserId",
-                table: "OfficeProduct",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfficeProduct_OfficeCompanyBranchId",
-                table: "OfficeProduct",
-                column: "OfficeCompanyBranchId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfficeProduct_OfficeCompanyId",
-                table: "OfficeProduct",
-                column: "OfficeCompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfficeProduct_OfficeTypeId",
-                table: "OfficeProduct",
-                column: "OfficeTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfficeProduct_StateId",
-                table: "OfficeProduct",
-                column: "StateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OfficeProductComment_OfficeProductId",
@@ -555,19 +518,44 @@ namespace Business_Platform.Migrations
                 column: "OfficeProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfficeProductOffer_OfficeCompanyId",
-                table: "OfficeProductOffer",
+                name: "IX_OfficeProductOffers_OfficeCompanyId",
+                table: "OfficeProductOffers",
                 column: "OfficeCompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfficeProductOffer_OfficeProductId",
-                table: "OfficeProductOffer",
+                name: "IX_OfficeProductOffers_OfficeProductId",
+                table: "OfficeProductOffers",
                 column: "OfficeProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfficeProductOffer_UserId",
-                table: "OfficeProductOffer",
+                name: "IX_OfficeProductOffers_UserId",
+                table: "OfficeProductOffers",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeProducts_AppUserId",
+                table: "OfficeProducts",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeProducts_OfficeCompanyBranchId",
+                table: "OfficeProducts",
+                column: "OfficeCompanyBranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeProducts_OfficeCompanyId",
+                table: "OfficeProducts",
+                column: "OfficeCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeProducts_OfficeTypeId",
+                table: "OfficeProducts",
+                column: "OfficeTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeProducts_StateId",
+                table: "OfficeProducts",
+                column: "StateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OfficeStocks_OfficeProductId",
@@ -596,13 +584,13 @@ namespace Business_Platform.Migrations
                 name: "OfficeCompBranchUser");
 
             migrationBuilder.DropTable(
-                name: "OfficeProdBranchProduct");
+                name: "OfficeProdBranchProducts");
 
             migrationBuilder.DropTable(
                 name: "OfficeProductComment");
 
             migrationBuilder.DropTable(
-                name: "OfficeProductOffer");
+                name: "OfficeProductOffers");
 
             migrationBuilder.DropTable(
                 name: "OfficeStocks");
@@ -611,16 +599,16 @@ namespace Business_Platform.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "OfficeProduct");
-
-            migrationBuilder.DropTable(
-                name: "OfficeCompanyBranch");
-
-            migrationBuilder.DropTable(
-                name: "OfficeProductType");
+                name: "OfficeProducts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "OfficeCompanyBranches");
+
+            migrationBuilder.DropTable(
+                name: "OfficeProductType");
 
             migrationBuilder.DropTable(
                 name: "OfficeCompanies");

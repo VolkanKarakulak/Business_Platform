@@ -6,10 +6,7 @@ namespace Business_Platform.Model.Office
 {
     public class OfficeCompanyBranch : BaseBranchModel
     {
-        public long UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public AppUser? AppUser { get; set; }
+       
         public byte StateId { get; set; }
 
         [ForeignKey("StateId")]

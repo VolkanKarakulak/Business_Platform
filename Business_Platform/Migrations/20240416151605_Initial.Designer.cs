@@ -4,6 +4,7 @@ using Business_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    partial class Business_PlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20240416151605_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,46 +145,6 @@ namespace Business_Platform.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Office.ManageOffer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<long>("AppUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("OfferDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("OfferPrice")
-                        .HasColumnType("float");
-
-                    b.Property<int>("OfficeProductOfferId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("OfficeProductOfferId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ManageOffers");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompany", b =>
@@ -429,9 +391,6 @@ namespace Business_Platform.Migrations
                     b.Property<int>("OfficeCompanyId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OfficeProdBranchProductId")
-                        .HasColumnType("int");
-
                     b.Property<int>("OfficeProductId")
                         .HasColumnType("int");
 
@@ -444,8 +403,6 @@ namespace Business_Platform.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OfficeCompanyId");
-
-                    b.HasIndex("OfficeProdBranchProductId");
 
                     b.HasIndex("OfficeProductId");
 
@@ -614,33 +571,6 @@ namespace Business_Platform.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Office.ManageOffer", b =>
-                {
-                    b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Business_Platform.Model.Office.OfficeProductOffer", "OfficeProductOffer")
-                        .WithMany()
-                        .HasForeignKey("OfficeProductOfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("OfficeProductOffer");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompany", b =>
                 {
                     b.HasOne("Business_Platform.Model.CompanyCategory", "CompanyCategory")
@@ -777,10 +707,6 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Business_Platform.Model.Office.OfficeProdBranchProduct", null)
-                        .WithMany("officeProductOffers")
-                        .HasForeignKey("OfficeProdBranchProductId");
-
                     b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
                         .WithMany("OfficeProductOffer")
                         .HasForeignKey("OfficeProductId")
@@ -874,11 +800,6 @@ namespace Business_Platform.Migrations
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompanyBranch", b =>
                 {
                     b.Navigation("OfficeProdBranchProducts");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProdBranchProduct", b =>
-                {
-                    b.Navigation("officeProductOffers");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProduct", b =>

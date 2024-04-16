@@ -5,15 +5,15 @@ namespace Business_Platform.Model.Office
 {
     public class OfficeCompBranchUser
     {
-        public int OfficeCompanyBranchId { get; set; }
-
-        [ForeignKey("OfficeCompBranchId")]
-        public OfficeCompanyBranch? OfficeCompanyBranch { get; set; }
-
         public long UserId { get; set; }
 
         [ForeignKey("UserId")]
         public AppUser? AppUser { get; set; }
+        public int OfficeCompanyBranchId { get; set; }
+
+        [ForeignKey("OfficeCompanyBranchId")]
+        public OfficeCompanyBranch? OfficeCompanyBranch { get; set; }
+
 
     }
 }

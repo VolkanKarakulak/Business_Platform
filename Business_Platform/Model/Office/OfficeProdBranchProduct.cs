@@ -17,6 +17,7 @@ namespace Business_Platform.Model.Office
 
         public int Quantity { get; set; }
 
+        public List<OfficeProductOffer>? officeProductOffers { get; set; }
        
     }
 }

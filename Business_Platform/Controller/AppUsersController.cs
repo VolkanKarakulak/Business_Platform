@@ -19,7 +19,6 @@ namespace BusinessPlatform.Controllers
     [ApiController]
     public class AppUsersController : ControllerBase
     {
-        //private readonly Business_PlatformContext _context;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly Business_PlatformContext _context;
 
@@ -55,7 +54,7 @@ namespace BusinessPlatform.Controllers
         // GET: api/AppUsers/5
         [HttpGet("{id}")]
         //[Authorize]
-        public ActionResult<AppUser> GetAppUser(long id)
+        public ActionResult<AppUser> GetAppUser(int id)
         {
             AppUser? appUser = null;
 
@@ -149,7 +148,7 @@ namespace BusinessPlatform.Controllers
         // DELETE: api/AppUsers/5
         [HttpDelete("{id}")]
         //[Authorize]
-        public ActionResult<string> DeleteAppUser(long id)
+        public ActionResult<string> DeleteAppUser(int id)
         {
             AppUser? user = null;
 
