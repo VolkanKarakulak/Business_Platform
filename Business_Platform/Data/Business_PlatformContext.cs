@@ -19,6 +19,11 @@ namespace Business_Platform.Data
         public DbSet<Business_Platform.Model.Clothing.ClothingCompany> ClothingCompanies { get; set; } = default!;
         public DbSet<Business_Platform.Model.CompanyCategory>? CompanyCategories { get; set; }
         public DbSet<Business_Platform.Model.State>? States { get; set; }
+        public DbSet<Business_Platform.Model.Clothing.ClothingStock>? ClothingStocks { get; set; }
+        public DbSet<Business_Platform.Model.Clothing.ClothingCompanyBranch>? ClothingCompanyBranch { get; set; }
+        public DbSet<Business_Platform.Model.Clothing.ClothingProduct>? ClothingProduct { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -44,9 +49,7 @@ namespace Business_Platform.Data
             modelBuilder.Entity<ClothingCompBranchUser>().HasOne(u => u.ClothingCompanyBranch).WithMany().OnDelete(DeleteBehavior.NoAction);
 
 
-
             base.OnModelCreating(modelBuilder);
         }
-        public DbSet<Business_Platform.Model.Clothing.ClothingCompanyBranch>? ClothingCompanyBranch { get; set; }
     }
 }
