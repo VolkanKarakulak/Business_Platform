@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Business_Platform.Model.Identity;
 
-namespace Business_Platform.Model.Clothing
+namespace Business_Platform.Model.Office
 {
-    public class ClothingProductOffer
+    public class OfficeProductOffer
     {
         public enum OfferStatus
         {
@@ -19,16 +19,16 @@ namespace Business_Platform.Model.Clothing
 
         [ForeignKey("UserId")]
         public AppUser? AppUser { get; set; }
-        public int ClothingProductId {  get; set; }
+        public int OfficeProductId {  get; set; }
 
-        public int ClothingCompanyId { get; set; }
+        public int OfficeCompanyId { get; set; }
 
-        [ForeignKey("ClothingCompanyId")]
-        public ClothingCompany? ClothingCompany { get; set; }
+        [ForeignKey("OfficeCompanyId")]
+        public OfficeCompany? OfficeCompany { get; set; }
 
-        [ForeignKey("ClothingProductId")]
-        public ClothingProduct? ClothingProduct { get; set; }
+        [ForeignKey("OfficeProductId")]
+        public OfficeProduct? OfficeProduct { get; set; }
 
-        public OfferStatus Status { get; set; } // Teklifin durumu
+        public OfferStatus Status { get; set; } = OfferStatus.Pending;  // Başlangıç değeri pending(beklemde) olsun
     }
 }

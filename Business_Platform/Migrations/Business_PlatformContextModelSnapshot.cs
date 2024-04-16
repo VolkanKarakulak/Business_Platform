@@ -22,325 +22,6 @@ namespace Business_Platform.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompany", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<int>("CompanyCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EMail")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("char(5)");
-
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("smalldatetime");
-
-                    b.Property<byte>("StateId")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyCategoryId");
-
-                    b.HasIndex("StateId");
-
-                    b.ToTable("ClothingCompanies");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompanyBranch", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<int>("BranchCode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ClothingCompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<byte>("StateId")
-                        .HasColumnType("tinyint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClothingCompanyId");
-
-                    b.HasIndex("StateId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ClothingCompanyBranch");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompBranchProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClothingCompanyBranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClothingProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClothingCompanyBranchId");
-
-                    b.HasIndex("ClothingProductId");
-
-                    b.ToTable("ClothingCompBranchProduct");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompBranchUser", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("ClothingCompanyBranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ClothingCompBranchId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "ClothingCompanyBranchId");
-
-                    b.HasIndex("ClothingCompBranchId");
-
-                    b.ToTable("ClothingCompBranchUser");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<long>("AppUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("ClothingCompanyBranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClothingCompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClothingTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("FabricType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageFileName")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Pattern")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Size")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte>("StateId")
-                        .HasColumnType("tinyint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("ClothingCompanyBranchId");
-
-                    b.HasIndex("ClothingCompanyId");
-
-                    b.HasIndex("ClothingTypeId");
-
-                    b.HasIndex("StateId");
-
-                    b.ToTable("ClothingProduct");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProductComment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClothingProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<DateTime>("CommmentDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClothingProductId");
-
-                    b.ToTable("ClothingProductComment");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProductOffer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClothingCompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClothingProductId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("OfferDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("OfferPrice")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClothingCompanyId");
-
-                    b.HasIndex("ClothingProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ClothingProductOffer");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingStock", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClothingProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalQuantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClothingProductId");
-
-                    b.ToTable("ClothingStocks");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ClothingType");
-                });
-
             modelBuilder.Entity("Business_Platform.Model.CompanyCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -464,6 +145,320 @@ namespace Business_Platform.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompany", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("CompanyCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EMail")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("char(5)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("smalldatetime");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyCategoryId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("OfficeCompanies");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompanyBranch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("BranchCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("OfficeCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficeCompanyId");
+
+                    b.HasIndex("StateId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OfficeCompanyBranch");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompBranchUser", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("OfficeCompanyBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OfficeCompBranchId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "OfficeCompanyBranchId");
+
+                    b.HasIndex("OfficeCompBranchId");
+
+                    b.ToTable("OfficeCompBranchUser");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProdBranchProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("OfficeCompanyBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OfficeProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficeCompanyBranchId");
+
+                    b.HasIndex("OfficeProductId");
+
+                    b.ToTable("OfficeProdBranchProduct");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<long>("AppUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ImageFileName")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Material")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("OfficeCompanyBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OfficeCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OfficeProductTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OfficeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("OfficeCompanyBranchId");
+
+                    b.HasIndex("OfficeCompanyId");
+
+                    b.HasIndex("OfficeTypeId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("OfficeProduct");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CommmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OfficeProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficeProductId");
+
+                    b.ToTable("OfficeProductComment");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductOffer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("OfferDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("OfferPrice")
+                        .HasColumnType("float");
+
+                    b.Property<int>("OfficeCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OfficeProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficeCompanyId");
+
+                    b.HasIndex("OfficeProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OfficeProductOffer");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OfficeProductType");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("OfficeProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficeProductId");
+
+                    b.ToTable("OfficeStocks");
+                });
+
             modelBuilder.Entity("Business_Platform.Model.State", b =>
                 {
                     b.Property<byte>("Id")
@@ -582,7 +577,7 @@ namespace Business_Platform.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompany", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompany", b =>
                 {
                     b.HasOne("Business_Platform.Model.CompanyCategory", "CompanyCategory")
                         .WithMany()
@@ -601,11 +596,11 @@ namespace Business_Platform.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompanyBranch", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompanyBranch", b =>
                 {
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingCompany", "ClothingCompany")
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", "OfficeCompany")
                         .WithMany("Branches")
-                        .HasForeignKey("ClothingCompanyId")
+                        .HasForeignKey("OfficeCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -623,35 +618,16 @@ namespace Business_Platform.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("ClothingCompany");
+                    b.Navigation("OfficeCompany");
 
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompBranchProduct", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompBranchUser", b =>
                 {
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingCompanyBranch", "ClothingCompanyBranch")
-                        .WithMany("ClothingCompBranchProducts")
-                        .HasForeignKey("ClothingCompanyBranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingProduct", "ClothingProduct")
-                        .WithMany("ClothingCompBranchProducts")
-                        .HasForeignKey("ClothingProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ClothingCompanyBranch");
-
-                    b.Navigation("ClothingProduct");
-                });
-
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompBranchUser", b =>
-                {
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingCompanyBranch", "ClothingCompanyBranch")
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompanyBranch", "OfficeCompanyBranch")
                         .WithMany()
-                        .HasForeignKey("ClothingCompBranchId")
+                        .HasForeignKey("OfficeCompBranchId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
@@ -662,10 +638,29 @@ namespace Business_Platform.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("ClothingCompanyBranch");
+                    b.Navigation("OfficeCompanyBranch");
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProduct", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProdBranchProduct", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompanyBranch", "OfficeCompanyBranch")
+                        .WithMany("OfficeProdBranchProducts")
+                        .HasForeignKey("OfficeCompanyBranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
+                        .WithMany("OfficeProdBranchProducts")
+                        .HasForeignKey("OfficeProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OfficeCompanyBranch");
+
+                    b.Navigation("OfficeProduct");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProduct", b =>
                 {
                     b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
                         .WithMany()
@@ -673,23 +668,21 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingCompanyBranch", "ClothingCompanyBranch")
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompanyBranch", "OfficeCompanyBranch")
                         .WithMany()
-                        .HasForeignKey("ClothingCompanyBranchId")
+                        .HasForeignKey("OfficeCompanyBranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingCompany", "ClothingCompany")
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", "OfficeCompany")
                         .WithMany("Products")
-                        .HasForeignKey("ClothingCompanyId")
+                        .HasForeignKey("OfficeCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingType", "ClothingType")
-                        .WithMany("ClothingProducts")
-                        .HasForeignKey("ClothingTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Business_Platform.Model.Office.OfficeProductType", "OfficeProductType")
+                        .WithMany("OfficeProducts")
+                        .HasForeignKey("OfficeTypeId");
 
                     b.HasOne("Business_Platform.Model.State", "State")
                         .WithMany()
@@ -699,37 +692,37 @@ namespace Business_Platform.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("ClothingCompany");
+                    b.Navigation("OfficeCompany");
 
-                    b.Navigation("ClothingCompanyBranch");
+                    b.Navigation("OfficeCompanyBranch");
 
-                    b.Navigation("ClothingType");
+                    b.Navigation("OfficeProductType");
 
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProductComment", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductComment", b =>
                 {
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingProduct", "ClothingProduct")
+                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
                         .WithMany("ProductComments")
-                        .HasForeignKey("ClothingProductId")
+                        .HasForeignKey("OfficeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ClothingProduct");
+                    b.Navigation("OfficeProduct");
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProductOffer", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductOffer", b =>
                 {
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingCompany", "ClothingCompany")
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", "OfficeCompany")
                         .WithMany("Offers")
-                        .HasForeignKey("ClothingCompanyId")
+                        .HasForeignKey("OfficeCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingProduct", "ClothingProduct")
-                        .WithMany("ClothingOffer")
-                        .HasForeignKey("ClothingProductId")
+                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
+                        .WithMany("OfficeProductOffer")
+                        .HasForeignKey("OfficeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -741,20 +734,20 @@ namespace Business_Platform.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("ClothingCompany");
+                    b.Navigation("OfficeCompany");
 
-                    b.Navigation("ClothingProduct");
+                    b.Navigation("OfficeProduct");
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingStock", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeStock", b =>
                 {
-                    b.HasOne("Business_Platform.Model.Clothing.ClothingProduct", "ClothingProduct")
+                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
                         .WithMany()
-                        .HasForeignKey("ClothingProductId")
+                        .HasForeignKey("OfficeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ClothingProduct");
+                    b.Navigation("OfficeProduct");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -808,7 +801,7 @@ namespace Business_Platform.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompany", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompany", b =>
                 {
                     b.Navigation("Branches");
 
@@ -817,23 +810,23 @@ namespace Business_Platform.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingCompanyBranch", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompanyBranch", b =>
                 {
-                    b.Navigation("ClothingCompBranchProducts");
+                    b.Navigation("OfficeProdBranchProducts");
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingProduct", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProduct", b =>
                 {
-                    b.Navigation("ClothingCompBranchProducts");
+                    b.Navigation("OfficeProdBranchProducts");
 
-                    b.Navigation("ClothingOffer");
+                    b.Navigation("OfficeProductOffer");
 
                     b.Navigation("ProductComments");
                 });
 
-            modelBuilder.Entity("Business_Platform.Model.Clothing.ClothingType", b =>
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductType", b =>
                 {
-                    b.Navigation("ClothingProducts");
+                    b.Navigation("OfficeProducts");
                 });
 #pragma warning restore 612, 618
         }

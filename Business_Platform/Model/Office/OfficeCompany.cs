@@ -1,9 +1,10 @@
 ﻿using Business_Platform.Model.BaseModel;
+using Business_Platform.Model.Office;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Business_Platform.Model.Clothing
+namespace Business_Platform.Model.Office
 {
-    public class ClothingCompany : BaseCompanyModel
+    public class OfficeCompany : BaseCompanyModel
     {
         public int CompanyCategoryId { get; set; }
 
@@ -15,10 +16,10 @@ namespace Business_Platform.Model.Clothing
         [ForeignKey("StateId")]
         public State? State { get; set; }
 
-        public List<ClothingProduct>? Products { get; set; }
+        public List<OfficeProduct>? Products { get; set; }
 
-        public List<ClothingProductOffer>? Offers { get; set; }
+        public List<OfficeProductOffer>? Offers { get; set; }
 
-        public List<ClothingCompanyBranch>? Branches { get; set; }
+        public List<OfficeCompanyBranch>? Branches { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Business_Platform.Model.Clothing;
+using Business_Platform.Model.Office;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Business_Platform.Model.Identity;
 
@@ -16,40 +16,46 @@ namespace Business_Platform.Data
         {
         }
 
-        public DbSet<Business_Platform.Model.Clothing.ClothingCompany> ClothingCompanies { get; set; } = default!;
+        public DbSet<Business_Platform.Model.Office.OfficeCompany> OfficeCompanies { get; set; } = default!;
         public DbSet<Business_Platform.Model.CompanyCategory>? CompanyCategories { get; set; }
         public DbSet<Business_Platform.Model.State>? States { get; set; }
-        public DbSet<Business_Platform.Model.Clothing.ClothingStock>? ClothingStocks { get; set; }
-        public DbSet<Business_Platform.Model.Clothing.ClothingCompanyBranch>? ClothingCompanyBranch { get; set; }
-        public DbSet<Business_Platform.Model.Clothing.ClothingProduct>? ClothingProduct { get; set; }
+        public DbSet<Business_Platform.Model.Office.OfficeStock>? OfficeStocks { get; set; }
+        public DbSet<Business_Platform.Model.Office.OfficeCompanyBranch>? OfficeCompanyBranch { get; set; }
+        public DbSet<Business_Platform.Model.Office.OfficeProduct>? OfficeProduct { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<ClothingCompanyBranch>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<OfficeCompanyBranch>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
 
-            //modelBuilder.Entity<ClothingProductOffer>().HasOne(u => u.).WithMany().OnDelete(DeleteBehavior.NoAction);
-            //modelBuilder.Entity<ClothingCompany>()
+            //modelBuilder.Entity<OfficeProductOffer>().HasOne(u => u.).WithMany().OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<OfficeCompany>()
             // .HasMany(cc => cc.Products)
             // .WithOne()
-            // .HasForeignKey(cp => cp.ClothingCompanyId)
+            // .HasForeignKey(cp => cp.OfficeCompanyId)
             // .OnDelete(DeleteBehavior.NoAction);
 
-            //modelBuilder.Entity<ClothingCompany>()
+            //modelBuilder.Entity<OfficeCompany>()
             //.HasMany(cc => cc.Offers)
             //.WithOne()
-            //.HasForeignKey(co => co.ClothingCompanyId)
+            //.HasForeignKey(co => co.OfficeCompanyId)
             //.OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<ClothingProductOffer>().HasOne(u => u.AppUser).WithMany().HasForeignKey(u => u.UserId).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<ClothingCompany>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<ClothingProduct>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<ClothingCompBranchUser>().HasKey(u => new { u.UserId, u.ClothingCompanyBranchId });
-            modelBuilder.Entity<ClothingCompBranchUser>().HasOne(u => u.ClothingCompanyBranch).WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<OfficeProductOffer>().HasOne(u => u.AppUser).WithMany().HasForeignKey(u => u.UserId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<OfficeCompany>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<OfficeProduct>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<OfficeCompBranchUser>().HasKey(u => new { u.UserId, u.OfficeCompanyBranchId });
+            modelBuilder.Entity<OfficeCompBranchUser>().HasOne(u => u.OfficeCompanyBranch).WithMany().OnDelete(DeleteBehavior.NoAction);
 
 
             base.OnModelCreating(modelBuilder);
         }
+
+
+        public DbSet<Business_Platform.Model.Office.OfficeProdBranchProduct>? OfficeProdBranchProduct { get; set; }
+
+
+        public DbSet<Business_Platform.Model.Office.OfficeProductOffer>? OfficeProductOffer { get; set; }
     }
 }

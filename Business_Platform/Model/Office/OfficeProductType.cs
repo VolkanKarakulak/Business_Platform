@@ -1,6 +1,6 @@
-﻿namespace Business_Platform.Model.Clothing
+﻿namespace Business_Platform.Model.Office
 {
-    public class ClothingType
+    public class OfficeProductType
     {
         public int Id { get; set; }
 
@@ -8,6 +8,6 @@
 
         public string Description { get; set; } = "";
 
-        public List<ClothingProduct>? ClothingProducts { get; set; }
+        public List<OfficeProduct>? OfficeProducts { get; set; }
     }
 }

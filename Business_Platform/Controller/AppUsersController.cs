@@ -28,7 +28,7 @@ namespace BusinessPlatform.Controllers
             public string UserName { get; set; }
             public string Password { get; set; }
         }
-       
+
         public struct ChangePasswordModel
         {
             public string UserName { get; set; }
@@ -48,7 +48,7 @@ namespace BusinessPlatform.Controllers
         {
             IQueryable<AppUser> users = _signInManager.UserManager.Users;
 
-            
+
             return users.AsNoTracking().ToList();
         }
 
@@ -68,11 +68,11 @@ namespace BusinessPlatform.Controllers
             }
 
             appUser = _signInManager.UserManager.Users.Where(u => u.Id == id).FirstOrDefault();
-            
+
 
             if (appUser == null)
             {
-                 return NotFound();
+                return NotFound();
             }
 
             return appUser;
@@ -82,17 +82,17 @@ namespace BusinessPlatform.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         //[Authorize]
-        public ActionResult  PutAppUser(AppUser appUser)
+        public ActionResult PutAppUser(AppUser appUser)
         {
             AppUser? user = null;
 
             user = _signInManager.UserManager.Users.Where(u => u.Id == appUser.Id).AsNoTracking().FirstOrDefault(); // asnotricking olmaz burda,oku ve unut diyemeyiz
 
-           _signInManager.UserManager.UpdateAsync(appUser);
+            _signInManager.UserManager.UpdateAsync(appUser);
 
-          
+
             return Ok();
-           
+
         }
 
         // POST: api/AppUsers
@@ -139,7 +139,7 @@ namespace BusinessPlatform.Controllers
                 return NotFound("User Not Found");
             }
             IdentityResult changePasswordResult = _signInManager.UserManager.ChangePasswordAsync(appUser, changePasswordModel.CurrentPassword, changePasswordModel.NewPassword).Result;
-            if(!changePasswordResult.Succeeded)
+            if (!changePasswordResult.Succeeded)
             {
                 return BadRequest("Password change failed");
             }
@@ -162,12 +162,12 @@ namespace BusinessPlatform.Controllers
             }
             user = _signInManager.UserManager.Users.Where(u => u.Id == id).FirstOrDefault();
 
-           
+
             _signInManager.UserManager.UpdateAsync(user).Wait();
             return Ok("User Deactivated");
         }
 
-        [HttpPost("Login")] 
+        [HttpPost("Login")]
         public ActionResult LogIn(string userName, string passWord)
         {
             Microsoft.AspNetCore.Identity.SignInResult signInResult;
@@ -181,7 +181,7 @@ namespace BusinessPlatform.Controllers
             signInResult = _signInManager.PasswordSignInAsync(appUser, passWord, false, false).Result;
             if (!signInResult.Succeeded)
             {
-               
+
                 ModelState.AddModelError(string.Empty, "Geçersiz kullanıcı adı veya parola.");
                 return BadRequest();
             }
@@ -194,7 +194,7 @@ namespace BusinessPlatform.Controllers
         //[Authorize]
         public ActionResult LogOut()
         {
-             _signInManager.SignOutAsync().Wait();
+            _signInManager.SignOutAsync().Wait();
 
             return Ok("Successful Logout");
         }

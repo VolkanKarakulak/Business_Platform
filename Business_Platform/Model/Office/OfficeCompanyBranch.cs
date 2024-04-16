@@ -2,9 +2,9 @@
 using Business_Platform.Model.BaseModel;
 using Business_Platform.Model.Identity;
 
-namespace Business_Platform.Model.Clothing
+namespace Business_Platform.Model.Office
 {
-    public class ClothingCompanyBranch : BaseBranchModel
+    public class OfficeCompanyBranch : BaseBranchModel
     {
         public long UserId { get; set; }
 
@@ -14,11 +14,11 @@ namespace Business_Platform.Model.Clothing
 
         [ForeignKey("StateId")]
         public State? State { get; set; }
-        public int ClothingCompanyId { get; set; }
+        public int OfficeCompanyId { get; set; }
 
-        [ForeignKey("ClothingCompanyId")]
-        public ClothingCompany? ClothingCompany { get; set; }
+        [ForeignKey("OfficeCompanyId")]
+        public OfficeCompany? OfficeCompany { get; set; }
 
-        public List<ClothingCompBranchProduct>? ClothingCompBranchProducts { get; set; }
+        public List<OfficeProdBranchProduct>? OfficeProdBranchProducts { get; set; }
     }
 }

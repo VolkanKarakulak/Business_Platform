@@ -52,20 +52,6 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingType",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClothingType", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CompanyCategories",
                 columns: table => new
                 {
@@ -77,6 +63,20 @@ namespace Business_Platform.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CompanyCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OfficeProductType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfficeProductType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,7 +198,7 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingCompanies",
+                name: "OfficeCompanies",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -214,29 +214,29 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingCompanies", x => x.Id);
+                    table.PrimaryKey("PK_OfficeCompanies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClothingCompanies_CompanyCategories_CompanyCategoryId",
+                        name: "FK_OfficeCompanies_CompanyCategories_CompanyCategoryId",
                         column: x => x.CompanyCategoryId,
                         principalTable: "CompanyCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClothingCompanies_States_StateId",
+                        name: "FK_OfficeCompanies_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingCompanyBranch",
+                name: "OfficeCompanyBranch",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    ClothingCompanyId = table.Column<int>(type: "int", nullable: false),
+                    OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
@@ -246,127 +246,152 @@ namespace Business_Platform.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingCompanyBranch", x => x.Id);
+                    table.PrimaryKey("PK_OfficeCompanyBranch", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClothingCompanyBranch_AspNetUsers_UserId",
+                        name: "FK_OfficeCompanyBranch_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ClothingCompanyBranch_ClothingCompanies_ClothingCompanyId",
-                        column: x => x.ClothingCompanyId,
-                        principalTable: "ClothingCompanies",
+                        name: "FK_OfficeCompanyBranch_OfficeCompanies_OfficeCompanyId",
+                        column: x => x.OfficeCompanyId,
+                        principalTable: "OfficeCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ClothingCompanyBranch_States_StateId",
+                        name: "FK_OfficeCompanyBranch_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingCompBranchUser",
+                name: "OfficeCompBranchUser",
                 columns: table => new
                 {
-                    ClothingCompanyBranchId = table.Column<int>(type: "int", nullable: false),
+                    OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    ClothingCompBranchId = table.Column<int>(type: "int", nullable: true)
+                    OfficeCompBranchId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingCompBranchUser", x => new { x.UserId, x.ClothingCompanyBranchId });
+                    table.PrimaryKey("PK_OfficeCompBranchUser", x => new { x.UserId, x.OfficeCompanyBranchId });
                     table.ForeignKey(
-                        name: "FK_ClothingCompBranchUser_AspNetUsers_UserId",
+                        name: "FK_OfficeCompBranchUser_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClothingCompBranchUser_ClothingCompanyBranch_ClothingCompBranchId",
-                        column: x => x.ClothingCompBranchId,
-                        principalTable: "ClothingCompanyBranch",
+                        name: "FK_OfficeCompBranchUser_OfficeCompanyBranch_OfficeCompBranchId",
+                        column: x => x.OfficeCompBranchId,
+                        principalTable: "OfficeCompanyBranch",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingProduct",
+                name: "OfficeProduct",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Pattern = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FabricType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClothingTypeId = table.Column<int>(type: "int", nullable: false),
+                    Material = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OfficeProductTypeId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     AppUserId = table.Column<long>(type: "bigint", nullable: false),
                     StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    ClothingCompanyId = table.Column<int>(type: "int", nullable: false),
-                    ClothingCompanyBranchId = table.Column<int>(type: "int", nullable: false),
+                    OfficeTypeId = table.Column<int>(type: "int", nullable: true),
+                    OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
+                    OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     ImageFileName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingProduct", x => x.Id);
+                    table.PrimaryKey("PK_OfficeProduct", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClothingProduct_AspNetUsers_AppUserId",
+                        name: "FK_OfficeProduct_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ClothingProduct_ClothingCompanies_ClothingCompanyId",
-                        column: x => x.ClothingCompanyId,
-                        principalTable: "ClothingCompanies",
+                        name: "FK_OfficeProduct_OfficeCompanies_OfficeCompanyId",
+                        column: x => x.OfficeCompanyId,
+                        principalTable: "OfficeCompanies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ClothingProduct_ClothingCompanyBranch_ClothingCompanyBranchId",
-                        column: x => x.ClothingCompanyBranchId,
-                        principalTable: "ClothingCompanyBranch",
+                        name: "FK_OfficeProduct_OfficeCompanyBranch_OfficeCompanyBranchId",
+                        column: x => x.OfficeCompanyBranchId,
+                        principalTable: "OfficeCompanyBranch",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ClothingProduct_ClothingType_ClothingTypeId",
-                        column: x => x.ClothingTypeId,
-                        principalTable: "ClothingType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        name: "FK_OfficeProduct_OfficeProductType_OfficeTypeId",
+                        column: x => x.OfficeTypeId,
+                        principalTable: "OfficeProductType",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ClothingProduct_States_StateId",
+                        name: "FK_OfficeProduct_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingProductComment",
+                name: "OfficeProdBranchProduct",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OfficeProductId = table.Column<int>(type: "int", nullable: false),
+                    OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfficeProdBranchProduct", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OfficeProdBranchProduct_OfficeCompanyBranch_OfficeCompanyBranchId",
+                        column: x => x.OfficeCompanyBranchId,
+                        principalTable: "OfficeCompanyBranch",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OfficeProdBranchProduct_OfficeProduct_OfficeProductId",
+                        column: x => x.OfficeProductId,
+                        principalTable: "OfficeProduct",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OfficeProductComment",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Comment = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     CommmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClothingProductId = table.Column<int>(type: "int", nullable: false)
+                    OfficeProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingProductComment", x => x.Id);
+                    table.PrimaryKey("PK_OfficeProductComment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClothingProductComment_ClothingProduct_ClothingProductId",
-                        column: x => x.ClothingProductId,
-                        principalTable: "ClothingProduct",
+                        name: "FK_OfficeProductComment_OfficeProduct_OfficeProductId",
+                        column: x => x.OfficeProductId,
+                        principalTable: "OfficeProduct",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingProductOffer",
+                name: "OfficeProductOffer",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -374,30 +399,50 @@ namespace Business_Platform.Migrations
                     OfferPrice = table.Column<double>(type: "float", nullable: false),
                     OfferDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    ClothingProductId = table.Column<int>(type: "int", nullable: false),
-                    ClothingCompanyId = table.Column<int>(type: "int", nullable: false),
+                    OfficeProductId = table.Column<int>(type: "int", nullable: false),
+                    OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingProductOffer", x => x.Id);
+                    table.PrimaryKey("PK_OfficeProductOffer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClothingProductOffer_AspNetUsers_UserId",
+                        name: "FK_OfficeProductOffer_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ClothingProductOffer_ClothingCompanies_ClothingCompanyId",
-                        column: x => x.ClothingCompanyId,
-                        principalTable: "ClothingCompanies",
+                        name: "FK_OfficeProductOffer_OfficeCompanies_OfficeCompanyId",
+                        column: x => x.OfficeCompanyId,
+                        principalTable: "OfficeCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClothingProductOffer_ClothingProduct_ClothingProductId",
-                        column: x => x.ClothingProductId,
-                        principalTable: "ClothingProduct",
+                        name: "FK_OfficeProductOffer_OfficeProduct_OfficeProductId",
+                        column: x => x.OfficeProductId,
+                        principalTable: "OfficeProduct",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OfficeStocks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OfficeProductId = table.Column<int>(type: "int", nullable: false),
+                    TotalQuantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfficeStocks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OfficeStocks_OfficeProduct_OfficeProductId",
+                        column: x => x.OfficeProductId,
+                        principalTable: "OfficeProduct",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -440,79 +485,94 @@ namespace Business_Platform.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingCompanies_CompanyCategoryId",
-                table: "ClothingCompanies",
+                name: "IX_OfficeCompanies_CompanyCategoryId",
+                table: "OfficeCompanies",
                 column: "CompanyCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingCompanies_StateId",
-                table: "ClothingCompanies",
+                name: "IX_OfficeCompanies_StateId",
+                table: "OfficeCompanies",
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingCompanyBranch_ClothingCompanyId",
-                table: "ClothingCompanyBranch",
-                column: "ClothingCompanyId");
+                name: "IX_OfficeCompanyBranch_OfficeCompanyId",
+                table: "OfficeCompanyBranch",
+                column: "OfficeCompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingCompanyBranch_StateId",
-                table: "ClothingCompanyBranch",
+                name: "IX_OfficeCompanyBranch_StateId",
+                table: "OfficeCompanyBranch",
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingCompanyBranch_UserId",
-                table: "ClothingCompanyBranch",
+                name: "IX_OfficeCompanyBranch_UserId",
+                table: "OfficeCompanyBranch",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingCompBranchUser_ClothingCompBranchId",
-                table: "ClothingCompBranchUser",
-                column: "ClothingCompBranchId");
+                name: "IX_OfficeCompBranchUser_OfficeCompBranchId",
+                table: "OfficeCompBranchUser",
+                column: "OfficeCompBranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProduct_AppUserId",
-                table: "ClothingProduct",
+                name: "IX_OfficeProdBranchProduct_OfficeCompanyBranchId",
+                table: "OfficeProdBranchProduct",
+                column: "OfficeCompanyBranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeProdBranchProduct_OfficeProductId",
+                table: "OfficeProdBranchProduct",
+                column: "OfficeProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeProduct_AppUserId",
+                table: "OfficeProduct",
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProduct_ClothingCompanyBranchId",
-                table: "ClothingProduct",
-                column: "ClothingCompanyBranchId");
+                name: "IX_OfficeProduct_OfficeCompanyBranchId",
+                table: "OfficeProduct",
+                column: "OfficeCompanyBranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProduct_ClothingCompanyId",
-                table: "ClothingProduct",
-                column: "ClothingCompanyId");
+                name: "IX_OfficeProduct_OfficeCompanyId",
+                table: "OfficeProduct",
+                column: "OfficeCompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProduct_ClothingTypeId",
-                table: "ClothingProduct",
-                column: "ClothingTypeId");
+                name: "IX_OfficeProduct_OfficeTypeId",
+                table: "OfficeProduct",
+                column: "OfficeTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProduct_StateId",
-                table: "ClothingProduct",
+                name: "IX_OfficeProduct_StateId",
+                table: "OfficeProduct",
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProductComment_ClothingProductId",
-                table: "ClothingProductComment",
-                column: "ClothingProductId");
+                name: "IX_OfficeProductComment_OfficeProductId",
+                table: "OfficeProductComment",
+                column: "OfficeProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProductOffer_ClothingCompanyId",
-                table: "ClothingProductOffer",
-                column: "ClothingCompanyId");
+                name: "IX_OfficeProductOffer_OfficeCompanyId",
+                table: "OfficeProductOffer",
+                column: "OfficeCompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProductOffer_ClothingProductId",
-                table: "ClothingProductOffer",
-                column: "ClothingProductId");
+                name: "IX_OfficeProductOffer_OfficeProductId",
+                table: "OfficeProductOffer",
+                column: "OfficeProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingProductOffer_UserId",
-                table: "ClothingProductOffer",
+                name: "IX_OfficeProductOffer_UserId",
+                table: "OfficeProductOffer",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeStocks_OfficeProductId",
+                table: "OfficeStocks",
+                column: "OfficeProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -533,31 +593,37 @@ namespace Business_Platform.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ClothingCompBranchUser");
+                name: "OfficeCompBranchUser");
 
             migrationBuilder.DropTable(
-                name: "ClothingProductComment");
+                name: "OfficeProdBranchProduct");
 
             migrationBuilder.DropTable(
-                name: "ClothingProductOffer");
+                name: "OfficeProductComment");
+
+            migrationBuilder.DropTable(
+                name: "OfficeProductOffer");
+
+            migrationBuilder.DropTable(
+                name: "OfficeStocks");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ClothingProduct");
+                name: "OfficeProduct");
 
             migrationBuilder.DropTable(
-                name: "ClothingCompanyBranch");
+                name: "OfficeCompanyBranch");
 
             migrationBuilder.DropTable(
-                name: "ClothingType");
+                name: "OfficeProductType");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "ClothingCompanies");
+                name: "OfficeCompanies");
 
             migrationBuilder.DropTable(
                 name: "CompanyCategories");

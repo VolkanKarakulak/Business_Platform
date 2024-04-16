@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Business_Platform.Model.Clothing
+namespace Business_Platform.Model.Office
 {
-    public class ClothingProductComment
+    public class OfficeProductComment
     {
         public int Id { get; set; }
 
@@ -10,9 +10,9 @@ namespace Business_Platform.Model.Clothing
         public string? Comment { get; set; }
         public DateTime CommmentDate { get; set; }
 
-        public int ClothingProductId { get; set; }
+        public int OfficeProductId { get; set; }
 
-        [ForeignKey("ClothingProductId")]
-        public ClothingProduct? ClothingProduct { get; set; }
+        [ForeignKey("OfficeProductId")]
+        public OfficeProduct? OfficeProduct { get; set; }
     }
 }
