@@ -1,4 +1,5 @@
 ﻿using Business_Platform.Model.BaseModel;
+using Business_Platform.Model.Identity;
 using Business_Platform.Model.Office;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,5 +22,6 @@ namespace Business_Platform.Model.Office
         public List<OfficeProductOffer>? Offers { get; set; }
 
         public List<OfficeCompanyBranch>? Branches { get; set; }
+        public List<AppUser>? AppUsers { get; set; }
     }
 }

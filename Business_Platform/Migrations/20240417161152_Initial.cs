@@ -25,33 +25,6 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CompanyCategories",
                 columns: table => new
                 {
@@ -108,6 +81,148 @@ namespace Business_Platform.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MainCompanies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    EMail = table.Column<string>(type: "varchar(100)", nullable: false),
+                    PostalCode = table.Column<string>(type: "char(5)", maxLength: 5, nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "smalldatetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MainCompanies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MainCompanies_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OfficeCompanies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CompanyCategoryId = table.Column<int>(type: "int", nullable: false),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    EMail = table.Column<string>(type: "varchar(100)", nullable: false),
+                    PostalCode = table.Column<string>(type: "char(5)", maxLength: 5, nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "smalldatetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfficeCompanies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OfficeCompanies_CompanyCategories_CompanyCategoryId",
+                        column: x => x.CompanyCategoryId,
+                        principalTable: "CompanyCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OfficeCompanies_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OfficeCompanyBranches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    PostalCode = table.Column<string>(type: "char(5)", maxLength: 5, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    EMail = table.Column<string>(type: "varchar(100)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BranchCode = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfficeCompanyBranches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OfficeCompanyBranches_OfficeCompanies_OfficeCompanyId",
+                        column: x => x.OfficeCompanyId,
+                        principalTable: "OfficeCompanies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OfficeCompanyBranches_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    OfficeCompanyId = table.Column<int>(type: "int", nullable: true),
+                    OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: true),
+                    MainCompanyId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_MainCompanies_MainCompanyId",
+                        column: x => x.MainCompanyId,
+                        principalTable: "MainCompanies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_OfficeCompanies_OfficeCompanyId",
+                        column: x => x.OfficeCompanyId,
+                        principalTable: "OfficeCompanies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_OfficeCompanyBranches_OfficeCompanyId",
+                        column: x => x.OfficeCompanyId,
+                        principalTable: "OfficeCompanyBranches",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -198,68 +313,6 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfficeCompanies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyCategoryId = table.Column<int>(type: "int", nullable: false),
-                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    EMail = table.Column<string>(type: "varchar(100)", nullable: false),
-                    PostalCode = table.Column<string>(type: "char(5)", maxLength: 5, nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "smalldatetime", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OfficeCompanies", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OfficeCompanies_CompanyCategories_CompanyCategoryId",
-                        column: x => x.CompanyCategoryId,
-                        principalTable: "CompanyCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OfficeCompanies_States_StateId",
-                        column: x => x.StateId,
-                        principalTable: "States",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OfficeCompanyBranches",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    Email = table.Column<string>(type: "varchar(100)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BranchCode = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OfficeCompanyBranches", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OfficeCompanyBranches_OfficeCompanies_OfficeCompanyId",
-                        column: x => x.OfficeCompanyId,
-                        principalTable: "OfficeCompanies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OfficeCompanyBranches_States_StateId",
-                        column: x => x.StateId,
-                        principalTable: "States",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OfficeCompBranchUser",
                 columns: table => new
                 {
@@ -290,11 +343,11 @@ namespace Business_Platform.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Material = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OfficeProductTypeId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     AppUserId = table.Column<long>(type: "bigint", nullable: false),
                     StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    OfficeTypeId = table.Column<int>(type: "int", nullable: true),
+                    ProductTypId = table.Column<int>(type: "int", nullable: false),
+                    ProductTypeId = table.Column<int>(type: "int", nullable: true),
                     OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
                     OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -323,8 +376,8 @@ namespace Business_Platform.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_OfficeProducts_OfficeProductType_OfficeTypeId",
-                        column: x => x.OfficeTypeId,
+                        name: "FK_OfficeProducts_OfficeProductType_ProductTypeId",
+                        column: x => x.ProductTypeId,
                         principalTable: "OfficeProductType",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -332,6 +385,32 @@ namespace Business_Platform.Migrations
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Likes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Likes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Likes_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Likes_OfficeProducts_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "OfficeProducts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -383,42 +462,6 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfficeProductOffers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OfferPrice = table.Column<double>(type: "float", nullable: false),
-                    OfferDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    OfficeProductId = table.Column<int>(type: "int", nullable: false),
-                    OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OfficeProductOffers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OfficeProductOffers_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OfficeProductOffers_OfficeCompanies_OfficeCompanyId",
-                        column: x => x.OfficeCompanyId,
-                        principalTable: "OfficeCompanies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OfficeProductOffers_OfficeProducts_OfficeProductId",
-                        column: x => x.OfficeProductId,
-                        principalTable: "OfficeProducts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OfficeStocks",
                 columns: table => new
                 {
@@ -436,6 +479,85 @@ namespace Business_Platform.Migrations
                         principalTable: "OfficeProducts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OfficeProductOffers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OfferPrice = table.Column<double>(type: "float", nullable: false),
+                    OfferDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    OfficeProductId = table.Column<int>(type: "int", nullable: false),
+                    OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    OfficeProdBranchProductId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OfficeProductOffers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OfficeProductOffers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OfficeProductOffers_OfficeCompanies_OfficeCompanyId",
+                        column: x => x.OfficeCompanyId,
+                        principalTable: "OfficeCompanies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OfficeProductOffers_OfficeProdBranchProducts_OfficeProdBranchProductId",
+                        column: x => x.OfficeProdBranchProductId,
+                        principalTable: "OfficeProdBranchProducts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_OfficeProductOffers_OfficeProducts_OfficeProductId",
+                        column: x => x.OfficeProductId,
+                        principalTable: "OfficeProducts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ManageOffers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OfferDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    OfferPrice = table.Column<double>(type: "float", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    OfficeProductOfferId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ManageOffers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ManageOffers_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ManageOffers_OfficeProductOffers_OfficeProductOfferId",
+                        column: x => x.OfficeProductOfferId,
+                        principalTable: "OfficeProductOffers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ManageOffers_OfficeProducts_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "OfficeProducts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -471,11 +593,56 @@ namespace Business_Platform.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_MainCompanyId",
+                table: "AspNetUsers",
+                column: "MainCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_OfficeCompanyId",
+                table: "AspNetUsers",
+                column: "OfficeCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_StateId",
+                table: "AspNetUsers",
+                column: "StateId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_AppUserId",
+                table: "Likes",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_ProductId",
+                table: "Likes",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MainCompanies_StateId",
+                table: "MainCompanies",
+                column: "StateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ManageOffers_AppUserId",
+                table: "ManageOffers",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ManageOffers_OfficeProductOfferId",
+                table: "ManageOffers",
+                column: "OfficeProductOfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ManageOffers_ProductId",
+                table: "ManageOffers",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OfficeCompanies_CompanyCategoryId",
@@ -523,6 +690,11 @@ namespace Business_Platform.Migrations
                 column: "OfficeCompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OfficeProductOffers_OfficeProdBranchProductId",
+                table: "OfficeProductOffers",
+                column: "OfficeProdBranchProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OfficeProductOffers_OfficeProductId",
                 table: "OfficeProductOffers",
                 column: "OfficeProductId");
@@ -548,9 +720,9 @@ namespace Business_Platform.Migrations
                 column: "OfficeCompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfficeProducts_OfficeTypeId",
+                name: "IX_OfficeProducts_ProductTypeId",
                 table: "OfficeProducts",
-                column: "OfficeTypeId");
+                column: "ProductTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OfficeProducts_StateId",
@@ -581,16 +753,16 @@ namespace Business_Platform.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Likes");
+
+            migrationBuilder.DropTable(
+                name: "ManageOffers");
+
+            migrationBuilder.DropTable(
                 name: "OfficeCompBranchUser");
 
             migrationBuilder.DropTable(
-                name: "OfficeProdBranchProducts");
-
-            migrationBuilder.DropTable(
                 name: "OfficeProductComment");
-
-            migrationBuilder.DropTable(
-                name: "OfficeProductOffers");
 
             migrationBuilder.DropTable(
                 name: "OfficeStocks");
@@ -599,16 +771,25 @@ namespace Business_Platform.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "OfficeProductOffers");
+
+            migrationBuilder.DropTable(
+                name: "OfficeProdBranchProducts");
+
+            migrationBuilder.DropTable(
                 name: "OfficeProducts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "OfficeCompanyBranches");
+                name: "OfficeProductType");
 
             migrationBuilder.DropTable(
-                name: "OfficeProductType");
+                name: "MainCompanies");
+
+            migrationBuilder.DropTable(
+                name: "OfficeCompanyBranches");
 
             migrationBuilder.DropTable(
                 name: "OfficeCompanies");

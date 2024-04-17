@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    [Migration("20240416185032_ManageOffer")]
-    partial class ManageOffer
+    [Migration("20240417161152_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -102,6 +102,9 @@ namespace Business_Platform.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int?>("MainCompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -115,6 +118,12 @@ namespace Business_Platform.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<int?>("OfficeCompanyBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OfficeCompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -124,8 +133,14 @@ namespace Business_Platform.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -136,6 +151,8 @@ namespace Business_Platform.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MainCompanyId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -144,7 +161,79 @@ namespace Business_Platform.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("OfficeCompanyId");
+
+                    b.HasIndex("StateId");
+
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<long>("AppUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.MainCompany", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("EMail")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("char(5)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("smalldatetime");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("MainCompanies");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.ManageOffer", b =>
@@ -256,7 +345,7 @@ namespace Business_Platform.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("EMail")
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
@@ -272,6 +361,14 @@ namespace Business_Platform.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("char(5)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("smalldatetime");
 
                     b.Property<byte>("StateId")
                         .HasColumnType("tinyint");
@@ -363,14 +460,14 @@ namespace Business_Platform.Migrations
                     b.Property<int>("OfficeCompanyId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OfficeProductTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OfficeTypeId")
-                        .HasColumnType("int");
-
                     b.Property<float>("Price")
                         .HasColumnType("real");
+
+                    b.Property<int>("ProductTypId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductTypeId")
+                        .HasColumnType("int");
 
                     b.Property<byte>("StateId")
                         .HasColumnType("tinyint");
@@ -383,7 +480,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("OfficeCompanyId");
 
-                    b.HasIndex("OfficeTypeId");
+                    b.HasIndex("ProductTypeId");
 
                     b.HasIndex("StateId");
 
@@ -616,6 +713,65 @@ namespace Business_Platform.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Business_Platform.Model.Identity.AppUser", b =>
+                {
+                    b.HasOne("Business_Platform.Model.MainCompany", "MainCompany")
+                        .WithMany("AppUsers")
+                        .HasForeignKey("MainCompanyId");
+
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", "OfficeCompany")
+                        .WithMany("AppUsers")
+                        .HasForeignKey("OfficeCompanyId");
+
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompanyBranch", "OfficeCompanyBranch")
+                        .WithMany("AppUsers")
+                        .HasForeignKey("OfficeCompanyId");
+
+                    b.HasOne("Business_Platform.Model.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MainCompany");
+
+                    b.Navigation("OfficeCompany");
+
+                    b.Navigation("OfficeCompanyBranch");
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Like", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.MainCompany", b =>
+                {
+                    b.HasOne("Business_Platform.Model.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("State");
+                });
+
             modelBuilder.Entity("Business_Platform.Model.Office.ManageOffer", b =>
                 {
                     b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
@@ -741,7 +897,7 @@ namespace Business_Platform.Migrations
 
                     b.HasOne("Business_Platform.Model.Office.OfficeProductType", "OfficeProductType")
                         .WithMany("OfficeProducts")
-                        .HasForeignKey("OfficeTypeId");
+                        .HasForeignKey("ProductTypeId");
 
                     b.HasOne("Business_Platform.Model.State", "State")
                         .WithMany()
@@ -864,8 +1020,15 @@ namespace Business_Platform.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Business_Platform.Model.MainCompany", b =>
+                {
+                    b.Navigation("AppUsers");
+                });
+
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompany", b =>
                 {
+                    b.Navigation("AppUsers");
+
                     b.Navigation("Branches");
 
                     b.Navigation("Offers");
@@ -875,6 +1038,8 @@ namespace Business_Platform.Migrations
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompanyBranch", b =>
                 {
+                    b.Navigation("AppUsers");
+
                     b.Navigation("OfficeProdBranchProducts");
                 });
 

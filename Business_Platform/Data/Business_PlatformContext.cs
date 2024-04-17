@@ -24,9 +24,11 @@ namespace Business_Platform.Data
         public DbSet<Business_Platform.Model.Office.OfficeProduct>? OfficeProducts { get; set; }
         public DbSet<Business_Platform.Model.Office.OfficeProdBranchProduct>? OfficeProdBranchProducts { get; set; }
         public DbSet<Business_Platform.Model.Office.OfficeProductOffer>? OfficeProductOffers { get; set; }
+        public DbSet<Business_Platform.Model.MainCompany>? MainCompanies { get; set; }
         public DbSet<Business_Platform.Model.Office.ManageOffer>? ManageOffers { get; set; }
+        public DbSet<Business_Platform.Model.Like>? Likes { get; set; }
 
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -45,13 +47,10 @@ namespace Business_Platform.Data
 
             modelBuilder.Entity<OfficeCompany>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<OfficeProduct>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<OfficeCompanyBranch>().HasOne(u => u.State).WithMany().OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<OfficeCompBranchUser>().HasOne(u => u.OfficeCompanyBranch).WithMany().OnDelete(DeleteBehavior.NoAction);
-
             modelBuilder.Entity<OfficeCompBranchUser>().HasKey(u => new { u.UserId, u.OfficeCompanyBranchId });
-           //modelBuilder.Entity<OfferAdmin>().HasKey(a => new { a.OfficeProductOfferId, a.OfficeCompBranchUserId });
-            
-
 
             base.OnModelCreating(modelBuilder);
         }

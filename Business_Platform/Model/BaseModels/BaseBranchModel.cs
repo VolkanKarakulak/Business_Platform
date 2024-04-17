@@ -15,6 +15,14 @@ namespace Business_Platform.Model.BaseModel
         [Column(TypeName = "nvarchar(150)")]
         public string Address { get; set; } = "";
 
+        [Column(TypeName = "smalldatetime")]
+        public DateTime RegisterDate { get; set; }
+
+        [StringLength(5, MinimumLength = 1)]
+        [Column(TypeName = "char(5)")]
+        [DataType(DataType.PostalCode)]
+        public string PostalCode { get; set; } = "";
+
         [Phone]
         [StringLength(30)]
         [Column(TypeName = "nvarchar(30)")]
@@ -22,7 +30,7 @@ namespace Business_Platform.Model.BaseModel
 
         [EmailAddress]
         [Column(TypeName = "varchar(100)")]
-        public string Email { get; set; } = "";
+        public string EMail { get; set; } = "";
         public string? City { get; set; }
         public int BranchCode { get; set; } // Ayrı bir model oluşturabilir
        

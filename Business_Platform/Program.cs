@@ -26,6 +26,8 @@ namespace Business_Platform
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
@@ -39,10 +41,16 @@ namespace Business_Platform
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
             app.MapControllers();
+
+            Business_PlatformContext? context = app.Services.CreateScope().ServiceProvider.GetService<Business_PlatformContext>();
+            RoleManager<AppRole>? roleManager = app.Services.CreateScope().ServiceProvider.GetService<RoleManager<AppRole>>();
+            UserManager<AppUser>? userManager = app.Services.CreateScope().ServiceProvider.GetService<UserManager<AppUser>>();
+            Initializer dBInitializer = new Initializer(context, roleManager, userManager);
 
             app.Run();
         }

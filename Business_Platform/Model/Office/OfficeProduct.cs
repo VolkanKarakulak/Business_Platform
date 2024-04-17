@@ -15,8 +15,6 @@ namespace Business_Platform.Model.Office
 
         public string Material { get; set; } = ""; // Ayrı bir model oluşturabilir
 
-        public int OfficeProductTypeId { get; set; }
-
         [Column(TypeName = "nvarchar(200)")]
         public string? Description { get; set; }
         public long AppUserId { get; set; }
@@ -29,7 +27,9 @@ namespace Business_Platform.Model.Office
         [ForeignKey("StateId")]
         public State? State { get; set; }
 
-        [ForeignKey("OfficeTypeId")]
+        public int ProductTypId { get; set; }
+
+        [ForeignKey("ProductTypeId")]
         public OfficeProductType? OfficeProductType { get; set; }
         public int OfficeCompanyId { get; set; }
 
