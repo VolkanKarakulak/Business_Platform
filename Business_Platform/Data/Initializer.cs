@@ -38,7 +38,7 @@ namespace Business_Platform.Data
                     state.Name = "Passive";
                     context.States.Add(state);
                 }
-                
+                context.SaveChanges();
                 if (context.MainCompanies?.Count() == 0)
                 {
                     mainCompany = new MainCompany();
@@ -50,11 +50,13 @@ namespace Business_Platform.Data
                     mainCompany.StateId = 1;
                     context.MainCompanies.Add(mainCompany);
                 }
+                context.SaveChanges();
                 if (context.CompanyCategories?.Count() == 0)
                 {
                     companyCategory = new CompanyCategory();
                     companyCategory.Name = "OfficeProductCompany";
                     companyCategory.Description = "OfficeProducts";
+                    context.CompanyCategories.Add(companyCategory);
                     companyCategory = new CompanyCategory();
                     companyCategory.Name = "FoodCompany";
                     companyCategory.Description = "Foods";
@@ -76,8 +78,8 @@ namespace Business_Platform.Data
                         officeCompany.CompanyCategoryId = companyCategory.Id;
                         context.OfficeCompanies.Add(officeCompany);
                     }
-                    
                 }
+                context.SaveChanges();
                 if (context.OfficeCompanyBranches?.Count() == 0)
                 {
                     if(officeCompany != null)
