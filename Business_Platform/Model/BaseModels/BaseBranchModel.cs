@@ -32,7 +32,7 @@ namespace Business_Platform.Model.BaseModel
         [Column(TypeName = "varchar(100)")]
         public string EMail { get; set; } = "";
         public string? City { get; set; }
-        public int BranchCode { get; set; } // Ayrı bir model oluşturabilir
+        public int BranchCode { get; set; } 
        
 
     }

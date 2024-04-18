@@ -2,9 +2,11 @@
 
 namespace Business_Platform.Model.Office
 {
-    public class OfficeProdBranchProduct
+    public class OfficeProdBranchProduct 
     {
         public int Id { get; set; }
+
+        public int Quantity { get; set; }
 
         public int OfficeProductId { get; set; }
         [ForeignKey("OfficeProductId")]
@@ -15,9 +17,7 @@ namespace Business_Platform.Model.Office
         [ForeignKey("OfficeCompanyBranchId")]
         public OfficeCompanyBranch? OfficeCompanyBranch { get; set; }
 
-        public int Quantity { get; set; }
-
-        public List<OfficeProductOffer>? officeProductOffers { get; set; }
+        public List<OfficeProductOffer>? OfficeProductOffers { get; set; }
        
     }
 }
