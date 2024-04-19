@@ -6,61 +6,61 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
-using Business_Platform.Model.Identity;
+using Business_Platform.Model;
 
 namespace Business_Platform.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppUsersController : ControllerBase
+    public class LikesController : ControllerBase
     {
         private readonly Business_PlatformContext _context;
 
-        public AppUsersController(Business_PlatformContext context)
+        public LikesController(Business_PlatformContext context)
         {
             _context = context;
         }
 
-        // GET: api/AppUsers
+        // GET: api/Likes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Like>>> GetLikes()
         {
-          if (_context.Users == null)
+          if (_context.Likes == null)
           {
               return NotFound();
           }
-            return await _context.Users.ToListAsync();
+            return await _context.Likes.ToListAsync();
         }
 
-        // GET: api/AppUsers/5
+        // GET: api/Likes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetAppUser(long id)
+        public async Task<ActionResult<Like>> GetLike(int id)
         {
-          if (_context.Users == null)
+          if (_context.Likes == null)
           {
               return NotFound();
           }
-            var appUser = await _context.Users.FindAsync(id);
+            var like = await _context.Likes.FindAsync(id);
 
-            if (appUser == null)
+            if (like == null)
             {
                 return NotFound();
             }
 
-            return appUser;
+            return like;
         }
 
-        // PUT: api/AppUsers/5
+        // PUT: api/Likes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAppUser(long id, AppUser appUser)
+        public async Task<IActionResult> PutLike(int id, Like like)
         {
-            if (id != appUser.Id)
+            if (id != like.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(appUser).State = EntityState.Modified;
+            _context.Entry(like).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace Business_Platform.Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AppUserExists(id))
+                if (!LikeExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace Business_Platform.Controller
             return NoContent();
         }
 
-        // POST: api/AppUsers
+        // POST: api/Likes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AppUser>> PostAppUser(AppUser appUser)
+        public async Task<ActionResult<Like>> PostLike(Like like)
         {
-          if (_context.Users == null)
+          if (_context.Likes == null)
           {
-              return Problem("Entity set 'Business_PlatformContext.Users'  is null.");
+              return Problem("Entity set 'Business_PlatformContext.Likes'  is null.");
           }
-            _context.Users.Add(appUser);
+            _context.Likes.Add(like);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
+            return CreatedAtAction("GetLike", new { id = like.Id }, like);
         }
 
-        // DELETE: api/AppUsers/5
+        // DELETE: api/Likes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAppUser(long id)
+        public async Task<IActionResult> DeleteLike(int id)
         {
-            if (_context.Users == null)
+            if (_context.Likes == null)
             {
                 return NotFound();
             }
-            var appUser = await _context.Users.FindAsync(id);
-            if (appUser == null)
+            var like = await _context.Likes.FindAsync(id);
+            if (like == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(appUser);
+            _context.Likes.Remove(like);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AppUserExists(long id)
+        private bool LikeExists(int id)
         {
-            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Likes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

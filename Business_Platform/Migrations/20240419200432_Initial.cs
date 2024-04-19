@@ -325,8 +325,7 @@ namespace Business_Platform.Migrations
                         name: "FK_AspNetUsers_FoodCompanies_FoodCompanyId",
                         column: x => x.FoodCompanyId,
                         principalTable: "FoodCompanies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AspNetUsers_MainCompanies_MainCompanyId",
                         column: x => x.MainCompanyId,
@@ -352,7 +351,7 @@ namespace Business_Platform.Migrations
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -567,7 +566,7 @@ namespace Business_Platform.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_OfficeProducts_OfficeCompanies_OfficeCompanyId",
                         column: x => x.OfficeCompanyId,
@@ -623,7 +622,9 @@ namespace Business_Platform.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AppUserId = table.Column<long>(type: "bigint", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false)
+                    OfficeProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    RestaurantFoodId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -638,6 +639,11 @@ namespace Business_Platform.Migrations
                         name: "FK_Likes_OfficeProducts_ProductId",
                         column: x => x.ProductId,
                         principalTable: "OfficeProducts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Likes_RestaurantFoods_RestaurantFoodId",
+                        column: x => x.RestaurantFoodId,
+                        principalTable: "RestaurantFoods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -666,7 +672,7 @@ namespace Business_Platform.Migrations
                         column: x => x.OfficeProductId,
                         principalTable: "OfficeProducts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -759,7 +765,7 @@ namespace Business_Platform.Migrations
                         column: x => x.OfficeCompanyId,
                         principalTable: "OfficeCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OfficeProductOffers_OfficeProdBranchProducts_OfficeProdBranchProductId",
                         column: x => x.OfficeProdBranchProductId,
@@ -770,7 +776,7 @@ namespace Business_Platform.Migrations
                         column: x => x.OfficeProductId,
                         principalTable: "OfficeProducts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -908,6 +914,11 @@ namespace Business_Platform.Migrations
                 name: "IX_Likes_ProductId",
                 table: "Likes",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Likes_RestaurantFoodId",
+                table: "Likes",
+                column: "RestaurantFoodId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MainCompanies_StateId",
@@ -1120,10 +1131,10 @@ namespace Business_Platform.Migrations
                 name: "RestaurantBranchUsers");
 
             migrationBuilder.DropTable(
-                name: "RestaurantFoods");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "RestaurantFoods");
 
             migrationBuilder.DropTable(
                 name: "OfficeProductOffers");

@@ -452,7 +452,13 @@ namespace Business_Platform.Migrations
                     b.Property<long>("AppUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("OfficeProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RestaurantFoodId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -460,6 +466,8 @@ namespace Business_Platform.Migrations
                     b.HasIndex("AppUserId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("RestaurantFoodId");
 
                     b.ToTable("Likes");
                 });
@@ -1194,20 +1202,26 @@ namespace Business_Platform.Migrations
             modelBuilder.Entity("Business_Platform.Model.Like", b =>
                 {
                     b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
-                        .WithMany()
+                        .WithMany("Likes")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Business_Platform.Model.Office.OfficeProduct", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Business_Platform.Model.Food.RestaurantFood", "RestaurantFood")
+                        .WithMany()
+                        .HasForeignKey("RestaurantFoodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AppUser");
 
                     b.Navigation("Product");
+
+                    b.Navigation("RestaurantFood");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.MainCompany", b =>
@@ -1501,6 +1515,11 @@ namespace Business_Platform.Migrations
                     b.Navigation("RestaurantBranchComments");
 
                     b.Navigation("RestaurantFoods");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Identity.AppUser", b =>
+                {
+                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.MainCompany", b =>

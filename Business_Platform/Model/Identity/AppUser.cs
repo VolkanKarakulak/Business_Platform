@@ -46,6 +46,8 @@ namespace Business_Platform.Model.Identity
 
         [ForeignKey("RestaurantBranchId")]
         public RestaurantBranch? RestaurantBranch { get; set; }
+
+        public List<Like>? Likes {  get; set; }
     }
 }
 
