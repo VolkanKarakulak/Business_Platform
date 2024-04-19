@@ -18,6 +18,8 @@ namespace Business_Platform.Model.Office
         public OfficeCompanyBranch? OfficeCompanyBranch { get; set; }
 
         public List<OfficeProductOffer>? OfficeProductOffers { get; set; }
+
+        public List<BranchProductComment>? OfficeProductComments { get; set; }
        
     }
 }

@@ -10,7 +10,6 @@ namespace Business_Platform.Model.Office
     public class OfficeProduct : BaseProductModel
     {
 
-        
         public string Color { get; set; } = ""; // Ayrı bir model oluşturabilir
 
         public string Material { get; set; } = ""; // Ayrı bir model oluşturabilir
@@ -42,7 +41,7 @@ namespace Business_Platform.Model.Office
         public OfficeCompanyBranch? OfficeCompanyBranch { get; set; }
 
         public List<OfficeProductComment>? ProductComments { get; set; }
-        public List<OfficeProductOffer>? OfficeProductOffer { get; set; }
+        public List<OfficeProductOffer>? OfficeProductOffers { get; set; }
         public List<OfficeProdBranchProduct>? OfficeProdBranchProducts { get; set; }
 
     }

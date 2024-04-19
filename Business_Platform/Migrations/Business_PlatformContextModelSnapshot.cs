@@ -509,6 +509,30 @@ namespace Business_Platform.Migrations
                     b.ToTable("MainCompanies");
                 });
 
+            modelBuilder.Entity("Business_Platform.Model.Office.BranchProductComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CommmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OfficeProdBranchProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficeProdBranchProductId");
+
+                    b.ToTable("BranchProductComment");
+                });
+
             modelBuilder.Entity("Business_Platform.Model.Office.ManageOffer", b =>
                 {
                     b.Property<int>("Id")
@@ -1197,6 +1221,17 @@ namespace Business_Platform.Migrations
                     b.Navigation("State");
                 });
 
+            modelBuilder.Entity("Business_Platform.Model.Office.BranchProductComment", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Office.OfficeProdBranchProduct", "OfficeProdBranchProduct")
+                        .WithMany("OfficeProductComments")
+                        .HasForeignKey("OfficeProdBranchProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OfficeProdBranchProduct");
+                });
+
             modelBuilder.Entity("Business_Platform.Model.Office.ManageOffer", b =>
                 {
                     b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
@@ -1365,7 +1400,7 @@ namespace Business_Platform.Migrations
                         .HasForeignKey("OfficeProdBranchProductId");
 
                     b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
-                        .WithMany("OfficeProductOffer")
+                        .WithMany("OfficeProductOffers")
                         .HasForeignKey("OfficeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1493,6 +1528,8 @@ namespace Business_Platform.Migrations
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProdBranchProduct", b =>
                 {
+                    b.Navigation("OfficeProductComments");
+
                     b.Navigation("OfficeProductOffers");
                 });
 
@@ -1500,7 +1537,7 @@ namespace Business_Platform.Migrations
                 {
                     b.Navigation("OfficeProdBranchProducts");
 
-                    b.Navigation("OfficeProductOffer");
+                    b.Navigation("OfficeProductOffers");
 
                     b.Navigation("ProductComments");
                 });

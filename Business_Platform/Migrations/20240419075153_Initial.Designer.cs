@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    [Migration("20240417170938_Initial")]
+    [Migration("20240419075153_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,276 @@ namespace Business_Platform.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CompanyCategories");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.FoodCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("RestaurantBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantBranchId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("FoodCategories");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.FoodCompany", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("CompanyCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EMail")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("char(5)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("smalldatetime");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyCategoryId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("FoodCompanies");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<long>("AppUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("BranchCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EMail")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("FoodCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("char(5)");
+
+                    b.Property<DateTime>("RegisterDate")
+                        .HasColumnType("smalldatetime");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("FoodCompanyId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("RestaurantBranches");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranchComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CommmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RestaurantBranchId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantBranchId");
+
+                    b.ToTable("RestaurantBranchComments");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranchFood", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("FoodCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageFileName")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("RestaurantBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodCategoryId");
+
+                    b.HasIndex("RestaurantBranchId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("RestaurantBranchFoods");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranchUser", b =>
+                {
+                    b.Property<long>("AppUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RestaurantBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppUserId", "RestaurantBranchId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("RestaurantBranchUsers");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantFood", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("FoodCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FoodCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageFileName")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int?>("RestaurantBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("StateId")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FoodCategoryId");
+
+                    b.HasIndex("FoodCompanyId");
+
+                    b.HasIndex("RestaurantBranchId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("RestaurantFoods");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Identity.AppRole", b =>
@@ -95,6 +365,9 @@ namespace Business_Platform.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("FoodCompanyId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -150,6 +423,8 @@ namespace Business_Platform.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FoodCompanyId");
 
                     b.HasIndex("MainCompanyId");
 
@@ -234,6 +509,30 @@ namespace Business_Platform.Migrations
                     b.HasIndex("StateId");
 
                     b.ToTable("MainCompanies");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.BranchProductComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CommmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OfficeProdBranchProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficeProdBranchProductId");
+
+                    b.ToTable("BranchProductComment");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.ManageOffer", b =>
@@ -713,8 +1012,160 @@ namespace Business_Platform.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Business_Platform.Model.Food.FoodCategory", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Food.RestaurantBranch", "RestaurantBranch")
+                        .WithMany("FoodCategories")
+                        .HasForeignKey("RestaurantBranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RestaurantBranch");
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.FoodCompany", b =>
+                {
+                    b.HasOne("Business_Platform.Model.CompanyCategory", "CompanyCategory")
+                        .WithMany()
+                        .HasForeignKey("CompanyCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CompanyCategory");
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranch", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Food.FoodCompany", "FoodCompany")
+                        .WithMany("RestaurantBranches")
+                        .HasForeignKey("FoodCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("FoodCompany");
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranchComment", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Food.RestaurantBranch", "RestaurantBranch")
+                        .WithMany("RestaurantBranchComments")
+                        .HasForeignKey("RestaurantBranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RestaurantBranch");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranchFood", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Food.FoodCategory", "FoodCategory")
+                        .WithMany()
+                        .HasForeignKey("FoodCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Food.RestaurantBranch", "RestaurantBranch")
+                        .WithMany()
+                        .HasForeignKey("RestaurantBranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FoodCategory");
+
+                    b.Navigation("RestaurantBranch");
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranchUser", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Food.RestaurantBranch", "RestaurantBranch")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("RestaurantBranch");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantFood", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Food.FoodCategory", "FoodCategory")
+                        .WithMany("RestaurantFoods")
+                        .HasForeignKey("FoodCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Food.FoodCompany", null)
+                        .WithMany("RestaurantFoods")
+                        .HasForeignKey("FoodCompanyId");
+
+                    b.HasOne("Business_Platform.Model.Food.RestaurantBranch", null)
+                        .WithMany("RestaurantFoods")
+                        .HasForeignKey("RestaurantBranchId");
+
+                    b.HasOne("Business_Platform.Model.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FoodCategory");
+
+                    b.Navigation("State");
+                });
+
             modelBuilder.Entity("Business_Platform.Model.Identity.AppUser", b =>
                 {
+                    b.HasOne("Business_Platform.Model.Food.FoodCompany", null)
+                        .WithMany("AppUsers")
+                        .HasForeignKey("FoodCompanyId");
+
                     b.HasOne("Business_Platform.Model.MainCompany", "MainCompany")
                         .WithMany("AppUsers")
                         .HasForeignKey("MainCompanyId");
@@ -770,6 +1221,17 @@ namespace Business_Platform.Migrations
                         .IsRequired();
 
                     b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.BranchProductComment", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Office.OfficeProdBranchProduct", "OfficeProdBranchProduct")
+                        .WithMany("OfficeProductComments")
+                        .HasForeignKey("OfficeProdBranchProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OfficeProdBranchProduct");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.ManageOffer", b =>
@@ -936,11 +1398,11 @@ namespace Business_Platform.Migrations
                         .IsRequired();
 
                     b.HasOne("Business_Platform.Model.Office.OfficeProdBranchProduct", null)
-                        .WithMany("officeProductOffers")
+                        .WithMany("OfficeProductOffers")
                         .HasForeignKey("OfficeProdBranchProductId");
 
                     b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
-                        .WithMany("OfficeProductOffer")
+                        .WithMany("OfficeProductOffers")
                         .HasForeignKey("OfficeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1020,6 +1482,29 @@ namespace Business_Platform.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Business_Platform.Model.Food.FoodCategory", b =>
+                {
+                    b.Navigation("RestaurantFoods");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.FoodCompany", b =>
+                {
+                    b.Navigation("AppUsers");
+
+                    b.Navigation("RestaurantBranches");
+
+                    b.Navigation("RestaurantFoods");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranch", b =>
+                {
+                    b.Navigation("FoodCategories");
+
+                    b.Navigation("RestaurantBranchComments");
+
+                    b.Navigation("RestaurantFoods");
+                });
+
             modelBuilder.Entity("Business_Platform.Model.MainCompany", b =>
                 {
                     b.Navigation("AppUsers");
@@ -1045,14 +1530,16 @@ namespace Business_Platform.Migrations
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProdBranchProduct", b =>
                 {
-                    b.Navigation("officeProductOffers");
+                    b.Navigation("OfficeProductComments");
+
+                    b.Navigation("OfficeProductOffers");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProduct", b =>
                 {
                     b.Navigation("OfficeProdBranchProducts");
 
-                    b.Navigation("OfficeProductOffer");
+                    b.Navigation("OfficeProductOffers");
 
                     b.Navigation("ProductComments");
                 });

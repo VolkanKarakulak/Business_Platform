@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Business_Platform.Model.Office;
+using Business_Platform.Model.Food;
 
 namespace Business_Platform.Model.Identity
 {
@@ -36,7 +37,15 @@ namespace Business_Platform.Model.Identity
         [ForeignKey("MainCompanyId")]
         public MainCompany? MainCompany { get; set; }
 
+        public int FoodCompanyId { get; set; }
 
+        [ForeignKey("FoodCompanyId")]
+        public FoodCompany? FoodCompany { get; set; }
+
+        public int RestaurantBrancId { get; set; }
+
+        [ForeignKey("RestaurantBranchId")]
+        public RestaurantBranch? RestaurantBranch { get; set; }
     }
 }
 

@@ -80,6 +80,7 @@ namespace Business_Platform.Data
                     }
                 }
                 context.SaveChanges();
+
                 if (context.OfficeCompanyBranches?.Count() == 0)
                 {
                     if(officeCompany != null)
@@ -124,36 +125,41 @@ namespace Business_Platform.Data
                             appUser.RegisterDate = DateTime.Today;
                             appUser.StateId = 1;
                             userManager.CreateAsync(appUser, "MainAdmin123!").Wait();
-                            userManager.AddToRoleAsync(appUser, "MainAdmin").Wait();
+                            userManager.AddToRoleAsync(appUser, "MainCompanyAdmin").Wait();
                         }
+                        
                         if (officeCompany != null)
-                        { 
-                            appUser = new AppUser();
-                            appUser.UserName = "OfficeCompanyAdmin";
-                            appUser.OfficeCompanyId = officeCompany.Id;
-                            appUser.Name = "OfficeCompanyAdmin";
-                            appUser.Email = "abcd@def.com";
-                            appUser.PhoneNumber = "1112223345";
-                            appUser.RegisterDate = DateTime.Today;
-                            appUser.StateId = 1;
-                            userManager.CreateAsync(appUser, "OfficeCompanyAdmin123!").Wait();
-                            userManager.AddToRoleAsync(appUser, "OfficeCompanyAdmin").Wait();
-
+                        {
+                                appUser = new AppUser();
+                                appUser.UserName = "OfficeCompanyAdmin";
+                                appUser.OfficeCompanyId = officeCompany.Id;
+                                appUser.Name = "OfficeCompanyAdmin";
+                                appUser.Email = "abcd@def.com";
+                                appUser.PhoneNumber = "1112223345";
+                                appUser.RegisterDate = DateTime.Today;
+                                appUser.StateId = 1;
+                                userManager.CreateAsync(appUser, "OfficeCompanyAdmin123!").Wait();
+                                userManager.AddToRoleAsync(appUser, "OfficeCompanyAdmin").Wait();
+                            
                         }
+                     
                         if (officeCompanyBranch != null)
                         {
-                            appUser = new AppUser();
-                            appUser.UserName = "BranchAdmin";
-                            appUser.OfficeCompanyBranchId = officeCompanyBranch.Id;
-                            appUser.Name = "BranchAdmin";
-                            appUser.Email = "abce@def.com";
-                            appUser.PhoneNumber = "1112223346";
-                            appUser.RegisterDate = DateTime.Today;
-                            appUser.StateId = 1;
-                            userManager.CreateAsync(appUser, "BranchAdmin123!").Wait();
-                            userManager.AddToRoleAsync(appUser, "BranchAdmin").Wait();
-
+                                appUser = new AppUser();
+                                appUser.UserName = "BranchAdmin";
+                                appUser.OfficeCompanyBranchId = officeCompanyBranch.Id;
+                                appUser.OfficeCompanyId = officeCompany!.Id;
+                                appUser.MainCompanyId = mainCompany!.Id;
+                                appUser.Name = "BranchAdmin";
+                                appUser.Email = "abce@def.com";
+                                appUser.PhoneNumber = "1112223346";
+                                appUser.RegisterDate = DateTime.Today;
+                                appUser.StateId = 1;
+                                userManager.CreateAsync(appUser, "BranchAdmin123!").Wait();
+                                userManager.AddToRoleAsync(appUser, "BranchAdmin").Wait();
+                            
                         }
+                        context.SaveChanges();
                     }
                 }
             }
