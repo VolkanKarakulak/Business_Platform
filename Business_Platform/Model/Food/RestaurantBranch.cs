@@ -11,10 +11,10 @@ namespace Business_Platform.Model.Food
 
         [ForeignKey("StateId")]
         public State? State { get; set; }
-        public long AppUserId { get; set; }
+        //public long AppUserId { get; set; }
 
-        [ForeignKey("AppUserId")]
-        public AppUser? AppUser { get; set; }
+        //[ForeignKey("AppUserId")]
+        //public AppUser? AppUser { get; set; }
        
         public int FoodCompanyId { get; set; }
 

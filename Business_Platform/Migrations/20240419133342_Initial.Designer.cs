@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    [Migration("20240419075153_Initial")]
+    [Migration("20240419133342_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -139,9 +139,6 @@ namespace Business_Platform.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<long>("AppUserId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("BranchCode")
                         .HasColumnType("int");
 
@@ -177,8 +174,6 @@ namespace Business_Platform.Migrations
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("FoodCompanyId");
 
@@ -409,6 +404,9 @@ namespace Business_Platform.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("RestaurantBranchId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -437,6 +435,8 @@ namespace Business_Platform.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("OfficeCompanyId");
+
+                    b.HasIndex("RestaurantBranchId");
 
                     b.HasIndex("StateId");
 
@@ -1052,12 +1052,6 @@ namespace Business_Platform.Migrations
 
             modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranch", b =>
                 {
-                    b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Business_Platform.Model.Food.FoodCompany", "FoodCompany")
                         .WithMany("RestaurantBranches")
                         .HasForeignKey("FoodCompanyId")
@@ -1069,8 +1063,6 @@ namespace Business_Platform.Migrations
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AppUser");
 
                     b.Navigation("FoodCompany");
 
@@ -1162,7 +1154,7 @@ namespace Business_Platform.Migrations
 
             modelBuilder.Entity("Business_Platform.Model.Identity.AppUser", b =>
                 {
-                    b.HasOne("Business_Platform.Model.Food.FoodCompany", null)
+                    b.HasOne("Business_Platform.Model.Food.FoodCompany", "FoodCompany")
                         .WithMany("AppUsers")
                         .HasForeignKey("FoodCompanyId");
 
@@ -1178,17 +1170,25 @@ namespace Business_Platform.Migrations
                         .WithMany("AppUsers")
                         .HasForeignKey("OfficeCompanyId");
 
+                    b.HasOne("Business_Platform.Model.Food.RestaurantBranch", "RestaurantBranch")
+                        .WithMany()
+                        .HasForeignKey("RestaurantBranchId");
+
                     b.HasOne("Business_Platform.Model.State", "State")
                         .WithMany()
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("FoodCompany");
+
                     b.Navigation("MainCompany");
 
                     b.Navigation("OfficeCompany");
 
                     b.Navigation("OfficeCompanyBranch");
+
+                    b.Navigation("RestaurantBranch");
 
                     b.Navigation("State");
                 });

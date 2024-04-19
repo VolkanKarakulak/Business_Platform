@@ -174,6 +174,40 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RestaurantBranches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    FoodCompanyId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    RegisterDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
+                    PostalCode = table.Column<string>(type: "char(5)", maxLength: 5, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    EMail = table.Column<string>(type: "varchar(100)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BranchCode = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantBranches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RestaurantBranches_FoodCompanies_FoodCompanyId",
+                        column: x => x.FoodCompanyId,
+                        principalTable: "FoodCompanies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RestaurantBranches_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OfficeCompanyBranches",
                 columns: table => new
                 {
@@ -207,6 +241,55 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FoodCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    RestaurantBranchId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FoodCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FoodCategories_RestaurantBranches_RestaurantBranchId",
+                        column: x => x.RestaurantBranchId,
+                        principalTable: "RestaurantBranches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FoodCategories_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RestaurantBranchComments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Comment = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    CommmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RestaurantBranchId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantBranchComments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RestaurantBranchComments_RestaurantBranches_RestaurantBranchId",
+                        column: x => x.RestaurantBranchId,
+                        principalTable: "RestaurantBranches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -219,6 +302,7 @@ namespace Business_Platform.Migrations
                     OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: true),
                     MainCompanyId = table.Column<int>(type: "int", nullable: true),
                     FoodCompanyId = table.Column<int>(type: "int", nullable: true),
+                    RestaurantBranchId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -241,7 +325,8 @@ namespace Business_Platform.Migrations
                         name: "FK_AspNetUsers_FoodCompanies_FoodCompanyId",
                         column: x => x.FoodCompanyId,
                         principalTable: "FoodCompanies",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUsers_MainCompanies_MainCompanyId",
                         column: x => x.MainCompanyId,
@@ -258,11 +343,93 @@ namespace Business_Platform.Migrations
                         principalTable: "OfficeCompanyBranches",
                         principalColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_AspNetUsers_RestaurantBranches_RestaurantBranchId",
+                        column: x => x.RestaurantBranchId,
+                        principalTable: "RestaurantBranches",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_AspNetUsers_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RestaurantBranchFoods",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    RestaurantBranchId = table.Column<int>(type: "int", nullable: false),
+                    FoodCategoryId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    ImageFileName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantBranchFoods", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RestaurantBranchFoods_FoodCategories_FoodCategoryId",
+                        column: x => x.FoodCategoryId,
+                        principalTable: "FoodCategories",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RestaurantBranchFoods_RestaurantBranches_RestaurantBranchId",
+                        column: x => x.RestaurantBranchId,
+                        principalTable: "RestaurantBranches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_RestaurantBranchFoods_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RestaurantFoods",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    FoodCategoryId = table.Column<int>(type: "int", nullable: false),
+                    FoodCompanyId = table.Column<int>(type: "int", nullable: true),
+                    RestaurantBranchId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Price = table.Column<float>(type: "real", nullable: false),
+                    ImageFileName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantFoods", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RestaurantFoods_FoodCategories_FoodCategoryId",
+                        column: x => x.FoodCategoryId,
+                        principalTable: "FoodCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RestaurantFoods_FoodCompanies_FoodCompanyId",
+                        column: x => x.FoodCompanyId,
+                        principalTable: "FoodCompanies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_RestaurantFoods_RestaurantBranches_RestaurantBranchId",
+                        column: x => x.RestaurantBranchId,
+                        principalTable: "RestaurantBranches",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_RestaurantFoods_States_StateId",
+                        column: x => x.StateId,
+                        principalTable: "States",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -400,7 +567,7 @@ namespace Business_Platform.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OfficeProducts_OfficeCompanies_OfficeCompanyId",
                         column: x => x.OfficeCompanyId,
@@ -426,44 +593,27 @@ namespace Business_Platform.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RestaurantBranches",
+                name: "RestaurantBranchUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
+                    RestaurantBranchId = table.Column<int>(type: "int", nullable: false),
                     AppUserId = table.Column<long>(type: "bigint", nullable: false),
-                    FoodCompanyId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
-                    PostalCode = table.Column<string>(type: "char(5)", maxLength: 5, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    EMail = table.Column<string>(type: "varchar(100)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BranchCode = table.Column<int>(type: "int", nullable: false)
+                    RestaurantId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RestaurantBranches", x => x.Id);
+                    table.PrimaryKey("PK_RestaurantBranchUsers", x => new { x.AppUserId, x.RestaurantBranchId });
                     table.ForeignKey(
-                        name: "FK_RestaurantBranches_AspNetUsers_AppUserId",
+                        name: "FK_RestaurantBranchUsers_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RestaurantBranches_FoodCompanies_FoodCompanyId",
-                        column: x => x.FoodCompanyId,
-                        principalTable: "FoodCompanies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_RestaurantBranches_States_StateId",
-                        column: x => x.StateId,
-                        principalTable: "States",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        name: "FK_RestaurantBranchUsers_RestaurantBranches_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "RestaurantBranches",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -489,7 +639,7 @@ namespace Business_Platform.Migrations
                         column: x => x.ProductId,
                         principalTable: "OfficeProducts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -516,7 +666,7 @@ namespace Business_Platform.Migrations
                         column: x => x.OfficeProductId,
                         principalTable: "OfficeProducts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -558,79 +708,6 @@ namespace Business_Platform.Migrations
                         principalTable: "OfficeProducts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FoodCategories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    RestaurantBranchId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FoodCategories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FoodCategories_RestaurantBranches_RestaurantBranchId",
-                        column: x => x.RestaurantBranchId,
-                        principalTable: "RestaurantBranches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FoodCategories_States_StateId",
-                        column: x => x.StateId,
-                        principalTable: "States",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RestaurantBranchComments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Comment = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                    CommmentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RestaurantBranchId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RestaurantBranchComments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RestaurantBranchComments_RestaurantBranches_RestaurantBranchId",
-                        column: x => x.RestaurantBranchId,
-                        principalTable: "RestaurantBranches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RestaurantBranchUsers",
-                columns: table => new
-                {
-                    RestaurantBranchId = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<long>(type: "bigint", nullable: false),
-                    RestaurantId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RestaurantBranchUsers", x => new { x.AppUserId, x.RestaurantBranchId });
-                    table.ForeignKey(
-                        name: "FK_RestaurantBranchUsers_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RestaurantBranchUsers_RestaurantBranches_RestaurantId",
-                        column: x => x.RestaurantId,
-                        principalTable: "RestaurantBranches",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -682,7 +759,7 @@ namespace Business_Platform.Migrations
                         column: x => x.OfficeCompanyId,
                         principalTable: "OfficeCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_OfficeProductOffers_OfficeProdBranchProducts_OfficeProdBranchProductId",
                         column: x => x.OfficeProdBranchProductId,
@@ -692,83 +769,6 @@ namespace Business_Platform.Migrations
                         name: "FK_OfficeProductOffers_OfficeProducts_OfficeProductId",
                         column: x => x.OfficeProductId,
                         principalTable: "OfficeProducts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RestaurantBranchFoods",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    RestaurantBranchId = table.Column<int>(type: "int", nullable: false),
-                    FoodCategoryId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    ImageFileName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RestaurantBranchFoods", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RestaurantBranchFoods_FoodCategories_FoodCategoryId",
-                        column: x => x.FoodCategoryId,
-                        principalTable: "FoodCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_RestaurantBranchFoods_RestaurantBranches_RestaurantBranchId",
-                        column: x => x.RestaurantBranchId,
-                        principalTable: "RestaurantBranches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_RestaurantBranchFoods_States_StateId",
-                        column: x => x.StateId,
-                        principalTable: "States",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RestaurantFoods",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    FoodCategoryId = table.Column<int>(type: "int", nullable: false),
-                    FoodCompanyId = table.Column<int>(type: "int", nullable: true),
-                    RestaurantBranchId = table.Column<int>(type: "int", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    ImageFileName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RestaurantFoods", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RestaurantFoods_FoodCategories_FoodCategoryId",
-                        column: x => x.FoodCategoryId,
-                        principalTable: "FoodCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RestaurantFoods_FoodCompanies_FoodCompanyId",
-                        column: x => x.FoodCompanyId,
-                        principalTable: "FoodCompanies",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_RestaurantFoods_RestaurantBranches_RestaurantBranchId",
-                        column: x => x.RestaurantBranchId,
-                        principalTable: "RestaurantBranches",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_RestaurantFoods_States_StateId",
-                        column: x => x.StateId,
-                        principalTable: "States",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -795,7 +795,7 @@ namespace Business_Platform.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ManageOffers_OfficeProductOffers_OfficeProductOfferId",
                         column: x => x.OfficeProductOfferId,
@@ -856,6 +856,11 @@ namespace Business_Platform.Migrations
                 name: "IX_AspNetUsers_OfficeCompanyId",
                 table: "AspNetUsers",
                 column: "OfficeCompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_RestaurantBranchId",
+                table: "AspNetUsers",
+                column: "RestaurantBranchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_StateId",
@@ -1020,11 +1025,6 @@ namespace Business_Platform.Migrations
                 column: "RestaurantBranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RestaurantBranches_AppUserId",
-                table: "RestaurantBranches",
-                column: "AppUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RestaurantBranches_FoodCompanyId",
                 table: "RestaurantBranches",
                 column: "FoodCompanyId");
@@ -1135,9 +1135,6 @@ namespace Business_Platform.Migrations
                 name: "OfficeProdBranchProducts");
 
             migrationBuilder.DropTable(
-                name: "RestaurantBranches");
-
-            migrationBuilder.DropTable(
                 name: "OfficeProducts");
 
             migrationBuilder.DropTable(
@@ -1147,16 +1144,19 @@ namespace Business_Platform.Migrations
                 name: "OfficeProductType");
 
             migrationBuilder.DropTable(
-                name: "FoodCompanies");
-
-            migrationBuilder.DropTable(
                 name: "MainCompanies");
 
             migrationBuilder.DropTable(
                 name: "OfficeCompanyBranches");
 
             migrationBuilder.DropTable(
+                name: "RestaurantBranches");
+
+            migrationBuilder.DropTable(
                 name: "OfficeCompanies");
+
+            migrationBuilder.DropTable(
+                name: "FoodCompanies");
 
             migrationBuilder.DropTable(
                 name: "CompanyCategories");

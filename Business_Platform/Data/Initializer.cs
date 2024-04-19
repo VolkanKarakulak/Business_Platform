@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Drawing.Drawing2D;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Model.Office;
+using Business_Platform.Model.Food;
 
 namespace Business_Platform.Data
 {
@@ -18,6 +19,8 @@ namespace Business_Platform.Data
             OfficeCompany? officeCompany = null;
             OfficeCompanyBranch? officeCompanyBranch = null;
             CompanyCategory? companyCategory = null;
+            FoodCompany? foodCompany = null;
+            RestaurantBranch? restaurantBranch = null;
            
 
             if (context != null)
@@ -51,6 +54,7 @@ namespace Business_Platform.Data
                     context.MainCompanies.Add(mainCompany);
                 }
                 context.SaveChanges();
+
                 if (context.CompanyCategories?.Count() == 0)
                 {
                     companyCategory = new CompanyCategory();
@@ -98,6 +102,40 @@ namespace Business_Platform.Data
                 }
                 context.SaveChanges();
 
+                if (context.FoodCompanies?.Count() == 0)
+                {
+                    if (companyCategory != null)
+                    {
+                        foodCompany = new FoodCompany();
+                        foodCompany.Address = "adres";
+                        foodCompany.EMail = "abcdef@def.com";
+                        foodCompany.Name = "FoodCompany";
+                        foodCompany.PostalCode = "12345";
+                        foodCompany.RegisterDate = DateTime.Today;
+                        foodCompany.StateId = 1;
+                        foodCompany.CompanyCategoryId = companyCategory.Id;
+                        context.FoodCompanies.Add(foodCompany);
+                    }
+                }
+                context.SaveChanges();
+
+                if (context.RestaurantBranches?.Count() == 0)
+                {
+                    if (foodCompany != null)
+                    {
+                        restaurantBranch = new RestaurantBranch();
+                        restaurantBranch.Address = "adres";
+                        restaurantBranch.EMail = "abc@def.com";
+                        restaurantBranch.Name = "OfficeCompany";
+                        restaurantBranch.PostalCode = "12345";
+                        restaurantBranch.RegisterDate = DateTime.Today;
+                        restaurantBranch.StateId = 1;
+                        restaurantBranch.FoodCompanyId = foodCompany.Id;
+                        context.RestaurantBranches.Add(restaurantBranch);
+                    }
+                }
+                context.SaveChanges();
+
                 if (roleManager != null)
                 {
                     if (roleManager.Roles.Count() == 0)
@@ -106,7 +144,11 @@ namespace Business_Platform.Data
                         roleManager.CreateAsync(appRole).Wait();
                         appRole = new AppRole("OfficeCompanyAdmin");
                         roleManager.CreateAsync(appRole).Wait();
-                        appRole = new AppRole("BranchAdmin");
+                        appRole = new AppRole("OfficeBranchAdmin");
+                        roleManager.CreateAsync(appRole).Wait();
+                        appRole = new AppRole("FoodCompanyAdmin");
+                        roleManager.CreateAsync(appRole).Wait();
+                        appRole = new AppRole("RestaurantBranchAdmin");
                         roleManager.CreateAsync(appRole).Wait();
                     }
                 }
@@ -130,35 +172,65 @@ namespace Business_Platform.Data
                         
                         if (officeCompany != null)
                         {
-                                appUser = new AppUser();
-                                appUser.UserName = "OfficeCompanyAdmin";
-                                appUser.OfficeCompanyId = officeCompany.Id;
-                                appUser.Name = "OfficeCompanyAdmin";
-                                appUser.Email = "abcd@def.com";
-                                appUser.PhoneNumber = "1112223345";
-                                appUser.RegisterDate = DateTime.Today;
-                                appUser.StateId = 1;
-                                userManager.CreateAsync(appUser, "OfficeCompanyAdmin123!").Wait();
-                                userManager.AddToRoleAsync(appUser, "OfficeCompanyAdmin").Wait();
-                            
+                             appUser = new AppUser();
+                             appUser.UserName = "OfficeCompanyAdmin";
+                             appUser.OfficeCompanyId = officeCompany.Id;
+                             appUser.Name = "OfficeCompanyAdmin";
+                             appUser.Email = "abcd@def.com";
+                             appUser.PhoneNumber = "1112223345";
+                             appUser.RegisterDate = DateTime.Today;
+                             appUser.StateId = 1;
+                             userManager.CreateAsync(appUser, "OfficeCompanyAdmin123!").Wait();
+                             userManager.AddToRoleAsync(appUser, "OfficeCompanyAdmin").Wait();
                         }
                      
                         if (officeCompanyBranch != null)
                         {
-                                appUser = new AppUser();
-                                appUser.UserName = "BranchAdmin";
-                                appUser.OfficeCompanyBranchId = officeCompanyBranch.Id;
-                                appUser.OfficeCompanyId = officeCompany!.Id;
-                                appUser.MainCompanyId = mainCompany!.Id;
-                                appUser.Name = "BranchAdmin";
-                                appUser.Email = "abce@def.com";
-                                appUser.PhoneNumber = "1112223346";
-                                appUser.RegisterDate = DateTime.Today;
-                                appUser.StateId = 1;
-                                userManager.CreateAsync(appUser, "BranchAdmin123!").Wait();
-                                userManager.AddToRoleAsync(appUser, "BranchAdmin").Wait();
+                             appUser = new AppUser();
+                             appUser.UserName = "OfficeBranchAdmin";
+                             appUser.OfficeCompanyBranchId = officeCompanyBranch.Id;
+                             appUser.OfficeCompanyId = officeCompany!.Id;
+                             appUser.MainCompanyId = mainCompany!.Id;
+                             appUser.Name = "OfficeBranchAdmin";
+                             appUser.Email = "abce@def.com";
+                             appUser.PhoneNumber = "1112223346";
+                             appUser.RegisterDate = DateTime.Today;
+                             appUser.StateId = 1;
+                             userManager.CreateAsync(appUser, "OfficeBranchAdmin123!").Wait();
+                             userManager.AddToRoleAsync(appUser, "OfficeBranchAdmin").Wait();
                             
                         }
+                        if (foodCompany != null)
+                        {
+                            appUser = new AppUser();
+                            appUser.UserName = "FoodCompanyAdmin";
+                            appUser.FoodCompanyId = foodCompany.Id;
+                            appUser.Name = "FoodCompanyAdmin";
+                            appUser.Email = "abcdef@def.com";
+                            appUser.PhoneNumber = "111222334567";
+                            appUser.RegisterDate = DateTime.Today;
+                            appUser.StateId = 1;
+                            userManager.CreateAsync(appUser, "FoodCompanyAdmin123!").Wait();
+                            userManager.AddToRoleAsync(appUser, "FoodCompanyAdmin").Wait();
+                        }
+
+                        if (restaurantBranch != null)
+                        {
+                            appUser = new AppUser();
+                            appUser.UserName = "RestaurantBranchAdmin";
+                            appUser.RestaurantBranchId = restaurantBranch.Id;
+                            appUser.FoodCompanyId = foodCompany!.Id;
+                            appUser.MainCompanyId = mainCompany!.Id;
+                            appUser.Name = "RestaurantBranchAdmin";
+                            appUser.Email = "abcefg@def.com";
+                            appUser.PhoneNumber = "111222334678";
+                            appUser.RegisterDate = DateTime.Today;
+                            appUser.StateId = 1;
+                            userManager.CreateAsync(appUser, "RestaurantBranchAdmin123!").Wait();
+                            userManager.AddToRoleAsync(appUser, "RestaurantBranchAdmin").Wait();
+
+                        }
+
                         context.SaveChanges();
                     }
                 }
