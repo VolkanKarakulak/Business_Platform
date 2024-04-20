@@ -9,7 +9,8 @@ namespace Business_Platform.Model.Office
         public int Id { get; set; }
 
         public DateTime OfferDate { get; set; }
-        public int Quantity { get; set; }
+
+        //public int Quantity { get; set; }
         public double OfferPrice { get; set; }
 
         public OfferStatus Status { get; set; }
@@ -26,7 +27,7 @@ namespace Business_Platform.Model.Office
         public int ProductId { get; set; }
 
         [ForeignKey("ProductId")]
-        public OfficeProduct? Product { get; set; }
+        public OfficeProdBranchProduct? OfficeProdBranchProduct { get; set; }
 
   
 

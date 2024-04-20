@@ -26,7 +26,7 @@ namespace Business_Platform.Model.Office
         [ForeignKey("StateId")]
         public State? State { get; set; }
 
-        public int ProductTypId { get; set; }
+        public int? ProductTypeId { get; set; }
 
         [ForeignKey("ProductTypeId")]
         public OfficeProductType? OfficeProductType { get; set; }

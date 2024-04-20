@@ -65,5 +65,8 @@ namespace Business_Platform.Data
 
             base.OnModelCreating(modelBuilder);
         }
+
+        
+        public DbSet<Business_Platform.Model.Office.OfficeProductComment>? OfficeProductComment { get; set; }
     }
 }

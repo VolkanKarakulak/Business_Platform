@@ -9,6 +9,7 @@ namespace Business_Platform.Model.Office
         public int Quantity { get; set; }
 
         public int OfficeProductId { get; set; }
+
         [ForeignKey("OfficeProductId")]
         public OfficeProduct? OfficeProduct { get; set; }
 

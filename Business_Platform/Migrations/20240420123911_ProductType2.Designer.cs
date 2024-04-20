@@ -4,6 +4,7 @@ using Business_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    partial class Business_PlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20240420123911_ProductType2")]
+    partial class ProductType2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -564,6 +566,9 @@ namespace Business_Platform.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -827,10 +832,10 @@ namespace Business_Platform.Migrations
                     b.Property<int>("OfficeCompanyId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OfficeProductId")
+                    b.Property<int?>("OfficeProdBranchProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("OfficeProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
@@ -843,9 +848,9 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("OfficeCompanyId");
 
-                    b.HasIndex("OfficeProductId");
+                    b.HasIndex("OfficeProdBranchProductId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("OfficeProductId");
 
                     b.HasIndex("UserId");
 
@@ -1254,7 +1259,7 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Business_Platform.Model.Office.OfficeProdBranchProduct", "OfficeProdBranchProduct")
+                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1262,9 +1267,9 @@ namespace Business_Platform.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("OfficeProdBranchProduct");
-
                     b.Navigation("OfficeProductOffer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompany", b =>
@@ -1403,13 +1408,13 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", null)
+                    b.HasOne("Business_Platform.Model.Office.OfficeProdBranchProduct", null)
                         .WithMany("OfficeProductOffers")
-                        .HasForeignKey("OfficeProductId");
+                        .HasForeignKey("OfficeProdBranchProductId");
 
-                    b.HasOne("Business_Platform.Model.Office.OfficeProdBranchProduct", "OfficeProdBranchProduct")
+                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
                         .WithMany("OfficeProductOffers")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("OfficeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1423,7 +1428,7 @@ namespace Business_Platform.Migrations
 
                     b.Navigation("OfficeCompany");
 
-                    b.Navigation("OfficeProdBranchProduct");
+                    b.Navigation("OfficeProduct");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeStock", b =>

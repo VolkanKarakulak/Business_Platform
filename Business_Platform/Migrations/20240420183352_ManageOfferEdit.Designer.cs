@@ -4,6 +4,7 @@ using Business_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    partial class Business_PlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20240420183352_ManageOfferEdit")]
+    partial class ManageOfferEdit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -710,7 +712,7 @@ namespace Business_Platform.Migrations
                     b.Property<int>("OfficeCompanyBranchId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OfficeProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -720,7 +722,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("OfficeCompanyBranchId");
 
-                    b.HasIndex("OfficeProductId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OfficeProdBranchProducts");
                 });
@@ -1334,7 +1336,7 @@ namespace Business_Platform.Migrations
 
                     b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
                         .WithMany("OfficeProdBranchProducts")
-                        .HasForeignKey("OfficeProductId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
