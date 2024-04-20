@@ -4,6 +4,7 @@ using Business_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    partial class Business_PlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20240420220606_manoffer")]
+    partial class manoffer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -877,6 +879,27 @@ namespace Business_Platform.Migrations
                     b.ToTable("OfficeProductType");
                 });
 
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("OfficeProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficeProductId");
+
+                    b.ToTable("OfficeStocks");
+                });
+
             modelBuilder.Entity("Business_Platform.Model.State", b =>
                 {
                     b.Property<byte>("Id")
@@ -1407,6 +1430,17 @@ namespace Business_Platform.Migrations
                     b.Navigation("OfficeCompany");
 
                     b.Navigation("OfficeProdBranchProduct");
+                });
+
+            modelBuilder.Entity("Business_Platform.Model.Office.OfficeStock", b =>
+                {
+                    b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
+                        .WithMany()
+                        .HasForeignKey("OfficeProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OfficeProduct");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>

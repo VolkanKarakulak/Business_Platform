@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Office;
+using Business_Platform.ViewModel;
 
 namespace Business_Platform.Controller
 {
@@ -34,20 +35,27 @@ namespace Business_Platform.Controller
 
         // GET: api/ManageOffers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ManageOffer>> GetManageOffer(int id)
+        public async Task<ActionResult<ManageOfferViewModel>> GetManageOffer(int id)
         {
-          if (_context.ManageOffers == null)
-          {
-              return NotFound();
-          }
-            var manageOffer = await _context.ManageOffers.FindAsync(id);
+            var manageOffer = await _context.ManageOffers!
+                .Include(o => o.OfficeProdBranchProduct) // Include to get related OfficeProdBranchProduct
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (manageOffer == null)
             {
                 return NotFound();
             }
 
-            return manageOffer;
+            var viewModel = new ManageOfferViewModel
+            {
+                OfferDate = manageOffer.OfferDate,
+                OfferPrice = manageOffer.OfferPrice,
+                Status = manageOffer.Status,
+                OfficeProductOfferId = manageOffer.OfficeProductOfferId,
+                OfficeProdBranchProductName = manageOffer.OfficeProdBranchProduct != null ? manageOffer.OfficeProdBranchProduct.Name : null
+            };
+
+            return viewModel;
         }
 
         // PUT: api/ManageOffers/5

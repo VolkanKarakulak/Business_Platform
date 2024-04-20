@@ -20,7 +20,6 @@ namespace Business_Platform.Data
         public DbSet<Business_Platform.Model.Office.OfficeCompany> OfficeCompanies { get; set; } = default!;
         public DbSet<Business_Platform.Model.CompanyCategory>? CompanyCategories { get; set; }
         public DbSet<Business_Platform.Model.State>? States { get; set; }
-        public DbSet<Business_Platform.Model.Office.OfficeStock>? OfficeStocks { get; set; }
         public DbSet<Business_Platform.Model.Office.OfficeCompanyBranch>? OfficeCompanyBranches { get; set; }
         public DbSet<Business_Platform.Model.Office.OfficeProduct>? OfficeProducts { get; set; }
         public DbSet<Business_Platform.Model.Office.OfficeProdBranchProduct>? OfficeProdBranchProducts { get; set; }
