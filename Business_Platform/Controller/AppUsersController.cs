@@ -124,7 +124,6 @@ namespace Business_Platform.Controller
             return Ok("Password Changed Succesfully");
         }
 
-
         // DELETE: api/AppUsers/5
         [HttpDelete("{id}")]
         //[Authorize]
