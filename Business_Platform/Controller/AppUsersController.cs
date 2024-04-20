@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Identity;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Business_Platform.Controller
 {
@@ -14,33 +16,53 @@ namespace Business_Platform.Controller
     [ApiController]
     public class AppUsersController : ControllerBase
     {
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly Business_PlatformContext _context;
 
-        public AppUsersController(Business_PlatformContext context)
+        public struct LogInModel
         {
-            _context = context;
+            public string UserName { get; set; }
+            public string Password { get; set; }
         }
 
+        public struct ChangePasswordModel
+        {
+            public string UserName { get; set; }
+            public string CurrentPassword { get; set; }
+            public string NewPassword { get; set; }
+        }
+        public AppUsersController(SignInManager<AppUser> signInManager, Business_PlatformContext context)
+        {
+            _signInManager = signInManager;
+            _context = context;
+        }
         // GET: api/AppUsers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        //[Authorize(Roles = "Admin")]
+        public ActionResult<List<AppUser>> GetUsers()
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            return await _context.Users.ToListAsync();
+            IQueryable<AppUser> users = _signInManager.UserManager.Users;
+
+            return users.AsNoTracking().ToList();
         }
 
         // GET: api/AppUsers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetAppUser(long id)
+        //[Authorize]
+        public ActionResult<AppUser> GetAppUser(long id)
         {
-          if (_context.Users == null)
-          {
-              return NotFound();
-          }
-            var appUser = await _context.Users.FindAsync(id);
+            AppUser? appUser = null;
+
+            //if (User.IsInRole("Admin") == false)
+            //{
+            //    if (User.FindFirstValue(ClaimTypes.NameIdentifier) != id.ToString())
+            //    {
+            //        return Unauthorized();
+            //    }
+            //}
+
+            appUser = _signInManager.UserManager.Users.Where(u => u.Id == id).FirstOrDefault();
+
 
             if (appUser == null)
             {
@@ -53,69 +75,107 @@ namespace Business_Platform.Controller
         // PUT: api/AppUsers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAppUser(long id, AppUser appUser)
+        //[Authorize]
+        public ActionResult PutAppUser(AppUser appUser)
         {
-            if (id != appUser.Id)
-            {
-                return BadRequest();
-            }
+            AppUser? user = null;
 
-            _context.Entry(appUser).State = EntityState.Modified;
+            user = _signInManager.UserManager.Users.Where(u => u.Id == appUser.Id).AsNoTracking().FirstOrDefault(); // asnotricking olmaz burda,oku ve unut diyemeyiz
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AppUserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _signInManager.UserManager.UpdateAsync(appUser);
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/AppUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<AppUser>> PostAppUser(AppUser appUser)
+        public ActionResult<string> PostAppUser(AppUser appUser)
         {
-          if (_context.Users == null)
-          {
-              return Problem("Entity set 'Business_PlatformContext.Users'  is null.");
-          }
-            _context.Users.Add(appUser);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAppUser", new { id = appUser.Id }, appUser);
+            if (User.Identity!.IsAuthenticated == true)
+            {
+                return BadRequest();
+            }
+
+            IdentityResult identityResult = _signInManager.UserManager.CreateAsync(appUser, appUser.PassWord).Result;
+
+            if (identityResult != IdentityResult.Success)
+            {
+                return identityResult.Errors.FirstOrDefault()!.Description;
+            }
+            return Ok("User Account Created");
         }
+
+        [HttpPost("ChangePassword")]
+        //[Authorize]
+        public ActionResult<string> ChangePassword(ChangePasswordModel changePasswordModel)
+        {
+            AppUser? appUser = _signInManager.UserManager.FindByNameAsync(changePasswordModel.UserName).Result;
+            if (appUser == null)
+            {
+                return NotFound("User Not Found");
+            }
+            IdentityResult changePasswordResult = _signInManager.UserManager.ChangePasswordAsync(appUser, changePasswordModel.CurrentPassword, changePasswordModel.NewPassword).Result;
+            if (!changePasswordResult.Succeeded)
+            {
+                return BadRequest("Password change failed");
+            }
+            return Ok("Password Changed Succesfully");
+        }
+
 
         // DELETE: api/AppUsers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAppUser(long id)
+        //[Authorize]
+        public ActionResult<string> DeleteAppUser(long id)
         {
-            if (_context.Users == null)
-            {
-                return NotFound();
-            }
-            var appUser = await _context.Users.FindAsync(id);
-            if (appUser == null)
-            {
-                return NotFound();
-            }
+            AppUser? user = null;
 
-            _context.Users.Remove(appUser);
-            await _context.SaveChangesAsync();
+            if (User.IsInRole("CustomerRepresentative") == false)
+            {
+                if (User.FindFirstValue(ClaimTypes.NameIdentifier) != id.ToString())
+                {
+                    return Unauthorized();
+                }
+            }
+            user = _signInManager.UserManager.Users.Where(u => u.Id == id).FirstOrDefault();
 
-            return NoContent();
+
+            _signInManager.UserManager.UpdateAsync(user).Wait();
+            return Ok("User Deactivated");
         }
 
+        [HttpPost("Login")]
+        public ActionResult LogIn(string userName, string passWord)
+        {
+            Microsoft.AspNetCore.Identity.SignInResult signInResult;
+            AppUser appUser = _signInManager.UserManager.FindByNameAsync(userName).Result;
+
+            if (appUser == null)
+            {
+                return RedirectToAction("LogIn");
+            }
+
+            signInResult = _signInManager.PasswordSignInAsync(appUser, passWord, false, false).Result;
+            if (!signInResult.Succeeded)
+            {
+
+                ModelState.AddModelError(string.Empty, "Invalid Username or Password");
+                return BadRequest();
+            }
+
+            return Ok("Succesful Login");
+        }
+
+        [HttpPost("Logout")]
+        //[Authorize]
+        public ActionResult LogOut()
+        {
+            _signInManager.SignOutAsync().Wait();
+
+            return Ok("Successful Logout");
+        }
         private bool AppUserExists(long id)
         {
             return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
