@@ -146,10 +146,10 @@ namespace Business_Platform.Controller
         }
 
         [HttpPost("Login")]
-        public ActionResult LogIn(string userName, string passWord)
+        public ActionResult LogIn(string eMail, string passWord)
         {
             Microsoft.AspNetCore.Identity.SignInResult signInResult;
-            AppUser appUser = _signInManager.UserManager.FindByNameAsync(userName).Result;
+            AppUser appUser = _signInManager.UserManager.FindByEmailAsync(eMail).Result;
 
             if (appUser == null)
             {
@@ -164,7 +164,10 @@ namespace Business_Platform.Controller
                 return BadRequest();
             }
 
-            return Ok("Succesful Login");
+            // Kullanıcı adını göster
+            //HttpContext.Session.SetString("UserName", appUser.UserName);
+
+            return Ok(new { Message = "Successful Login", UserName = appUser.UserName });
         }
 
         [HttpPost("Logout")]
