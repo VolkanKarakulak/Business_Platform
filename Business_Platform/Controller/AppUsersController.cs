@@ -9,6 +9,8 @@ using Business_Platform.Data;
 using Business_Platform.Model.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Business_Platform.ViewModel;
 
 namespace Business_Platform.Controller
 {
@@ -144,6 +146,29 @@ namespace Business_Platform.Controller
             _signInManager.UserManager.UpdateAsync(user).Wait();
             return Ok("User Deactivated");
         }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = new AppUser { Name = model.Name, UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
+
+            var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                // Yeni kullanıcı oluşturuldu, ancak onay bekliyor.
+                // Onay işlemi burada gerçekleştirilmemiştir, sadece "User" rolü atanmıştır.
+
+                return Ok("User Created Successfully");
+            }
+
+            return BadRequest(result.Errors);
+        }
+
 
         [HttpPost("Login")]
         public ActionResult LogIn(string eMail, string passWord)
