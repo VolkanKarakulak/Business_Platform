@@ -17,17 +17,17 @@ namespace Business_Platform.Controller
     public class AppRolesController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
-        public AppRolesController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AppRolesController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
         [HttpPost]
-        [Route("assign")]
-        public async Task<IActionResult> AssignRoleToUser(AssignRoleModel model)
+        [Route("RoleAssignWithRoleId")]
+        public async Task<IActionResult> AssignRoleToUserWithName(AssignRoleModel model)
         {
             // Kullanıcıyı bul
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -37,18 +37,49 @@ namespace Business_Platform.Controller
             }
 
             // Rolü bul
-            var role = await _roleManager.FindByNameAsync(model.Role);
+            var role = await _roleManager.FindByIdAsync(model.RoleId.ToString());
             if (role == null)
             {
                 return NotFound("Role Not Found.");
             }
 
             // Kullanıcıya rol ata
-            var result = await _userManager.AddToRoleAsync(user, model.Role);
+            var result = await _userManager.AddToRoleAsync(user, role.Name);
 
             if (result.Succeeded)
             {
-                return Ok($"Role '{model.Role}' Assigned to User '{user.Email}' Successfully.");
+                return Ok($"Role '{role.Name}' Assigned to User '{user.Email}' Successfully.");
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
+        [HttpPost]
+        [Route("RoleAssignWithRoleName")]
+        public async Task<IActionResult> AssignRoleToUserWithId(AssignRoleModel model)
+        {
+            // Kullanıcıyı bul
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound("User Not Found.");
+            }
+
+            // Rolü bul
+            var role = await _roleManager.FindByNameAsync(model.RoleName);
+            if (role == null)
+            {
+                return NotFound("Role Not Found.");
+            }
+
+            // Kullanıcıya rol ata
+            var result = await _userManager.AddToRoleAsync(user, role.Name);
+
+            if (result.Succeeded)
+            {
+                return Ok($"Role '{role.Name}' Assigned to User '{user.Email}' Successfully.");
             }
             else
             {

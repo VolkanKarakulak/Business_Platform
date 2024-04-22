@@ -78,15 +78,27 @@ namespace Business_Platform.Controller
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         //[Authorize]
-        public ActionResult PutAppUser(AppUser appUser)
+        public ActionResult PutAppUser(int id, [FromBody] UserPutViewModel model)
         {
-            AppUser? user = null;
+            var user = _signInManager.UserManager.Users.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.RegisterDate = model.RegisterDate;
+            user.StateId = model.StateId;
+            user.OfficeCompanyBranchId = model.OfficeCompanyBranchId;
+            user.FoodCompanyId = model.FoodCompanyId;
+            user.RestaurantBranchId = model.RestaurantBranchId;
+            user.MainCompanyId = model.MainCompanyId;
 
-            user = _signInManager.UserManager.Users.Where(u => u.Id == appUser.Id).AsNoTracking().FirstOrDefault(); // asnotricking olmaz burda,oku ve unut diyemeyiz
+            var result = _signInManager.UserManager.UpdateAsync(user).Result;
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
 
-            _signInManager.UserManager.UpdateAsync(appUser);
-
-            return Ok();
+            return BadRequest(result.Errors);
         }
 
         // POST: api/AppUsers
@@ -143,11 +155,11 @@ namespace Business_Platform.Controller
             user = _signInManager.UserManager.Users.Where(u => u.Id == id).FirstOrDefault();
 
 
-            _signInManager.UserManager.UpdateAsync(user).Wait();
+            _signInManager.UserManager.UpdateAsync(user!).Wait();
             return Ok("User Deactivated");
         }
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             if (!ModelState.IsValid)
@@ -160,10 +172,8 @@ namespace Business_Platform.Controller
             var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                // Yeni kullanıcı oluşturuldu, ancak onay bekliyor.
-                // Onay işlemi burada gerçekleştirilmemiştir, sadece "User" rolü atanmıştır.
-
-                return Ok("User Created Successfully");
+               
+                return Ok("User Created Successfully. Wait For Authorization");
             }
 
             return BadRequest(result.Errors);

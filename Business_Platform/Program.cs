@@ -21,7 +21,7 @@ namespace Business_Platform
             builder.Services.AddDbContext<Business_PlatformContext>(options =>
                options.UseSqlServer(builder.Configuration.GetConnectionString("WatchMeContext") ?? throw new InvalidOperationException("Connection string 'WatchMeContext' not found.")));
 
-            builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = false).AddDefaultTokenProviders()
+            builder.Services.AddIdentity<AppUser, AppRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<Business_PlatformContext>();
 
              builder.Services.AddControllers().AddNewtonsoftJson(opt =>
@@ -35,6 +35,7 @@ namespace Business_Platform
             builder.Services.AddAuthorization();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddScoped<RoleManager<AppRole>>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
