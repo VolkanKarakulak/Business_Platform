@@ -35,6 +35,9 @@ namespace Business_Platform
             builder.Services.AddAuthorization();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddAuthorization(options => options.AddPolicy("OfficeComBranchAdmin", policy => policy.RequireClaim("OfficeCompanyBranchId")));
+            builder.Services.AddAuthorization(options => options.AddPolicy("RestBranchAdmin", policy => policy.RequireClaim("RestaurantBranchId")));
+
             builder.Services.AddScoped<RoleManager<AppRole>>();
             var app = builder.Build();
 

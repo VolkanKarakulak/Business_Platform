@@ -43,7 +43,6 @@ namespace Business_Platform.Controller
                 return NotFound("Role Not Found.");
             }
 
-            // Kullanıcıya rol ata
             var result = await _userManager.AddToRoleAsync(user, role.Name);
 
             if (result.Succeeded)
