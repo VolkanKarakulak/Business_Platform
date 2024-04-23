@@ -14,6 +14,17 @@ namespace Business_Platform.Model.Office
         public double OfferPrice { get; set; }
 
         public OfferStatus Status { get; set; }
+
+        public int OfficeCompanyBranchId { get; set; }
+
+        [ForeignKey("OfficeCompanyBranchId")]
+        public OfficeCompanyBranch? OfficeCompanyBranch { get; set; }
+
+        public int OfficeCompanyId { get; set; }
+
+        [ForeignKey("OfficeCompanyId")]
+        public OfficeCompany? OfficeCompany { get; set; }
+
         public int OfficeProductOfferId {  get; set; }
 
         [ForeignKey("OfficeProductOfferId")]

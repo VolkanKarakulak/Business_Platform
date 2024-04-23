@@ -88,6 +88,7 @@ namespace Business_Platform.Controller
             user.RegisterDate = model.RegisterDate;
             user.StateId = model.StateId;
             user.OfficeCompanyBranchId = model.OfficeCompanyBranchId;
+            user.OfficeCompanyId = model.OfficeCompanyId;
             user.FoodCompanyId = model.FoodCompanyId;
             user.RestaurantBranchId = model.RestaurantBranchId;
             user.MainCompanyId = model.MainCompanyId;

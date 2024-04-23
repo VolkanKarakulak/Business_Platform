@@ -17,6 +17,8 @@ namespace Business_Platform.Model.Office
         public OfficeCompany? OfficeCompany { get; set; }
 
         public List<OfficeProdBranchProduct>? OfficeProdBranchProducts { get; set; }
+        
+        public List<OfficeProductOffer>? OfficeProductOffers { get; set; }
         public virtual List<AppUser>? AppUsers { get; set; }
     }
 }

@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Office;
 using Business_Platform.ViewModel;
+using Microsoft.AspNetCore.Authorization;
+using Business_Platform.Model.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Business_Platform.Controller
 {
@@ -16,17 +19,27 @@ namespace Business_Platform.Controller
     public class ManageOffersController : ControllerBase
     {
         private readonly Business_PlatformContext _context;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public ManageOffersController(Business_PlatformContext context)
+        public ManageOffersController(Business_PlatformContext context, SignInManager<AppUser> signInManager)
         {
             _context = context;
+            _signInManager = signInManager;
         }
 
         // GET: api/ManageOffers
         [HttpGet]
+        [Authorize(Roles = "OfficeCompanyAdmin")]
         public async Task<ActionResult<IEnumerable<ManageOffer>>> GetManageOffers()
         {
-          if (_context.ManageOffers == null)
+            ManageOffer manageOffer = new ManageOffer();
+
+            if (User.HasClaim("OfficeCompanyAdminId", manageOffer.OfficeCompanyId.ToString()) == false)
+            {
+                return Unauthorized();
+            }
+
+            if (_context.ManageOffers == null)
           {
               return NotFound();
           }

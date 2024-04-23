@@ -20,10 +20,11 @@ namespace Business_Platform.Model.Office
         [ForeignKey("UserId")]
         public AppUser? AppUser { get; set; }
 
-        public int OfficeCompanyId { get; set; }
+        public int OfficeCompanyBranchId { get; set; }
 
-        [ForeignKey("OfficeCompanyId")]
-        public OfficeCompany? OfficeCompany { get; set; }
+        [ForeignKey("OfficeCompanyBranchId")]
+        public OfficeCompanyBranch? OfficeCompanyBranch { get; set; }
+
 
         public int ProductId { get; set; }
 

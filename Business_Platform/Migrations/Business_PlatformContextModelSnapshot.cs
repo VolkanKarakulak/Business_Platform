@@ -558,6 +558,12 @@ namespace Business_Platform.Migrations
                     b.Property<double>("OfferPrice")
                         .HasColumnType("float");
 
+                    b.Property<int>("OfficeCompanyBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OfficeCompanyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("OfficeProductOfferId")
                         .HasColumnType("int");
 
@@ -570,6 +576,10 @@ namespace Business_Platform.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("OfficeCompanyBranchId");
+
+                    b.HasIndex("OfficeCompanyId");
 
                     b.HasIndex("OfficeProductOfferId");
 
@@ -828,7 +838,10 @@ namespace Business_Platform.Migrations
                     b.Property<double>("OfferPrice")
                         .HasColumnType("float");
 
-                    b.Property<int>("OfficeCompanyId")
+                    b.Property<int>("OfficeCompanyBranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OfficeCompanyId")
                         .HasColumnType("int");
 
                     b.Property<int?>("OfficeProductId")
@@ -844,6 +857,8 @@ namespace Business_Platform.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OfficeCompanyBranchId");
 
                     b.HasIndex("OfficeCompanyId");
 
@@ -1231,6 +1246,18 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompanyBranch", "OfficeCompanyBranch")
+                        .WithMany()
+                        .HasForeignKey("OfficeCompanyBranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", "OfficeCompany")
+                        .WithMany()
+                        .HasForeignKey("OfficeCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Business_Platform.Model.Office.OfficeProductOffer", "OfficeProductOffer")
                         .WithMany()
                         .HasForeignKey("OfficeProductOfferId")
@@ -1244,6 +1271,10 @@ namespace Business_Platform.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
+
+                    b.Navigation("OfficeCompany");
+
+                    b.Navigation("OfficeCompanyBranch");
 
                     b.Navigation("OfficeProdBranchProduct");
 
@@ -1380,11 +1411,15 @@ namespace Business_Platform.Migrations
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductOffer", b =>
                 {
-                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", "OfficeCompany")
-                        .WithMany("Offers")
-                        .HasForeignKey("OfficeCompanyId")
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompanyBranch", "OfficeCompanyBranch")
+                        .WithMany("OfficeProductOffers")
+                        .HasForeignKey("OfficeCompanyBranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", null)
+                        .WithMany("Offers")
+                        .HasForeignKey("OfficeCompanyId");
 
                     b.HasOne("Business_Platform.Model.Office.OfficeProduct", null)
                         .WithMany("OfficeProductOffers")
@@ -1404,7 +1439,7 @@ namespace Business_Platform.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("OfficeCompany");
+                    b.Navigation("OfficeCompanyBranch");
 
                     b.Navigation("OfficeProdBranchProduct");
                 });
@@ -1509,6 +1544,8 @@ namespace Business_Platform.Migrations
                     b.Navigation("AppUsers");
 
                     b.Navigation("OfficeProdBranchProducts");
+
+                    b.Navigation("OfficeProductOffers");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProdBranchProduct", b =>

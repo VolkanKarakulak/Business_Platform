@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Food;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Business_Platform.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "FoodCompanyAdmin")]
     public class FoodCategoriesController : ControllerBase
     {
         private readonly Business_PlatformContext _context;

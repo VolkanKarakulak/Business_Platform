@@ -35,7 +35,25 @@ namespace Business_Platform
             builder.Services.AddAuthorization();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddAuthorization(options => options.AddPolicy("OfficeComBranchAdmin", policy => policy.RequireClaim("OfficeCompanyBranchId")));
+            builder.Services.AddAuthorization(options => options.AddPolicy("OfficeBranchAdmin", policy => policy.RequireClaim("OfficeCompanyBranchId")));
+            builder.Services.AddAuthorization(options => options.AddPolicy("OfficeCompanyAdmin", policy => policy.RequireClaim("OfficeCompanyId")));
+
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("OfficeBranchAdmin", policy =>
+            //    {
+            //        policy.RequireClaim("OfficeCompanyBranchId");
+            //    });
+            //});
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("FoodCompanyAdmin", policy =>
+            //    {
+            //        policy.RequireClaim("RestaurantBranchId");
+            //        policy.RequireClaim("FoodCompanyAdmin");
+            //    });
+            //});
+
             builder.Services.AddAuthorization(options => options.AddPolicy("RestBranchAdmin", policy => policy.RequireClaim("RestaurantBranchId")));
 
             builder.Services.AddScoped<RoleManager<AppRole>>();

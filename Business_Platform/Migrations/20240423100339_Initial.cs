@@ -550,7 +550,6 @@ namespace Business_Platform.Migrations
                     Description = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     AppUserId = table.Column<long>(type: "bigint", nullable: false),
                     StateId = table.Column<byte>(type: "tinyint", nullable: false),
-                    ProductTypId = table.Column<int>(type: "int", nullable: false),
                     ProductTypeId = table.Column<int>(type: "int", nullable: true),
                     OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
                     OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false),
@@ -566,13 +565,13 @@ namespace Business_Platform.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OfficeProducts_OfficeCompanies_OfficeCompanyId",
                         column: x => x.OfficeCompanyId,
                         principalTable: "OfficeCompanies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_OfficeProducts_OfficeCompanyBranches_OfficeCompanyBranchId",
                         column: x => x.OfficeCompanyBranchId,
@@ -654,6 +653,7 @@ namespace Business_Platform.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     OfficeProductId = table.Column<int>(type: "int", nullable: false),
                     OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false)
@@ -672,7 +672,7 @@ namespace Business_Platform.Migrations
                         column: x => x.OfficeProductId,
                         principalTable: "OfficeProducts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -690,26 +690,6 @@ namespace Business_Platform.Migrations
                     table.PrimaryKey("PK_OfficeProductComment", x => x.Id);
                     table.ForeignKey(
                         name: "FK_OfficeProductComment_OfficeProducts_OfficeProductId",
-                        column: x => x.OfficeProductId,
-                        principalTable: "OfficeProducts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OfficeStocks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OfficeProductId = table.Column<int>(type: "int", nullable: false),
-                    TotalQuantity = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OfficeStocks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OfficeStocks_OfficeProducts_OfficeProductId",
                         column: x => x.OfficeProductId,
                         principalTable: "OfficeProducts",
                         principalColumn: "Id",
@@ -746,10 +726,11 @@ namespace Business_Platform.Migrations
                     OfferPrice = table.Column<double>(type: "float", nullable: false),
                     OfferDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    OfficeProductId = table.Column<int>(type: "int", nullable: false),
-                    OfficeCompanyId = table.Column<int>(type: "int", nullable: false),
+                    OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    OfficeProdBranchProductId = table.Column<int>(type: "int", nullable: true)
+                    OfficeCompanyId = table.Column<int>(type: "int", nullable: true),
+                    OfficeProductId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -764,19 +745,24 @@ namespace Business_Platform.Migrations
                         name: "FK_OfficeProductOffers_OfficeCompanies_OfficeCompanyId",
                         column: x => x.OfficeCompanyId,
                         principalTable: "OfficeCompanies",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_OfficeProductOffers_OfficeCompanyBranches_OfficeCompanyBranchId",
+                        column: x => x.OfficeCompanyBranchId,
+                        principalTable: "OfficeCompanyBranches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OfficeProductOffers_OfficeProdBranchProducts_OfficeProdBranchProductId",
-                        column: x => x.OfficeProdBranchProductId,
+                        name: "FK_OfficeProductOffers_OfficeProdBranchProducts_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "OfficeProdBranchProducts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_OfficeProductOffers_OfficeProducts_OfficeProductId",
                         column: x => x.OfficeProductId,
                         principalTable: "OfficeProducts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -786,9 +772,9 @@ namespace Business_Platform.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OfferDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
                     OfferPrice = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    OfficeCompanyBranchId = table.Column<int>(type: "int", nullable: false),
                     OfficeProductOfferId = table.Column<int>(type: "int", nullable: false),
                     AppUserId = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
@@ -803,15 +789,21 @@ namespace Business_Platform.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ManageOffers_OfficeProductOffers_OfficeProductOfferId",
-                        column: x => x.OfficeProductOfferId,
-                        principalTable: "OfficeProductOffers",
+                        name: "FK_ManageOffers_OfficeCompanyBranches_OfficeCompanyBranchId",
+                        column: x => x.OfficeCompanyBranchId,
+                        principalTable: "OfficeCompanyBranches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ManageOffers_OfficeProdBranchProducts_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "OfficeProdBranchProducts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ManageOffers_OfficeProducts_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "OfficeProducts",
+                        name: "FK_ManageOffers_OfficeProductOffers_OfficeProductOfferId",
+                        column: x => x.OfficeProductOfferId,
+                        principalTable: "OfficeProductOffers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -931,6 +923,11 @@ namespace Business_Platform.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ManageOffers_OfficeCompanyBranchId",
+                table: "ManageOffers",
+                column: "OfficeCompanyBranchId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ManageOffers_OfficeProductOfferId",
                 table: "ManageOffers",
                 column: "OfficeProductOfferId");
@@ -981,19 +978,24 @@ namespace Business_Platform.Migrations
                 column: "OfficeProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OfficeProductOffers_OfficeCompanyBranchId",
+                table: "OfficeProductOffers",
+                column: "OfficeCompanyBranchId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OfficeProductOffers_OfficeCompanyId",
                 table: "OfficeProductOffers",
                 column: "OfficeCompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfficeProductOffers_OfficeProdBranchProductId",
-                table: "OfficeProductOffers",
-                column: "OfficeProdBranchProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OfficeProductOffers_OfficeProductId",
                 table: "OfficeProductOffers",
                 column: "OfficeProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OfficeProductOffers_ProductId",
+                table: "OfficeProductOffers",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OfficeProductOffers_UserId",
@@ -1024,11 +1026,6 @@ namespace Business_Platform.Migrations
                 name: "IX_OfficeProducts_StateId",
                 table: "OfficeProducts",
                 column: "StateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfficeStocks_OfficeProductId",
-                table: "OfficeStocks",
-                column: "OfficeProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RestaurantBranchComments_RestaurantBranchId",
@@ -1117,9 +1114,6 @@ namespace Business_Platform.Migrations
 
             migrationBuilder.DropTable(
                 name: "OfficeProductComment");
-
-            migrationBuilder.DropTable(
-                name: "OfficeStocks");
 
             migrationBuilder.DropTable(
                 name: "RestaurantBranchComments");
