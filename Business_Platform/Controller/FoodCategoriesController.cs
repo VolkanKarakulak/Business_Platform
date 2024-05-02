@@ -56,14 +56,24 @@ namespace Business_Platform.Controller
         // PUT: api/FoodCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFoodCategory(int id, FoodCategory foodCategory)
+        public async Task<IActionResult> PutFoodCategory(int id, FoodCategoryPutViewModel foodCategoryPutViewModel)
         {
-            if (id != foodCategory.Id)
+            if (id != foodCategoryPutViewModel.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(foodCategory).State = EntityState.Modified;
+            FoodCategory? foodCategory = await _context.FoodCategories!.FindAsync(id);
+
+            if (foodCategory == null)
+            {
+                return NotFound();
+            }
+
+            foodCategory.Name = foodCategoryPutViewModel.Name;
+            foodCategory.Description = foodCategoryPutViewModel.Description;
+            foodCategory.StateId = foodCategoryPutViewModel.StateId;
+            foodCategory.RestaurantBranchId = foodCategoryPutViewModel.RestaurantBranchId;
 
             try
             {
