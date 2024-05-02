@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Food;
 using Microsoft.AspNetCore.Authorization;
+using Business_Platform.ViewModel;
 
 namespace Business_Platform.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "FoodCompanyAdmin")]
+    //[Authorize(Policy = "FoodCompanyAdmin")]
     public class FoodCategoriesController : ControllerBase
     {
         private readonly Business_PlatformContext _context;
@@ -86,12 +87,21 @@ namespace Business_Platform.Controller
         // POST: api/FoodCategories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<FoodCategory>> PostFoodCategory(FoodCategory foodCategory)
+        public async Task<ActionResult<FoodCategory>> PostFoodCategory(FoodCategoryPostViewModel foodCategoryPostViewModel)
         {
           if (_context.FoodCategories == null)
           {
               return Problem("Entity set 'Business_PlatformContext.FoodCategories'  is null.");
           }
+
+            FoodCategory foodCategory = new FoodCategory
+            {
+                Name = foodCategoryPostViewModel.Name,
+                Description = foodCategoryPostViewModel.Description,
+                StateId = foodCategoryPostViewModel.StateId,
+                RestaurantBranchId = foodCategoryPostViewModel.RestaurantBranchId
+            };
+
             _context.FoodCategories.Add(foodCategory);
             await _context.SaveChangesAsync();
 
