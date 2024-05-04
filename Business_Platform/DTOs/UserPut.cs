@@ -1,6 +1,6 @@
-﻿namespace Business_Platform.ViewModel
+﻿namespace Business_Platform.DTOs
 {
-    public class UserPutViewModel
+    public class UserPut
     {
         public DateTime RegisterDate { get; set; }
         public byte StateId { get; set; }

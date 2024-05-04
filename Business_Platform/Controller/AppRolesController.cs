@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Identity;
 using Microsoft.AspNetCore.Identity;
-using Business_Platform.ViewModel;
+using Business_Platform.DTOs;
 
 namespace Business_Platform.Controller
 {
@@ -27,7 +27,7 @@ namespace Business_Platform.Controller
 
         [HttpPost]
         [Route("RoleAssignWithRoleId")]
-        public async Task<IActionResult> AssignRoleToUserWithName(AssignRoleModel model)
+        public async Task<IActionResult> AssignRoleToUserWithName(AssignRole model)
         {
             // Kullanıcıyı bul
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -57,7 +57,7 @@ namespace Business_Platform.Controller
 
         [HttpPost]
         [Route("RoleAssignWithRoleName")]
-        public async Task<IActionResult> AssignRoleToUserWithId(AssignRoleModel model)
+        public async Task<IActionResult> AssignRoleToUserWithId(AssignRole model)
         {
             // Kullanıcıyı bul
             var user = await _userManager.FindByEmailAsync(model.Email);

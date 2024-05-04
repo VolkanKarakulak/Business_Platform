@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Office;
-using Business_Platform.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Business_Platform.Model.Identity;
 using Microsoft.AspNetCore.Identity;
+using Business_Platform.DTOs;
 
 namespace Business_Platform.Controller
 {
@@ -29,15 +29,15 @@ namespace Business_Platform.Controller
 
         // GET: api/ManageOffers
         [HttpGet]
-        [Authorize(Roles = "OfficeCompanyAdmin")]
-        public async Task<ActionResult<IEnumerable<ManageOffer>>> GetManageOffers()
+        //[Authorize(Roles = "OfficeCompanyAdmin")]
+        public async Task<ActionResult<IEnumerable<Model.Office.ManageOffer>>> GetManageOffers()
         {
-            ManageOffer manageOffer = new ManageOffer();
+            Model.Office.ManageOffer manageOffer = new Model.Office.ManageOffer();
 
-            if (User.HasClaim("OfficeCompanyAdminId", manageOffer.OfficeCompanyId.ToString()) == false)
-            {
-                return Unauthorized();
-            }
+            //if (User.HasClaim("OfficeCompanyAdminId", manageOffer.OfficeCompanyId.ToString()) == false)
+            //{
+            //    return Unauthorized();
+            //}
 
             if (_context.ManageOffers == null)
           {
@@ -48,7 +48,7 @@ namespace Business_Platform.Controller
 
         // GET: api/ManageOffers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ManageOfferViewModel>> GetManageOffer(int id)
+        public async Task<ActionResult<ManageOfferDto>> GetManageOffer(int id)
         {
             var manageOffer = await _context.ManageOffers!
                 .Include(o => o.OfficeProdBranchProduct) // Include to get related OfficeProdBranchProduct
@@ -59,7 +59,7 @@ namespace Business_Platform.Controller
                 return NotFound();
             }
 
-            var viewModel = new ManageOfferViewModel
+            var viewModel = new DTOs.ManageOfferDto
             {
                 OfferDate = manageOffer.OfferDate,
                 OfferPrice = manageOffer.OfferPrice,
@@ -74,7 +74,7 @@ namespace Business_Platform.Controller
         // PUT: api/ManageOffers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutManageOffer(int id, ManageOffer manageOffer)
+        public async Task<IActionResult> PutManageOffer(int id, Model.Office.ManageOffer manageOffer)
         {
             if (id != manageOffer.Id)
             {
@@ -105,7 +105,7 @@ namespace Business_Platform.Controller
         // POST: api/ManageOffers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ManageOffer>> PostManageOffer(ManageOffer manageOffer)
+        public async Task<ActionResult<Model.Office.ManageOffer>> PostManageOffer(Model.Office.ManageOffer manageOffer)
         {
           if (_context.ManageOffers == null)
           {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Food;
 using Microsoft.AspNetCore.Authorization;
-using Business_Platform.ViewModel;
+using Business_Platform.DTOs;
 
 namespace Business_Platform.Controller
 {
@@ -56,9 +56,9 @@ namespace Business_Platform.Controller
         // PUT: api/FoodCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFoodCategory(int id, FoodCategoryPutViewModel foodCategoryPutViewModel)
+        public async Task<IActionResult> PutFoodCategory(int id, FoodCategoryPut foodCategoryPut)
         {
-            if (id != foodCategoryPutViewModel.Id)
+            if (id != foodCategoryPut.Id)
             {
                 return BadRequest();
             }
@@ -70,10 +70,10 @@ namespace Business_Platform.Controller
                 return NotFound();
             }
 
-            foodCategory.Name = foodCategoryPutViewModel.Name;
-            foodCategory.Description = foodCategoryPutViewModel.Description;
-            foodCategory.StateId = foodCategoryPutViewModel.StateId;
-            foodCategory.RestaurantBranchId = foodCategoryPutViewModel.RestaurantBranchId;
+            foodCategory.Name = foodCategoryPut.Name;
+            foodCategory.Description = foodCategoryPut.Description;
+            foodCategory.StateId = foodCategoryPut.StateId;
+            foodCategory.RestaurantBranchId = foodCategoryPut.RestaurantBranchId;
 
             try
             {
@@ -97,7 +97,7 @@ namespace Business_Platform.Controller
         // POST: api/FoodCategories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<FoodCategory>> PostFoodCategory(FoodCategoryPostViewModel foodCategoryPostViewModel)
+        public async Task<ActionResult<FoodCategory>> PostFoodCategory(FoodCategoryPost foodCategoryPost)
         {
           if (_context.FoodCategories == null)
           {
@@ -106,10 +106,10 @@ namespace Business_Platform.Controller
 
             FoodCategory foodCategory = new FoodCategory
             {
-                Name = foodCategoryPostViewModel.Name,
-                Description = foodCategoryPostViewModel.Description,
-                StateId = foodCategoryPostViewModel.StateId,
-                RestaurantBranchId = foodCategoryPostViewModel.RestaurantBranchId
+                Name = foodCategoryPost.Name,
+                Description = foodCategoryPost.Description,
+                StateId = foodCategoryPost.StateId,
+                RestaurantBranchId = foodCategoryPost.RestaurantBranchId
             };
 
             _context.FoodCategories.Add(foodCategory);

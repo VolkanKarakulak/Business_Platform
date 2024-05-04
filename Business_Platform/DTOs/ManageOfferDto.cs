@@ -1,8 +1,8 @@
 ﻿using static Business_Platform.Model.Office.OfficeProductOffer;
 
-namespace Business_Platform.ViewModel
+namespace Business_Platform.DTOs
 {
-    public class ManageOfferViewModel
+    public class ManageOfferDto
     {
         public DateTime OfferDate { get; set; }
         public double OfferPrice { get; set; }

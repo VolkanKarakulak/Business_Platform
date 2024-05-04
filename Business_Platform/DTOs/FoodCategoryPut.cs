@@ -1,6 +1,6 @@
-﻿namespace Business_Platform.ViewModel
+﻿namespace Business_Platform.DTOs
 {
-    public class FoodCategoryPutViewModel
+    public class FoodCategoryPut
     {
         public int Id { get; set; }
         public string Name { get; set; } = "";

@@ -10,7 +10,7 @@ using Business_Platform.Model.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Business_Platform.ViewModel;
+using Business_Platform.DTOs;
 
 namespace Business_Platform.Controller
 {
@@ -78,7 +78,7 @@ namespace Business_Platform.Controller
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         //[Authorize]
-        public ActionResult PutAppUser(int id, [FromBody] UserPutViewModel model)
+        public ActionResult PutAppUser(int id, [FromBody] UserPut model)
         {
             var user = _signInManager.UserManager.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)
@@ -161,7 +161,7 @@ namespace Business_Platform.Controller
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        public async Task<IActionResult> Register([FromBody] Register model)
         {
             if (!ModelState.IsValid)
             {

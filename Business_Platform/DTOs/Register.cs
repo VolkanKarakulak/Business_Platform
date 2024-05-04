@@ -1,6 +1,6 @@
-﻿namespace Business_Platform.ViewModel
+﻿namespace Business_Platform.DTOs
 {
-    public class RegisterViewModel
+    public class Register
     {
         public string Name { get; set; } = "";
         public string UserName { get; set; } = "";

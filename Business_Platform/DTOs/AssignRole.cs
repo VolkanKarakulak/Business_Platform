@@ -1,6 +1,6 @@
-﻿namespace Business_Platform.ViewModel
+﻿namespace Business_Platform.DTOs
 {
-    public class AssignRoleModel
+    public class AssignRole
     {
         public string? Email { get; set; }
         public long? RoleId { get; set; }

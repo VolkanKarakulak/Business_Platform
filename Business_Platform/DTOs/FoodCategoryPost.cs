@@ -1,6 +1,6 @@
-﻿namespace Business_Platform.ViewModel
+﻿namespace Business_Platform.DTOs
 {
-    public class FoodCategoryPostViewModel
+    public class FoodCategoryPost
     {
         public string Name { get; set; } = "";
         public string? Description { get; set; } 
