@@ -41,37 +41,59 @@ namespace Business_Platform.Controller
         // GET: api/AppUsers
         [HttpGet]
         //[Authorize(Roles = "Admin")]
-        public ActionResult<List<AppUser>> GetUsers()
+        public ActionResult<List<UserGet>> GetUsers()
         {
-            IQueryable<AppUser> users = _signInManager.UserManager.Users;
+            var users = _signInManager.UserManager.Users.Select(user => new UserGet
+            {
+                Id = user.Id,
+                Name = user.Name,
+                RegisterDate = user.RegisterDate,
+                StateName = user.State!.Name, // Include State name
+                OfficeCompanyName = user.OfficeCompany!.Name, // Include OfficeCompany name
+                OfficeCompanyBranchName = user.OfficeCompanyBranch!.Name, // Include OfficeCompanyBranch name
+                MainCompanyName = user.MainCompany!.Name, // Include MainCompany name
+                FoodCompanyName = user.FoodCompany!.Name, // Include FoodCompany name
+                RestaurantBranchName = user.RestaurantBranch!.Name, // Include RestaurantBranch name
 
-            return users.AsNoTracking().ToList();
+                // ... (other properties if needed)
+            }).AsNoTracking().ToList();
+
+            return users;
         }
 
         // GET: api/AppUsers/5
         [HttpGet("{id}")]
         //[Authorize]
-        public ActionResult<AppUser> GetAppUser(long id)
+        public ActionResult<UserGet> GetAppUser(long id)
         {
-            AppUser? appUser = null;
+            var user = _signInManager.UserManager.Users
+                .Include(u => u.State)  // Include State entity
+                .Include(u => u.OfficeCompany) // Include OfficeCompany entity
+                .Include(u => u.OfficeCompanyBranch)
+                .Include(u => u.MainCompany)// Include OfficeCompanyBranch entity
+                .Where(u => u.Id == id).FirstOrDefault();
 
-            //if (User.IsInRole("Admin") == false)
-            //{
-            //    if (User.FindFirstValue(ClaimTypes.NameIdentifier) != id.ToString())
-            //    {
-            //        return Unauthorized();
-            //    }
-            //}
-
-            appUser = _signInManager.UserManager.Users.Where(u => u.Id == id).FirstOrDefault();
-
-
-            if (appUser == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return appUser;
+            var getUser = new UserGet
+            {
+                Id = user.Id,
+                Name = user.Name,
+                RegisterDate = user.RegisterDate,
+                StateName = user.State?.Name, // Include State name
+                OfficeCompanyName = user.OfficeCompany?.Name, // Include OfficeCompany name
+                OfficeCompanyBranchName = user.OfficeCompanyBranch?.Name, // Include OfficeCompanyBranch name
+                MainCompanyName = user.MainCompany?.Name, // Include MainCompany name
+                FoodCompanyName = user.FoodCompany?.Name, // Include FoodCompany name
+                RestaurantBranchName = user.RestaurantBranch?.Name, // Include RestaurantBranch name
+
+                // ... (other properties if needed)
+            };
+
+            return getUser;
         }
 
         // PUT: api/AppUsers/5
