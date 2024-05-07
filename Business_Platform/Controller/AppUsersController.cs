@@ -48,12 +48,12 @@ namespace Business_Platform.Controller
                 Id = user.Id,
                 Name = user.Name,
                 RegisterDate = user.RegisterDate,
-                StateName = user.State!.Name, // Include State name
-                OfficeCompanyName = user.OfficeCompany!.Name, // Include OfficeCompany name
-                OfficeCompanyBranchName = user.OfficeCompanyBranch!.Name, // Include OfficeCompanyBranch name
-                MainCompanyName = user.MainCompany!.Name, // Include MainCompany name
-                FoodCompanyName = user.FoodCompany!.Name, // Include FoodCompany name
-                RestaurantBranchName = user.RestaurantBranch!.Name, // Include RestaurantBranch name
+                StateName = user.State!.Name,
+                OfficeCompanyName = user.OfficeCompany!.Name, 
+                OfficeCompanyBranchName = user.OfficeCompanyBranch!.Name, 
+                MainCompanyName = user.MainCompany!.Name, 
+                FoodCompanyName = user.FoodCompany!.Name, 
+                RestaurantBranchName = user.RestaurantBranch!.Name, 
 
                 // ... (other properties if needed)
             }).AsNoTracking().ToList();
@@ -67,10 +67,10 @@ namespace Business_Platform.Controller
         public ActionResult<UserGet> GetAppUser(long id)
         {
             var user = _signInManager.UserManager.Users
-                .Include(u => u.State)  // Include State entity
-                .Include(u => u.OfficeCompany) // Include OfficeCompany entity
+                .Include(u => u.State)  
+                .Include(u => u.OfficeCompany) 
                 .Include(u => u.OfficeCompanyBranch)
-                .Include(u => u.MainCompany)// Include OfficeCompanyBranch entity
+                .Include(u => u.MainCompany)
                 .Where(u => u.Id == id).FirstOrDefault();
 
             if (user == null)
@@ -83,14 +83,13 @@ namespace Business_Platform.Controller
                 Id = user.Id,
                 Name = user.Name,
                 RegisterDate = user.RegisterDate,
-                StateName = user.State?.Name, // Include State name
-                OfficeCompanyName = user.OfficeCompany?.Name, // Include OfficeCompany name
-                OfficeCompanyBranchName = user.OfficeCompanyBranch?.Name, // Include OfficeCompanyBranch name
-                MainCompanyName = user.MainCompany?.Name, // Include MainCompany name
-                FoodCompanyName = user.FoodCompany?.Name, // Include FoodCompany name
-                RestaurantBranchName = user.RestaurantBranch?.Name, // Include RestaurantBranch name
+                StateName = user.State?.Name, 
+                OfficeCompanyName = user.OfficeCompany?.Name, 
+                OfficeCompanyBranchName = user.OfficeCompanyBranch?.Name, 
+                MainCompanyName = user.MainCompany?.Name, 
+                FoodCompanyName = user.FoodCompany?.Name, 
+                RestaurantBranchName = user.RestaurantBranch?.Name, 
 
-                // ... (other properties if needed)
             };
 
             return getUser;
