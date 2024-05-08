@@ -71,6 +71,8 @@ namespace Business_Platform.Controller
                 .Include(u => u.State)  
                 .Include(u => u.OfficeCompany) 
                 .Include(u => u.OfficeCompanyBranch)
+                .Include(u => u.FoodCompany)
+                .Include(u => u.RestaurantBranch)
                 .Include(u => u.MainCompany)
                 .Where(u => u.Id == id).FirstOrDefault();
 
@@ -127,15 +129,29 @@ namespace Business_Platform.Controller
         // POST: api/AppUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult<string> PostAppUser(AppUser appUser)
+        public ActionResult<string> PostAppUser(UserPost userPost)
         {
 
             if (User.Identity!.IsAuthenticated == true)
             {
                 return BadRequest();
             }
+            var appUser = new AppUser
+            {
+                Name = userPost.Name,
+                UserName = userPost.UserName,
+                Email = userPost.Email,
+                PhoneNumber = userPost.PhoneNumber,
+                RegisterDate = userPost.RegisterDate,
+                StateId = userPost.StateId,
+                OfficeCompanyId = userPost.OfficeCompanyId,
+                OfficeCompanyBranchId = userPost.OfficeCompanyBranchId,
+                MainCompanyId = userPost.MainCompanyId,
+                FoodCompanyId = userPost.FoodCompanyId,
+                RestaurantBranchId = userPost.RestaurantBranchId
+            };
 
-            IdentityResult identityResult = _signInManager.UserManager.CreateAsync(appUser, appUser.PassWord).Result;
+            IdentityResult identityResult = _signInManager.UserManager.CreateAsync(appUser, userPost.PassWord).Result;
 
             if (identityResult != IdentityResult.Success)
             {
