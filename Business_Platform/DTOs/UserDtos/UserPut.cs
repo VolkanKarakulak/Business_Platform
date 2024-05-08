@@ -1,4 +1,4 @@
-﻿namespace Business_Platform.DTOs
+﻿namespace Business_Platform.DTOs.UserDtos
 {
     public class UserPut
     {
@@ -8,7 +8,7 @@
         public int? OfficeCompanyId { get; set; }
         public int? FoodCompanyId { get; set; }
         public int? RestaurantBranchId { get; set; }
-        public int? MainCompanyId { get; set; } 
+        public int? MainCompanyId { get; set; }
 
     }
 }

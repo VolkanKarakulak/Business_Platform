@@ -1,10 +1,10 @@
-﻿namespace Business_Platform.DTOs
+﻿namespace Business_Platform.DTOs.FoodCategoryDtos
 {
     public class FoodCategoryPut
     {
         public int Id { get; set; }
         public string Name { get; set; } = "";
-        public string? Description { get; set; } 
+        public string? Description { get; set; }
         public byte StateId { get; set; }
         public int? RestaurantBranchId { get; set; }
 

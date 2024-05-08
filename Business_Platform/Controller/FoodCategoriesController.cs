@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Food;
 using Microsoft.AspNetCore.Authorization;
-using Business_Platform.DTOs;
+using Business_Platform.DTOs.FoodCategoryDtos;
 
 namespace Business_Platform.Controller
 {

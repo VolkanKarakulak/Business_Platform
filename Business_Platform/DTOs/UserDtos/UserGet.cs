@@ -3,7 +3,7 @@ using Business_Platform.Model.Office;
 using Business_Platform.Model;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Business_Platform.DTOs
+namespace Business_Platform.DTOs.UserDtos
 {
     public class UserGet
     {

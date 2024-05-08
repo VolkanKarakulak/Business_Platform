@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Business_Platform.DTOs;
+using Business_Platform.DTOs.UserDtos;
 
 namespace Business_Platform.Controller
 {
