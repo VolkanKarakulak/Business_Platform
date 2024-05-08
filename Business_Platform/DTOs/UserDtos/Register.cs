@@ -1,4 +1,4 @@
-﻿namespace Business_Platform.DTOs
+﻿namespace Business_Platform.DTOs.UserDtos
 {
     public class Register
     {
@@ -7,6 +7,6 @@
         public string Email { get; set; } = "";
         public string Password { get; set; } = "";
         public string PhoneNumber { get; set; } = "";
-       
+
     }
 }

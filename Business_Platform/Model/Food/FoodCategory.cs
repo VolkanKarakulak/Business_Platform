@@ -27,9 +27,6 @@ namespace Business_Platform.Model.Food
 
         public virtual List<RestaurantFood>? RestaurantFoods { get; set; }
       
-        
-
-       
 
     }
 }

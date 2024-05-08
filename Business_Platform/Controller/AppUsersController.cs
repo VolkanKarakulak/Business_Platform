@@ -10,7 +10,6 @@ using Business_Platform.Model.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Business_Platform.DTOs;
 using Business_Platform.DTOs.UserDtos;
 
 namespace Business_Platform.Controller
@@ -92,7 +91,6 @@ namespace Business_Platform.Controller
                 MainCompanyName = user.MainCompany?.Name, 
                 FoodCompanyName = user.FoodCompany?.Name, 
                 RestaurantBranchName = user.RestaurantBranch?.Name, 
-
             };
 
             return getUser;

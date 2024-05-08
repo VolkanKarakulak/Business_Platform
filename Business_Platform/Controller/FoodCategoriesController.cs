@@ -26,18 +26,27 @@ namespace Business_Platform.Controller
 
         // GET: api/FoodCategories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FoodCategory>>> GetFoodCategories()
+        public async Task<ActionResult<IEnumerable<FoodCategoryGet>>> GetFoodCategories()
         {
-          if (_context.FoodCategories == null)
-          {
+            var foodCategories = await _context.FoodCategories!.Select(u => new FoodCategoryGet
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Description = u.Description,
+                StateName = u.State!.Name,
+                RestaurantBranchName = u.RestaurantBranch!.Name
+            }).ToListAsync();
+
+            if (_context.FoodCategories == null)
+            {
               return NotFound();
-          }
-            return await _context.FoodCategories.ToListAsync();
+            }
+            return foodCategories;
         }
 
         // GET: api/FoodCategories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<FoodCategory>> GetFoodCategory(int id)
+        public async Task<ActionResult<Model.Food.FoodCategory>> GetFoodCategory(int id)
         {
           if (_context.FoodCategories == null)
           {
@@ -56,14 +65,14 @@ namespace Business_Platform.Controller
         // PUT: api/FoodCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFoodCategory(int id, FoodCategoryPut foodCategoryPut)
+        public async Task<IActionResult> PutFoodCategory(int id, DTOs.FoodCategoryDtos.FoodCategoryPut foodCategoryPut)
         {
             if (id != foodCategoryPut.Id)
             {
                 return BadRequest();
             }
 
-            FoodCategory? foodCategory = await _context.FoodCategories!.FindAsync(id);
+            Model.Food.FoodCategory? foodCategory = await _context.FoodCategories!.FindAsync(id);
 
             if (foodCategory == null)
             {
@@ -97,14 +106,14 @@ namespace Business_Platform.Controller
         // POST: api/FoodCategories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<FoodCategory>> PostFoodCategory(FoodCategoryPost foodCategoryPost)
+        public async Task<ActionResult<Model.Food.FoodCategory>> PostFoodCategory(FoodCategoryPost foodCategoryPost)
         {
           if (_context.FoodCategories == null)
           {
               return Problem("Entity set 'Business_PlatformContext.FoodCategories'  is null.");
           }
 
-            FoodCategory foodCategory = new FoodCategory
+            Model.Food.FoodCategory foodCategory = new Model.Food.FoodCategory
             {
                 Name = foodCategoryPost.Name,
                 Description = foodCategoryPost.Description,
