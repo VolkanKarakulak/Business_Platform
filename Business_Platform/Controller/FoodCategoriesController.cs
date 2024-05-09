@@ -33,7 +33,7 @@ namespace Business_Platform.Controller
                 Id = u.Id,
                 Name = u.Name,
                 Description = u.Description,
-                StateName = u.State!.Name,
+                State = u.State!.Name,
                 RestaurantBranchName = u.RestaurantBranch!.Name
             }).ToListAsync();
 
@@ -46,20 +46,24 @@ namespace Business_Platform.Controller
 
         // GET: api/FoodCategories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Model.Food.FoodCategory>> GetFoodCategory(int id)
+        public async Task<ActionResult<FoodCategoryGet>> GetFoodCategory(int id)
         {
-          if (_context.FoodCategories == null)
-          {
-              return NotFound();
-          }
-            var foodCategory = await _context.FoodCategories.FindAsync(id);
+         
+            var foodCategory = await _context.FoodCategories!.Include(u => u.State).Include(u => u.RestaurantBranch).FirstOrDefaultAsync(u => u.Id == id);
 
             if (foodCategory == null)
             {
                 return NotFound();
             }
-
-            return foodCategory;
+            var foodCategoryDto = new FoodCategoryGet
+            {
+                Id = foodCategory.Id,
+                Name = foodCategory.Name,
+                Description = foodCategory.Description,
+                State = foodCategory.State?.Name,
+                RestaurantBranchName = foodCategory.RestaurantBranch?.Name
+            };
+            return foodCategoryDto;
         }
 
         // PUT: api/FoodCategories/5
@@ -106,7 +110,7 @@ namespace Business_Platform.Controller
         // POST: api/FoodCategories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Model.Food.FoodCategory>> PostFoodCategory(FoodCategoryPost foodCategoryPost)
+        public async Task<ActionResult<FoodCategory>> PostFoodCategory(FoodCategoryPost foodCategoryPost)
         {
           if (_context.FoodCategories == null)
           {

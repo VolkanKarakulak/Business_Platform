@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Food;
+using Business_Platform.DTOs.FoodCompanyDtos;
 
 namespace Business_Platform.Controller
 {
@@ -23,13 +24,34 @@ namespace Business_Platform.Controller
 
         // GET: api/FoodCompanies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FoodCompany>>> GetFoodCompanies()
+        public async Task<ActionResult<IEnumerable<FoodCompanyGet>>> GetFoodCompanies()
         {
-          if (_context.FoodCompanies == null)
+            var foodCompanies = await _context.FoodCompanies!
+            .Include(fc => fc.RestaurantBranches)
+            .Include(fc => fc.RestaurantFoods)
+            .Include(fc => fc.AppUsers)
+            .Select(u => new FoodCompanyGet
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Address = u.Address,
+                PhoneNumber = u.PhoneNumber,
+                EMail = u.EMail,
+                PostalCode = u.PostalCode,
+                RegisterDate = u.RegisterDate,
+                CompanyCategoryName = u.CompanyCategory!.Name,
+                StateName = u.State!.Name,
+                RestaurantBranchNames = u.RestaurantBranches!.Select(rb => rb.Name).ToList(),
+                RestaurantFoodNames = u.RestaurantFoods!.Select(rf => rf.Name).ToList(),
+                AppUserNames = u.AppUsers!.Select(au => au.Name).ToList()
+            })
+            .ToListAsync();
+
+            if (_context.FoodCompanies == null)
           {
               return NotFound();
           }
-            return await _context.FoodCompanies.ToListAsync();
+            return foodCompanies;
         }
 
         // GET: api/FoodCompanies/5

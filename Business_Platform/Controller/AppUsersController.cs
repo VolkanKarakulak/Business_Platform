@@ -55,7 +55,6 @@ namespace Business_Platform.Controller
                 FoodCompanyName = user.FoodCompany!.Name, 
                 RestaurantBranchName = user.RestaurantBranch!.Name, 
 
-                // ... (other properties if needed)
             }).AsNoTracking().ToList();
 
             return users;
