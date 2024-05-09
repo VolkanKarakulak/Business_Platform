@@ -13,7 +13,7 @@ namespace Business_Platform.DTOs.FoodCompanyDtos
         public string PostalCode { get; set; } = "";
         public DateTime RegisterDate { get; set; }
         public string? CompanyCategoryName { get; set; }
-        public string? StateName { get; set; }
+        public string? State { get; set; }
 
         public List<string>? RestaurantBranchNames { get; set; }
         public List<string>? RestaurantFoodNames { get; set; }

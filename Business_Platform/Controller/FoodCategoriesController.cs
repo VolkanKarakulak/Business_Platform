@@ -28,16 +28,17 @@ namespace Business_Platform.Controller
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FoodCategoryGet>>> GetFoodCategories()
         {
-            var foodCategories = await _context.FoodCategories!.Select(u => new FoodCategoryGet
+            var foodCategories = await _context.FoodCategories!.Include(u => u.RestaurantFoods).Select(u => new FoodCategoryGet
             {
                 Id = u.Id,
                 Name = u.Name,
                 Description = u.Description,
                 State = u.State!.Name,
-                RestaurantBranchName = u.RestaurantBranch!.Name
+                RestaurantBranchName = u.RestaurantBranch!.Name,
+                RestaurantFoodNames = u.RestaurantFoods!.Select(rf => rf.Name).ToList()
             }).ToListAsync();
 
-            if (_context.FoodCategories == null)
+            if (foodCategories == null || foodCategories.Count == 0)
             {
               return NotFound();
             }
@@ -69,7 +70,7 @@ namespace Business_Platform.Controller
         // PUT: api/FoodCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFoodCategory(int id, DTOs.FoodCategoryDtos.FoodCategoryPut foodCategoryPut)
+        public async Task<IActionResult> PutFoodCategory(int id, FoodCategoryPut foodCategoryPut)
         {
             if (id != foodCategoryPut.Id)
             {

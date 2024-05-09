@@ -27,9 +27,6 @@ namespace Business_Platform.Controller
         public async Task<ActionResult<IEnumerable<FoodCompanyGet>>> GetFoodCompanies()
         {
             var foodCompanies = await _context.FoodCompanies!
-            .Include(fc => fc.RestaurantBranches)
-            .Include(fc => fc.RestaurantFoods)
-            .Include(fc => fc.AppUsers)
             .Select(u => new FoodCompanyGet
             {
                 Id = u.Id,
@@ -40,14 +37,13 @@ namespace Business_Platform.Controller
                 PostalCode = u.PostalCode,
                 RegisterDate = u.RegisterDate,
                 CompanyCategoryName = u.CompanyCategory!.Name,
-                StateName = u.State!.Name,
+                State = u.State!.Name,
                 RestaurantBranchNames = u.RestaurantBranches!.Select(rb => rb.Name).ToList(),
                 RestaurantFoodNames = u.RestaurantFoods!.Select(rf => rf.Name).ToList(),
                 AppUserNames = u.AppUsers!.Select(au => au.Name).ToList()
-            })
-            .ToListAsync();
+            }).ToListAsync();
 
-            if (_context.FoodCompanies == null)
+          if (foodCompanies == null || foodCompanies.Count == 0)
           {
               return NotFound();
           }
@@ -56,20 +52,38 @@ namespace Business_Platform.Controller
 
         // GET: api/FoodCompanies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<FoodCompany>> GetFoodCompany(int id)
+        public async Task<ActionResult<FoodCompanyGet>> GetFoodCompany(int id)
         {
-          if (_context.FoodCompanies == null)
-          {
-              return NotFound();
-          }
-            var foodCompany = await _context.FoodCompanies.FindAsync(id);
+          var foodCompany = await _context.FoodCompanies!
+            .Include(fc => fc.CompanyCategory)
+            .Include(fc => fc.State)
+            .Include(fc => fc.RestaurantBranches)
+            .Include(fc => fc.RestaurantFoods)
+            .Include(fc => fc.AppUsers)
+            .FirstOrDefaultAsync(fc => fc.Id == id);
 
             if (foodCompany == null)
             {
-                return NotFound();
+              return NotFound();
             }
 
-            return foodCompany;
+            var foodCompanyDto = new FoodCompanyGet
+            {
+                Id = foodCompany.Id,
+                Name = foodCompany.Name,
+                Address = foodCompany.Address,
+                PhoneNumber = foodCompany.PhoneNumber,
+                EMail = foodCompany.EMail,
+                PostalCode = foodCompany.PostalCode,
+                RegisterDate = foodCompany.RegisterDate,
+                CompanyCategoryName = foodCompany.CompanyCategory?.Name,
+                State = foodCompany.State?.Name,
+                RestaurantBranchNames = foodCompany.RestaurantBranches?.Select(rb => rb.Name).ToList(),
+                RestaurantFoodNames = foodCompany.RestaurantFoods?.Select(rf => rf.Name).ToList(),
+                AppUserNames = foodCompany.AppUsers?.Select(au => au.Name).ToList()
+            };
+
+            return foodCompanyDto;
         }
 
         // PUT: api/FoodCompanies/5
