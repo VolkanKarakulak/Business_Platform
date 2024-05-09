@@ -7,12 +7,12 @@ namespace Business_Platform.Model.Food
 {
     public class FoodCompany : BaseCompanyModel
     {
-        public int CompanyCategoryId { get; set; }
+        public int? CompanyCategoryId { get; set; }
 
         [ForeignKey("CompanyCategoryId")]
         public CompanyCategory? CompanyCategory { get; set; }
 
-        public byte StateId { get; set; }
+        public byte? StateId { get; set; }
 
         [ForeignKey("StateId")]
         public State? State { get; set; }

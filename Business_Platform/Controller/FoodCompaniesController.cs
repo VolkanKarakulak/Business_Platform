@@ -29,7 +29,7 @@ namespace Business_Platform.Controller
             var foodCompanies = await _context.FoodCompanies!
             .Select(u => new FoodCompanyGet
             {
-                Id = u.Id,
+                Id = u.Id, // u, burada foodCompanies'i temsil ediyor
                 Name = u.Name,
                 Address = u.Address,
                 PhoneNumber = u.PhoneNumber,
@@ -120,12 +120,25 @@ namespace Business_Platform.Controller
         // POST: api/FoodCompanies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<FoodCompany>> PostFoodCompany(FoodCompany foodCompany)
+        public async Task<ActionResult<FoodCompany>> PostFoodCompany(FoodCompanyPost foodCompanyPost)
         {
           if (_context.FoodCompanies == null)
           {
               return Problem("Entity set 'Business_PlatformContext.FoodCompanies'  is null.");
           }
+
+            FoodCompany foodCompany = new FoodCompany
+            {
+                Name = foodCompanyPost.Name,
+                Address = foodCompanyPost.Address,
+                PhoneNumber = foodCompanyPost.PhoneNumber,
+                EMail = foodCompanyPost.EMail,
+                PostalCode = foodCompanyPost.PostalCode,
+                RegisterDate = foodCompanyPost.RegisterDate,
+                CompanyCategoryId = foodCompanyPost.CompanyCategoryId,
+                StateId = foodCompanyPost.StateId
+
+            };
             _context.FoodCompanies.Add(foodCompany);
             await _context.SaveChangesAsync();
 

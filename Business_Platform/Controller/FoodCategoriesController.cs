@@ -118,7 +118,7 @@ namespace Business_Platform.Controller
               return Problem("Entity set 'Business_PlatformContext.FoodCategories'  is null.");
           }
 
-            Model.Food.FoodCategory foodCategory = new Model.Food.FoodCategory
+            FoodCategory foodCategory = new FoodCategory
             {
                 Name = foodCategoryPost.Name,
                 Description = foodCategoryPost.Description,
