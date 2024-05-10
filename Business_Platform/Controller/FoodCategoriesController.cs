@@ -77,7 +77,7 @@ namespace Business_Platform.Controller
                 return BadRequest();
             }
 
-            Model.Food.FoodCategory? foodCategory = await _context.FoodCategories!.FindAsync(id);
+            FoodCategory? foodCategory = await _context.FoodCategories!.FindAsync(id);
 
             if (foodCategory == null)
             {

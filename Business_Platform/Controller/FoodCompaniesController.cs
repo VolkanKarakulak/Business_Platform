@@ -89,14 +89,27 @@ namespace Business_Platform.Controller
         // PUT: api/FoodCompanies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFoodCompany(int id, FoodCompany foodCompany)
+        public async Task<IActionResult> PutFoodCompany(int id, FoodCompanyPut foodCompanyPut)
         {
-            if (id != foodCompany.Id)
+            if (id != foodCompanyPut.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(foodCompany).State = EntityState.Modified;
+            FoodCompany? foodCompany = await _context.FoodCompanies!.FindAsync(id);
+
+            if (foodCompany == null)
+            {
+                return NotFound();
+            }
+
+            foodCompany.Name = foodCompanyPut.Name;
+            foodCompany.Address = foodCompanyPut.Address;
+            foodCompany.PhoneNumber = foodCompanyPut.PhoneNumber;
+            foodCompany.EMail = foodCompanyPut.EMail;
+            foodCompany.PostalCode = foodCompanyPut.PostalCode;
+            foodCompany.CompanyCategoryId = foodCompanyPut.CompanyCategoryId;
+            foodCompany.StateId = foodCompanyPut.StateId;
 
             try
             {
