@@ -20,17 +20,21 @@ namespace Business_Platform.Model.Office
         [ForeignKey("UserId")]
         public AppUser? AppUser { get; set; }
 
-        public int OfficeCompanyBranchId { get; set; }
+        public int? OfficeCompanyId { get; set; }
+
+        [ForeignKey("OfficeCompanyId")]
+        public OfficeCompany? OfficeCompany { get; set; }
+
+        public int? OfficeCompanyBranchId { get; set; }
 
         [ForeignKey("OfficeCompanyBranchId")]
         public OfficeCompanyBranch? OfficeCompanyBranch { get; set; }
 
-
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
 
         [ForeignKey("ProductId")]
         public OfficeProdBranchProduct? OfficeProdBranchProduct { get; set; }
 
-        public OfferStatus Status { get; set; } = OfferStatus.Pending;  // Başlangıç değeri pending(beklemde) olsun
+        public OfferStatus Status { get; set; } = OfferStatus.Pending;  // Başlangıç değeri pending(beklemede) olsun
     }
 }

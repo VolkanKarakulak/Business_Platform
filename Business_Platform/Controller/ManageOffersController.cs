@@ -66,7 +66,7 @@ namespace Business_Platform.Controller
                 .Include(o => o.OfficeProdBranchProduct)
                 .Include(o => o.OfficeCompanyBranch)
                 .Include(o => o.AppUser)
-                .Include(o => o.OfficeCompany)// Include to get related OfficeProdBranchProduct
+                .Include(o => o.OfficeCompany) 
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (manageOffer == null)
@@ -85,7 +85,6 @@ namespace Business_Platform.Controller
                 OfficeCompanyName = manageOffer.OfficeCompany!.Name,
                 OfficeCompanyBranchName = manageOffer.OfficeCompanyBranch!.Name,
                 OfficeProdBranchProductName = manageOffer.OfficeProdBranchProduct!.Name,
-
             };
 
             return viewModel;

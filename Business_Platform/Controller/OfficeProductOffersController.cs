@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Office;
+using Business_Platform.DTOs.OfficeProductOfferDtos;
 
 namespace Business_Platform.Controller
 {
@@ -84,13 +85,23 @@ namespace Business_Platform.Controller
         // POST: api/OfficeProductOffers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<OfficeProductOffer>> PostOfficeProductOffer(OfficeProductOffer officeProductOffer)
+        public async Task<ActionResult<OfficeProductOffer>> PostOfficeProductOffer(OfficeProductOfferPost officeProductOfferPost)
         {
-          if (_context.OfficeProductOffers == null)
-          {
-              return Problem("Entity set 'Business_PlatformContext.OfficeProductOffers'  is null.");
-          }
-            _context.OfficeProductOffers.Add(officeProductOffer);
+            if (officeProductOfferPost == null)
+            {
+                return BadRequest();
+            }
+
+            var officeProductOffer = new OfficeProductOffer
+            {
+                ProductId = officeProductOfferPost.OfficeProdBranchProductId,
+                OfferPrice = officeProductOfferPost.OfferPrice,
+                OfferDate = officeProductOfferPost.OfferDate,
+                UserId = officeProductOfferPost.UserId,
+                OfficeCompanyBranchId = officeProductOfferPost.OfficeCompanyBranchId
+            };
+
+            _context.OfficeProductOffers!.Add(officeProductOffer);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetOfficeProductOffer", new { id = officeProductOffer.Id }, officeProductOffer);
