@@ -30,20 +30,32 @@ namespace Business_Platform.Controller
         // GET: api/ManageOffers
         [HttpGet]
         //[Authorize(Roles = "OfficeCompanyAdmin")]
-        public async Task<ActionResult<IEnumerable<Model.Office.ManageOffer>>> GetManageOffers()
+        public async Task<ActionResult<IEnumerable<ManageOfferDto>>> GetManageOffers()
         {
-            Model.Office.ManageOffer manageOffer = new Model.Office.ManageOffer();
-
             //if (User.HasClaim("OfficeCompanyAdminId", manageOffer.OfficeCompanyId.ToString()) == false)
             //{
             //    return Unauthorized();
             //}
 
+            var managerOffers = await _context.ManageOffers!.Select(u => new ManageOfferDto
+            {
+                OfferDate = u.OfferDate,
+                OfferPrice = u.OfferPrice,
+                Status = u.Status!,
+                //OfficeProductOffer = u.OfficeProductOffer.OfferDate
+                AppUserName = u.AppUser!.Name,
+                OfficeProdBranchProductName = u.OfficeProdBranchProduct!.Name,
+                OfficeCompanyName = u.OfficeCompany!.Name,
+                OfficeCompanyBranchName = u.OfficeCompanyBranch!.Name
+
+
+            }).ToListAsync();
+
             if (_context.ManageOffers == null)
           {
               return NotFound();
           }
-            return await _context.ManageOffers.ToListAsync();
+            return managerOffers;
         }
 
         // GET: api/ManageOffers/5
@@ -51,7 +63,10 @@ namespace Business_Platform.Controller
         public async Task<ActionResult<ManageOfferDto>> GetManageOffer(int id)
         {
             var manageOffer = await _context.ManageOffers!
-                .Include(o => o.OfficeProdBranchProduct) // Include to get related OfficeProdBranchProduct
+                .Include(o => o.OfficeProdBranchProduct)
+                .Include(o => o.OfficeCompanyBranch)
+                .Include(o => o.AppUser)
+                .Include(o => o.OfficeCompany)// Include to get related OfficeProdBranchProduct
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (manageOffer == null)
@@ -59,13 +74,18 @@ namespace Business_Platform.Controller
                 return NotFound();
             }
 
-            var viewModel = new DTOs.ManageOfferDto
+            var viewModel = new ManageOfferDto
             {
                 OfferDate = manageOffer.OfferDate,
                 OfferPrice = manageOffer.OfferPrice,
                 Status = manageOffer.Status,
-                OfficeProductOfferId = manageOffer.OfficeProductOfferId,
-                OfficeProdBranchProductName = manageOffer.OfficeProdBranchProduct != null ? manageOffer.OfficeProdBranchProduct.Name : null
+                //OfficeProductOffer = manageOffer.OfficeProductOfferId,
+                //OfficeProdBranchProductName = manageOffer.OfficeProdBranchProduct != null ? manageOffer.OfficeProdBranchProduct.Name : null
+                AppUserName = manageOffer.AppUser!.Name,
+                OfficeCompanyName = manageOffer.OfficeCompany!.Name,
+                OfficeCompanyBranchName = manageOffer.OfficeCompanyBranch!.Name,
+                OfficeProdBranchProductName = manageOffer.OfficeProdBranchProduct!.Name,
+
             };
 
             return viewModel;
@@ -74,7 +94,7 @@ namespace Business_Platform.Controller
         // PUT: api/ManageOffers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutManageOffer(int id, Model.Office.ManageOffer manageOffer)
+        public async Task<IActionResult> PutManageOffer(int id, ManageOffer manageOffer)
         {
             if (id != manageOffer.Id)
             {
@@ -105,7 +125,7 @@ namespace Business_Platform.Controller
         // POST: api/ManageOffers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Model.Office.ManageOffer>> PostManageOffer(Model.Office.ManageOffer manageOffer)
+        public async Task<ActionResult<ManageOffer>> PostManageOffer(ManageOffer manageOffer)
         {
           if (_context.ManageOffers == null)
           {
