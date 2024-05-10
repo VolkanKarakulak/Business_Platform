@@ -31,7 +31,7 @@ namespace Business_Platform.Controller
             {
                 Id = u.Id,
                 OfferPrice = u.OfferPrice,
-                UserName = u.AppUser!.Name,
+                Name = u.AppUser!.Name,
                 OfficeCompanyName = u.OfficeCompany!.Name,
                 OfficeCompanyBranchName = u.OfficeCompanyBranch!.Name,
                 OfficeProdBranchProductName = u.OfficeProdBranchProduct!.Name,
@@ -48,20 +48,26 @@ namespace Business_Platform.Controller
 
         // GET: api/OfficeProductOffers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<OfficeProductOffer>> GetOfficeProductOffer(int id)
+        public async Task<ActionResult<OfficeProductOfferGet>> GetOfficeProductOffer(int id)
         {
-          if (_context.OfficeProductOffers == null)
+          var officeProductOffer = await _context.OfficeProductOffers!.Include(u => u.OfficeCompany).Include(u => u.OfficeCompanyBranch).Include(u => u.OfficeProdBranchProduct).Include(u => u.AppUser).FirstOrDefaultAsync(u => u.Id == id);
+
+          if (officeProductOffer == null)
           {
               return NotFound();
           }
-            var officeProductOffer = await _context.OfficeProductOffers.FindAsync(id);
-
-            if (officeProductOffer == null)
+            var officeProductOfferGet = new OfficeProductOfferGet
             {
-                return NotFound();
-            }
+                Id = officeProductOffer.Id,
+                OfferPrice = officeProductOffer.OfferPrice,
+                Name = officeProductOffer.AppUser?.Name,
+                OfficeCompanyName = officeProductOffer.OfficeCompany?.Name,
+                OfficeCompanyBranchName = officeProductOffer.OfficeCompanyBranch?.Name,
+                OfficeProdBranchProductName = officeProductOffer.OfficeProdBranchProduct?.Name,
+                Status = officeProductOffer.Status
+            };
 
-            return officeProductOffer;
+            return officeProductOfferGet;
         }
 
         // PUT: api/OfficeProductOffers/5
