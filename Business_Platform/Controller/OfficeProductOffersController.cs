@@ -31,14 +31,13 @@ namespace Business_Platform.Controller
             {
                 Id = u.Id,
                 OfferPrice = u.OfferPrice,
-                UserId = u.UserId,
-                OfficeCompanyId = u.OfficeCompanyId,
-                OfficeCompanyBranchId = u.OfficeCompanyBranchId,
-                OfficeProdBranchProductId = u.ProductId,
+                UserName = u.AppUser!.Name,
+                OfficeCompanyName = u.OfficeCompany!.Name,
+                OfficeCompanyBranchName = u.OfficeCompanyBranch!.Name,
+                OfficeProdBranchProductName = u.OfficeProdBranchProduct!.Name,
                 Status = u.Status
 
             }).ToListAsync();
-
 
           if (officeProductOffer == null)
           {

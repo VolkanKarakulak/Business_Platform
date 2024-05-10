@@ -7,10 +7,10 @@ namespace Business_Platform.DTOs.OfficeProductOfferDtos
         public int? Id { get; set; }
         public double OfferPrice { get; set; }
         public DateTime OfferDate { get; set; }
-        public long UserId { get; set; }
-        public int? OfficeCompanyId { get; set; }
-        public int? OfficeCompanyBranchId { get; set; }
-        public int? OfficeProdBranchProductId { get; set; }
+        public string? UserName { get; set; }
+        public string? OfficeCompanyName { get; set; }
+        public string? OfficeCompanyBranchName { get; set; }
+        public string? OfficeProdBranchProductName { get; set; }
         public OfferStatus Status { get; set; } 
     }
 }
