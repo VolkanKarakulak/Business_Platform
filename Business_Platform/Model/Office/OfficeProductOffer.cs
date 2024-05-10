@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Business_Platform.Model.Identity;
 
 namespace Business_Platform.Model.Office
@@ -7,10 +8,14 @@ namespace Business_Platform.Model.Office
     {
         public enum OfferStatus
         {
-            Pending, // Beklemede
-            Accepted, // Kabul Edildi
-            Rejected // Reddedildi      
+            [Display(Name = "Beklemede")]
+            Pending,
+            [Display(Name = "Kabul Edildi")]
+            Accepted,
+            [Display(Name = "Reddedildi")]
+            Rejected  
         }
+
 
         public int Id { get; set; }
         public double OfferPrice { get; set; }

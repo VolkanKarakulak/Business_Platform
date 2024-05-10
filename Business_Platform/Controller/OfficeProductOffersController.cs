@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Office;
 using Business_Platform.DTOs.OfficeProductOfferDtos;
+using Microsoft.OpenApi.Extensions;
 
 namespace Business_Platform.Controller
 {
@@ -24,13 +25,26 @@ namespace Business_Platform.Controller
 
         // GET: api/OfficeProductOffers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OfficeProductOffer>>> GetOfficeProductOffers()
+        public async Task<ActionResult<IEnumerable<OfficeProductOfferGet>>> GetOfficeProductOffers()
         {
-          if (_context.OfficeProductOffers == null)
+            var officeProductOffer = await  _context.OfficeProductOffers!.Select(u => new OfficeProductOfferGet
+            {
+                Id = u.Id,
+                OfferPrice = u.OfferPrice,
+                UserId = u.UserId,
+                OfficeCompanyId = u.OfficeCompanyId,
+                OfficeCompanyBranchId = u.OfficeCompanyBranchId,
+                OfficeProdBranchProductId = u.ProductId,
+                Status = u.Status
+
+            }).ToListAsync();
+
+
+          if (officeProductOffer == null)
           {
               return NotFound();
           }
-            return await _context.OfficeProductOffers.ToListAsync();
+            return officeProductOffer;
         }
 
         // GET: api/OfficeProductOffers/5

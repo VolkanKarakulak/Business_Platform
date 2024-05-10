@@ -39,7 +39,7 @@ namespace Business_Platform.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CompanyCategories");
+                    b.ToTable("CompanyCategories", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Food.FoodCategory", b =>
@@ -71,7 +71,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("FoodCategories");
+                    b.ToTable("FoodCategories", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Food.FoodCompany", b =>
@@ -121,7 +121,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("FoodCompanies");
+                    b.ToTable("FoodCompanies", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranch", b =>
@@ -177,7 +177,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("RestaurantBranches");
+                    b.ToTable("RestaurantBranches", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranchComment", b =>
@@ -201,7 +201,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("RestaurantBranchId");
 
-                    b.ToTable("RestaurantBranchComments");
+                    b.ToTable("RestaurantBranchComments", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranchFood", b =>
@@ -241,7 +241,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("RestaurantBranchFoods");
+                    b.ToTable("RestaurantBranchFoods", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranchUser", b =>
@@ -259,7 +259,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("RestaurantId");
 
-                    b.ToTable("RestaurantBranchUsers");
+                    b.ToTable("RestaurantBranchUsers", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Food.RestaurantFood", b =>
@@ -304,7 +304,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("RestaurantFoods");
+                    b.ToTable("RestaurantFoods", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Identity.AppRole", b =>
@@ -469,7 +469,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("RestaurantFoodId");
 
-                    b.ToTable("Likes");
+                    b.ToTable("Likes", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.MainCompany", b =>
@@ -514,7 +514,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("MainCompanies");
+                    b.ToTable("MainCompanies", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.BranchProductComment", b =>
@@ -538,7 +538,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("OfficeProdBranchProductId");
 
-                    b.ToTable("BranchProductComment");
+                    b.ToTable("BranchProductComment", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.ManageOffer", b =>
@@ -585,7 +585,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ManageOffers");
+                    b.ToTable("ManageOffers", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompany", b =>
@@ -635,7 +635,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("OfficeCompanies");
+                    b.ToTable("OfficeCompanies", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompanyBranch", b =>
@@ -691,7 +691,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("OfficeCompanyBranches");
+                    b.ToTable("OfficeCompanyBranches", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompBranchUser", b =>
@@ -706,7 +706,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("OfficeCompanyBranchId");
 
-                    b.ToTable("OfficeCompBranchUser");
+                    b.ToTable("OfficeCompBranchUser", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProdBranchProduct", b =>
@@ -736,7 +736,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("OfficeProductId");
 
-                    b.ToTable("OfficeProdBranchProducts");
+                    b.ToTable("OfficeProdBranchProducts", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProduct", b =>
@@ -797,7 +797,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("OfficeProducts");
+                    b.ToTable("OfficeProducts", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductComment", b =>
@@ -821,7 +821,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("OfficeProductId");
 
-                    b.ToTable("OfficeProductComment");
+                    b.ToTable("OfficeProductComment", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductOffer", b =>
@@ -868,7 +868,7 @@ namespace Business_Platform.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OfficeProductOffers");
+                    b.ToTable("OfficeProductOffers", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeProductType", b =>
@@ -889,7 +889,7 @@ namespace Business_Platform.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OfficeProductType");
+                    b.ToTable("OfficeProductType", (string)null);
                 });
 
             modelBuilder.Entity("Business_Platform.Model.State", b =>
@@ -904,7 +904,7 @@ namespace Business_Platform.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("States");
+                    b.ToTable("States", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
