@@ -79,14 +79,29 @@ namespace Business_Platform.Controller
         // PUT: api/OfficeCompanyBranches/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOfficeCompanyBranch(int id, OfficeCompanyBranch officeCompanyBranch)
+        public async Task<IActionResult> PutOfficeCompanyBranch(int id, OfficeCompanyBranchPut officeCompanyBranchPut)
         {
-            if (id != officeCompanyBranch.Id)
+            if (id != officeCompanyBranchPut.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(officeCompanyBranch).State = EntityState.Modified;
+            OfficeCompanyBranch? officeCompanyBranch = await _context.OfficeCompanyBranches!.FindAsync(id);
+
+            if (officeCompanyBranch == null)
+            {
+                return NotFound();
+            }
+
+            officeCompanyBranch.Name = officeCompanyBranchPut.Name;
+            officeCompanyBranch.Address = officeCompanyBranchPut.Address;
+            officeCompanyBranch.PhoneNumber = officeCompanyBranchPut.PhoneNumber;
+            officeCompanyBranch.PostalCode = officeCompanyBranchPut.PostalCode;
+            officeCompanyBranch.EMail = officeCompanyBranchPut.EMail;
+            officeCompanyBranch.City = officeCompanyBranchPut.City;
+            officeCompanyBranch.BranchCode = officeCompanyBranchPut.BranchCode;
+            officeCompanyBranch.StateId = officeCompanyBranchPut.StateId;
+            officeCompanyBranch.OfficeCompanyId = officeCompanyBranchPut.OfficeCompanyId;
 
             try
             {
