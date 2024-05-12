@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Office;
+using Business_Platform.DTOs.OfficeCompanyBranchDtos;
 
 namespace Business_Platform.Controller
 {
@@ -23,13 +24,28 @@ namespace Business_Platform.Controller
 
         // GET: api/OfficeCompanyBranches
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OfficeCompanyBranch>>> GetOfficeCompanyBranches()
+        public async Task<ActionResult<IEnumerable<OfficeCompanyBranchGet>>> GetOfficeCompanyBranches()
         {
-          if (_context.OfficeCompanyBranches == null)
-          {
-              return NotFound();
-          }
-            return await _context.OfficeCompanyBranches.ToListAsync();
+            var officeCompanyBranches = await _context.OfficeCompanyBranches!.Select(u => new OfficeCompanyBranchGet
+            {
+                Name = u.Name,
+                Address = u.Address,
+                RegisterDate = u.RegisterDate,
+                PostalCode = u.PostalCode,
+                PhoneNumber = u.PhoneNumber,
+                EMail = u.EMail,
+                City = u.City!,
+                BranchCode = u.BranchCode,
+                State = u.State!.Name,
+                OfficeCompanyName = u.OfficeCompany!.Name
+
+            }).ToListAsync();
+
+            if (officeCompanyBranches == null )
+            {
+                return NotFound();
+            }
+            return officeCompanyBranches;
         }
 
         // GET: api/OfficeCompanyBranches/5
