@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Office;
+using Business_Platform.DTOs.OfficeProdBranchProductDtos;
 
 namespace Business_Platform.Controller
 {
@@ -23,24 +24,18 @@ namespace Business_Platform.Controller
 
         // GET: api/OfficeProdBranchProducts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OfficeProdBranchProduct>>> GetOfficeProdBranchProducts()
+        public async Task<ActionResult<IEnumerable<OfficeProdBranchProductGet>>> GetOfficeProdBranchProducts()
         {
-          if (_context.OfficeProdBranchProducts == null)
+          var officeProdBranchProduct = await _context.OfficeProdBranchProducts!.Select(u => new OfficeProdBranchProductGet
           {
-              return NotFound();
-          }
-            return await _context.OfficeProdBranchProducts.ToListAsync();
-        }
+              Id = u.Id,
+              Name = u.Name,
+              Quantity = u.Quantity,
+              OfficeProductId = u.OfficeProductId,
+              OfficeCompanyBranchId = u.OfficeCompanyBranchId,
+              OfficeCompanyBranchName = u.OfficeCompanyBranch!.Name,
 
-        // GET: api/OfficeProdBranchProducts/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<OfficeProdBranchProduct>> GetOfficeProdBranchProduct(int id)
-        {
-          if (_context.OfficeProdBranchProducts == null)
-          {
-              return NotFound();
-          }
-            var officeProdBranchProduct = await _context.OfficeProdBranchProducts.FindAsync(id);
+          }).ToListAsync();
 
             if (officeProdBranchProduct == null)
             {
@@ -48,6 +43,32 @@ namespace Business_Platform.Controller
             }
 
             return officeProdBranchProduct;
+        }
+
+        // GET: api/OfficeProdBranchProducts/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<OfficeProdBranchProductGet>> GetOfficeProdBranchProduct(int id)
+        {
+          
+            var officeProdBranchProduct = await _context.OfficeProdBranchProducts!.Include(u => u.OfficeProduct)
+                .Include(u => u.OfficeCompanyBranch).FirstOrDefaultAsync(u => u.Id == id);
+
+            if (officeProdBranchProduct == null)
+            {
+                return NotFound();
+            }
+
+            var officeProdBranchProductGet = new OfficeProdBranchProductGet
+            {
+                Id = officeProdBranchProduct.Id,
+                Name = officeProdBranchProduct.Name,
+                Quantity = officeProdBranchProduct.Quantity,
+                OfficeProductId = officeProdBranchProduct.OfficeProductId,
+                OfficeCompanyBranchId = officeProdBranchProduct.OfficeCompanyBranchId,
+                OfficeCompanyBranchName = officeProdBranchProduct.OfficeCompanyBranch!.Name,
+            };
+
+            return officeProdBranchProductGet;
         }
 
         // PUT: api/OfficeProdBranchProducts/5
