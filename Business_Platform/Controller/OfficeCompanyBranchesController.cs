@@ -50,20 +50,30 @@ namespace Business_Platform.Controller
 
         // GET: api/OfficeCompanyBranches/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<OfficeCompanyBranch>> GetOfficeCompanyBranch(int id)
+        public async Task<ActionResult<OfficeCompanyBranchGet>> GetOfficeCompanyBranch(int id)
         {
-          if (_context.OfficeCompanyBranches == null)
-          {
-              return NotFound();
-          }
-            var officeCompanyBranch = await _context.OfficeCompanyBranches.FindAsync(id);
+          
+            var officeCompanyBranch = await _context.OfficeCompanyBranches!.Include(u => u.State).Include(u => u.OfficeCompany).FirstOrDefaultAsync(u => u.Id == id);
 
             if (officeCompanyBranch == null)
             {
                 return NotFound();
             }
 
-            return officeCompanyBranch;
+            var officeCompanyBranchGet = new OfficeCompanyBranchGet
+            {
+                Name = officeCompanyBranch.Name,
+                Address = officeCompanyBranch.Address,
+                RegisterDate = officeCompanyBranch.RegisterDate,
+                PostalCode = officeCompanyBranch.PostalCode,
+                PhoneNumber = officeCompanyBranch.PhoneNumber,
+                EMail = officeCompanyBranch.EMail,
+                City = officeCompanyBranch.City!,
+                BranchCode = officeCompanyBranch.BranchCode,
+                State = officeCompanyBranch.State!.Name,
+                OfficeCompanyName = officeCompanyBranch.OfficeCompany!.Name
+            };
+            return officeCompanyBranchGet;
         }
 
         // PUT: api/OfficeCompanyBranches/5
