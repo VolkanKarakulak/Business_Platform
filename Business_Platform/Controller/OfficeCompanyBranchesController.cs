@@ -28,6 +28,7 @@ namespace Business_Platform.Controller
         {
             var officeCompanyBranches = await _context.OfficeCompanyBranches!.Select(u => new OfficeCompanyBranchGet
             {
+                Id = u.Id,
                 Name = u.Name,
                 Address = u.Address,
                 RegisterDate = u.RegisterDate,
@@ -62,6 +63,7 @@ namespace Business_Platform.Controller
 
             var officeCompanyBranchGet = new OfficeCompanyBranchGet
             {
+                Id = officeCompanyBranch.Id,
                 Name = officeCompanyBranch.Name,
                 Address = officeCompanyBranch.Address,
                 RegisterDate = officeCompanyBranch.RegisterDate,
@@ -125,12 +127,23 @@ namespace Business_Platform.Controller
         // POST: api/OfficeCompanyBranches
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<OfficeCompanyBranch>> PostOfficeCompanyBranch(OfficeCompanyBranch officeCompanyBranch)
+        public async Task<ActionResult<OfficeCompanyBranch>> PostOfficeCompanyBranch(OfficeCompanyBranchPost officeCompanyBranchPost)
         {
           if (_context.OfficeCompanyBranches == null)
           {
               return Problem("Entity set 'Business_PlatformContext.OfficeCompanyBranches'  is null.");
           }
+            OfficeCompanyBranch officeCompanyBranch = new OfficeCompanyBranch
+            {
+                Name = officeCompanyBranchPost.Name,
+                Address = officeCompanyBranchPost.Address,
+                PhoneNumber = officeCompanyBranchPost.PhoneNumber,
+                EMail = officeCompanyBranchPost.EMail,
+                PostalCode = officeCompanyBranchPost.PostalCode,
+                OfficeCompanyId = officeCompanyBranchPost.OfficeCompanyId, // Dikkat: modellerde nullable yaptık. Yapmalı mıyız?
+                StateId = officeCompanyBranchPost.StateId // Dikkat: Modellerde nullable yapmadık. Yapmalı mıyız?
+            };
+
             _context.OfficeCompanyBranches.Add(officeCompanyBranch);
             await _context.SaveChangesAsync();
 
