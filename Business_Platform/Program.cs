@@ -40,7 +40,7 @@ namespace Business_Platform
 
             builder.Services.AddAuthorization(options =>
             {
-                options.AddPolicy("OfficeBranchAdminPolicy", policy =>
+                options.AddPolicy("OfficeBranchAdmin", policy =>
                 {
                     policy.RequireClaim("OfficeBranchId");
                     policy.RequireClaim("OfficeCompanyId");

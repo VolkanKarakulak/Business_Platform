@@ -88,7 +88,7 @@ namespace Business_Platform.Controller
         // PUT: api/OfficeCompanyBranches/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        //[Authorize(Policy = "OfficeBranchAdminPolicy")]
+        [Authorize(Roles = "OfficeBranchAdmin")]
         public async Task<IActionResult> PutOfficeCompanyBranch(int id, OfficeCompanyBranchPut officeCompanyBranchPut)
         {
             if (id != officeCompanyBranchPut.Id)
@@ -96,14 +96,14 @@ namespace Business_Platform.Controller
                 return BadRequest();
             }
 
-            //var hasBranchClaim = User.HasClaim("OfficeBranchId", id.ToString());
-            //var hasCompanyClaim = User.HasClaim("OfficeCompanyId", officeCompanyBranchPut.OfficeCompanyId.ToString());
-            //var hasCompanyCategory = User.HasClaim("CompanyCategoryId", officeCompanyBranchPut.CompanyCategoryId.ToString());
+            bool BranchClaim = User.HasClaim("OfficeBranchId", id.ToString());
+            bool CompanyClaim = User.HasClaim("OfficeCompanyId", officeCompanyBranchPut.OfficeCompanyId.ToString());
+            bool CompanyCategory = User.HasClaim("CompanyCategoryId", officeCompanyBranchPut.CompanyCategoryId.ToString());
 
-            //if (!hasBranchClaim || !hasCompanyClaim || !hasCompanyCategory)
-            //{
-            //    return Unauthorized("Unauthorized");
-            //}
+            if (BranchClaim || CompanyClaim || CompanyCategory)
+            {
+                return Unauthorized("Unauthorized");
+            }
 
             OfficeCompanyBranch? officeCompanyBranch = await _context.OfficeCompanyBranches!.FindAsync(id);
 
