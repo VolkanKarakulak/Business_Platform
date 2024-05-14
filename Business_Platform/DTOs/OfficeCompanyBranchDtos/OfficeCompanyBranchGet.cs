@@ -11,8 +11,11 @@
         public string PhoneNumber { get; set; } = "";
         public string EMail { get; set; } = "";
         public string? BranchCode { get; set; }
-        public string? State { get; set; } = "";
-        public string? OfficeCompanyName { get; set; } = "";
+        public string? State { get; set; }
+        public int? CompanyCategoryId { get; set; }
+        public string? CompanyCategoryName { get; set; }
+        public int? OfficeCompanyId { get; set; }
+        public string? OfficeCompanyName { get; set; }
 
     }
 }

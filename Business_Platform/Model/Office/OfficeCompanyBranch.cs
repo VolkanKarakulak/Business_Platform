@@ -11,6 +11,10 @@ namespace Business_Platform.Model.Office
 
         [ForeignKey("StateId")]
         public State? State { get; set; }
+        public int? CompanyCategoryId { get; set; }
+
+        [ForeignKey("CompanyCategoryId")]
+        public CompanyCategory? CompanyCategory { get; set; }
         public int? OfficeCompanyId { get; set; }
 
         [ForeignKey("OfficeCompanyId")]

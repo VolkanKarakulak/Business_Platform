@@ -8,6 +8,7 @@ namespace Business_Platform
 {
     public class Program
     {
+        
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -35,7 +36,19 @@ namespace Business_Platform
             builder.Services.AddAuthorization();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddAuthorization(options => options.AddPolicy("OfficeBranchAdmin", policy => policy.RequireClaim("OfficeCompanyBranchId")));
+            //builder.Services.AddAuthorization(options => options.AddPolicy("OfficeBranchAdmin", policy => policy.RequireClaim("OfficeCompanyBranchId")));
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("OfficeBranchAdminPolicy", policy =>
+                {
+                    policy.RequireClaim("OfficeBranchId");
+                    policy.RequireClaim("OfficeCompanyId");
+                    policy.RequireClaim("CompanyCategoryId");
+                });
+            });
+
+
             builder.Services.AddAuthorization(options => options.AddPolicy("OfficeCompanyAdmin", policy => policy.RequireClaim("OfficeCompanyId")));
 
             //builder.Services.AddAuthorization(options =>

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Office;
 using Business_Platform.DTOs.OfficeCompanyBranchDtos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Business_Platform.Controller
 {
@@ -38,6 +39,9 @@ namespace Business_Platform.Controller
                 City = u.City!,
                 BranchCode = u.BranchCode,
                 State = u.State!.Name,
+                OfficeCompanyId = u.OfficeCompanyId,
+                CompanyCategoryName = u.CompanyCategory!.Name,
+                CompanyCategoryId = u.CompanyCategory!.Id,
                 OfficeCompanyName = u.OfficeCompany!.Name
 
             }).ToListAsync();
@@ -54,7 +58,7 @@ namespace Business_Platform.Controller
         public async Task<ActionResult<OfficeCompanyBranchGet>> GetOfficeCompanyBranch(int id)
         {
           
-            var officeCompanyBranch = await _context.OfficeCompanyBranches!.Include(u => u.State).Include(u => u.OfficeCompany).FirstOrDefaultAsync(u => u.Id == id);
+            var officeCompanyBranch = await _context.OfficeCompanyBranches!.Include(u => u.State).Include(u => u.OfficeCompany).Include(u => u.CompanyCategory).FirstOrDefaultAsync(u => u.Id == id);
 
             if (officeCompanyBranch == null)
             {
@@ -73,7 +77,10 @@ namespace Business_Platform.Controller
                 City = officeCompanyBranch.City!,
                 BranchCode = officeCompanyBranch.BranchCode,
                 State = officeCompanyBranch.State!.Name,
-                OfficeCompanyName = officeCompanyBranch.OfficeCompany!.Name
+                CompanyCategoryId = officeCompanyBranch.CompanyCategoryId,
+                CompanyCategoryName = officeCompanyBranch.CompanyCategory?.Name,
+                OfficeCompanyId = officeCompanyBranch.OfficeCompanyId,
+                OfficeCompanyName = officeCompanyBranch.OfficeCompany?.Name
             };
             return officeCompanyBranchGet;
         }
@@ -81,12 +88,22 @@ namespace Business_Platform.Controller
         // PUT: api/OfficeCompanyBranches/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        //[Authorize(Policy = "OfficeBranchAdminPolicy")]
         public async Task<IActionResult> PutOfficeCompanyBranch(int id, OfficeCompanyBranchPut officeCompanyBranchPut)
         {
             if (id != officeCompanyBranchPut.Id)
             {
                 return BadRequest();
             }
+
+            //var hasBranchClaim = User.HasClaim("OfficeBranchId", id.ToString());
+            //var hasCompanyClaim = User.HasClaim("OfficeCompanyId", officeCompanyBranchPut.OfficeCompanyId.ToString());
+            //var hasCompanyCategory = User.HasClaim("CompanyCategoryId", officeCompanyBranchPut.CompanyCategoryId.ToString());
+
+            //if (!hasBranchClaim || !hasCompanyClaim || !hasCompanyCategory)
+            //{
+            //    return Unauthorized("Unauthorized");
+            //}
 
             OfficeCompanyBranch? officeCompanyBranch = await _context.OfficeCompanyBranches!.FindAsync(id);
 
@@ -103,6 +120,7 @@ namespace Business_Platform.Controller
             officeCompanyBranch.City = officeCompanyBranchPut.City;
             officeCompanyBranch.BranchCode = officeCompanyBranchPut.BranchCode;
             officeCompanyBranch.StateId = officeCompanyBranchPut.StateId;
+            officeCompanyBranch.CompanyCategoryId = officeCompanyBranchPut.CompanyCategoryId;
             officeCompanyBranch.OfficeCompanyId = officeCompanyBranchPut.OfficeCompanyId;
 
             try

@@ -11,6 +11,7 @@
         public string EMail { get; set; } = "";
         public string BranchCode { get; set; } = "";
         public byte StateId { get; set; }
+        public int CompanyCategoryId { get; set; }
         public int OfficeCompanyId { get; set; }
 
     }
