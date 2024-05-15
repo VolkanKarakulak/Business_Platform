@@ -42,9 +42,9 @@ namespace Business_Platform
             {
                 options.AddPolicy("OfficeBranchAdminPolicy", policy =>
                 {
-                    policy.RequireRole("OfficeBranchAdmin"); // Require the defined role
-                    policy.RequireClaim("CompanyId");
-                    policy.RequireClaim("BranchId");
+                    policy.RequireRole("OfficeBranchAdmin"); 
+                    policy.RequireClaim("OfficeCompanyId");
+                    policy.RequireClaim("OfficeBranchId");
                     policy.RequireClaim("CompanyCategoryId");
                 });
             });

@@ -98,10 +98,10 @@ namespace Business_Platform.Controller
                 return NotFound();
             }
 
-            if (!User.HasClaim("OfficeBranchId", id.ToString()) &&
-                !User.HasClaim("OfficeCompanyId", officeCompanyBranch.OfficeCompanyId.ToString()) &&
-                !User.HasClaim("CompanyCategoryId", officeCompanyBranch.CompanyCategoryId.ToString()) &&
-                !User.IsInRole("OfficeBranchAdmin"))
+            if (!User.IsInRole("OfficeBranchAdmin") &&
+                !User.HasClaim(c => c.Type == "OfficeBranchId" && c.Value == officeCompanyBranch.Id.ToString()) &&
+                !User.HasClaim(c => c.Type == "OfficeCompanyId" && c.Value == officeCompanyBranch.OfficeCompanyId.ToString()) &&
+                !User.HasClaim(c => c.Type == "CompanyCategoryId" && c.Value == officeCompanyBranch.CompanyCategoryId.ToString()))
             {
                 return Unauthorized("Yetkisiz");
             }
