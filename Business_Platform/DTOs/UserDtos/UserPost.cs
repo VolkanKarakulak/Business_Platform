@@ -9,6 +9,7 @@
         public string PhoneNumber { get; set; } = "";
         public DateTime RegisterDate { get; set; }
         public byte StateId { get; set; }
+        public int? CompanyCategoryId { get; set; }
         public int? OfficeCompanyId { get; set; }
         public int? OfficeCompanyBranchId { get; set; }
         public int? MainCompanyId { get; set; }

@@ -40,10 +40,11 @@ namespace Business_Platform
 
             builder.Services.AddAuthorization(options =>
             {
-                options.AddPolicy("OfficeBranchAdmin", policy =>
+                options.AddPolicy("OfficeBranchAdminPolicy", policy =>
                 {
-                    policy.RequireClaim("OfficeBranchId");
-                    policy.RequireClaim("OfficeCompanyId");
+                    policy.RequireRole("OfficeBranchAdmin"); // Require the defined role
+                    policy.RequireClaim("CompanyId");
+                    policy.RequireClaim("BranchId");
                     policy.RequireClaim("CompanyCategoryId");
                 });
             });

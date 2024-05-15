@@ -137,10 +137,12 @@ namespace Business_Platform.Controller
             {
                 Name = userPost.Name,
                 UserName = userPost.UserName,
+                PassWord = userPost.PassWord,
                 Email = userPost.Email,
                 PhoneNumber = userPost.PhoneNumber,
                 RegisterDate = userPost.RegisterDate,
                 StateId = userPost.StateId,
+                CompanyCategoryId = userPost.CompanyCategoryId,
                 OfficeCompanyId = userPost.OfficeCompanyId,
                 OfficeCompanyBranchId = userPost.OfficeCompanyBranchId,
                 MainCompanyId = userPost.MainCompanyId,

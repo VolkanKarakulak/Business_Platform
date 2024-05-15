@@ -191,6 +191,7 @@ namespace Business_Platform.Data
                              appUser.OfficeCompanyBranchId = officeCompanyBranch.Id;
                              appUser.OfficeCompanyId = officeCompany!.Id;
                              appUser.MainCompanyId = mainCompany!.Id;
+                             appUser.CompanyCategoryId = companyCategory!.Id;
                              appUser.Name = "OfficeBranchAdmin";
                              appUser.Email = "abce@def.com";
                              appUser.PhoneNumber = "1112223346";
