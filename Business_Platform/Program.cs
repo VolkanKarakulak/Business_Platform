@@ -17,10 +17,7 @@ namespace Business_Platform
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-
-            builder.Services.AddDbContext<Business_PlatformContext>(options =>
-               options.UseSqlServer(builder.Configuration.GetConnectionString("WatchMeContext") ?? throw new InvalidOperationException("Connection string 'WatchMeContext' not found.")));
+            builder.Services.AddControllers();  
 
             builder.Services.AddIdentity<AppUser, AppRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<Business_PlatformContext>();
@@ -38,9 +35,7 @@ namespace Business_Platform
 
             //builder.Services.AddAuthorization(options => options.AddPolicy("OfficeBranchAdmin", policy => policy.RequireClaim("OfficeCompanyBranchId")));
 
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("OfficeBranchAdminPolicy", policy =>
+            builder.Services.AddAuthorization(options =>{options.AddPolicy("OfficeBranchAdminPolicy", policy =>
                 {
                     policy.RequireRole("OfficeBranchAdmin"); 
                     policy.RequireClaim("OfficeCompanyId");
