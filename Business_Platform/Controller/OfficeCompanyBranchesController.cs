@@ -58,7 +58,9 @@ namespace Business_Platform.Controller
         public async Task<ActionResult<OfficeCompanyBranchGet>> GetOfficeCompanyBranch(int id)
         {
           
-            var officeCompanyBranch = await _context.OfficeCompanyBranches!.Include(u => u.State).Include(u => u.OfficeCompany).Include(u => u.CompanyCategory).FirstOrDefaultAsync(u => u.Id == id);
+            var officeCompanyBranch = await _context.OfficeCompanyBranches!
+                .Include(u => u.State).Include(u => u.OfficeCompany)
+                .Include(u => u.CompanyCategory).FirstOrDefaultAsync(u => u.Id == id);
 
             if (officeCompanyBranch == null)
             {
@@ -88,7 +90,7 @@ namespace Business_Platform.Controller
         // PUT: api/OfficeCompanyBranches/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Policy = "OfficeBranchAdminPolicy")]
+        //[Authorize(Policy = "OfficeBranchAdminPolicy")]
         public async Task<IActionResult> PutOfficeCompanyBranch(int id, OfficeCompanyBranchPut officeCompanyBranchPut)
         {
             OfficeCompanyBranch? officeCompanyBranch = await _context.OfficeCompanyBranches!.Where(u => u.Id == id).FirstOrDefaultAsync();
@@ -98,13 +100,13 @@ namespace Business_Platform.Controller
                 return NotFound();
             }
 
-            if (!User.IsInRole("OfficeBranchAdmin") &&
-                !User.HasClaim(c => c.Type == "OfficeBranchId" && c.Value == officeCompanyBranch.Id.ToString()) &&
-                !User.HasClaim(c => c.Type == "OfficeCompanyId" && c.Value == officeCompanyBranch.OfficeCompanyId.ToString()) &&
-                !User.HasClaim(c => c.Type == "CompanyCategoryId" && c.Value == officeCompanyBranch.CompanyCategoryId.ToString()))
-            {
-                return Unauthorized("Yetkisiz");
-            }
+            //if ( //!User.HasClaim(c => c.Type == "CompanyCategoryId" && c.Value == officeCompanyBranch.CompanyCategoryId.ToString()) && 
+            //     //!User.HasClaim(c => c.Type == "OfficeCompanyId" && c.Value == officeCompanyBranch.OfficeCompanyId.ToString()) &&
+            //     !User.HasClaim(c => c.Type == "OfficeBranchId" && c.Value == id.ToString()) &&
+            //     !User.IsInRole("OfficeBranchAdmin"))
+            //{
+            //   return Unauthorized("Yetkisiz");
+            //}
 
             officeCompanyBranch.Name = officeCompanyBranchPut.Name;
             officeCompanyBranch.Address = officeCompanyBranchPut.Address;

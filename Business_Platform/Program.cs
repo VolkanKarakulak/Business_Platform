@@ -8,19 +8,18 @@ namespace Business_Platform
 {
     public class Program
     {
-        
         public static void Main(string[] args)
         {
-            var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<Business_PlatformContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("Business_PlatformContext") ?? throw new InvalidOperationException("Connection string 'Business_PlatformContext' not found.")));
+            var builder = WebApplication.CreateBuilder(args); 
 
-            // Add services to the container.
+            builder.Services.AddDbContext<Business_PlatformContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Business_PlatformContext") 
+                ?? throw new InvalidOperationException("Connection string 'Business_PlatformContext' not found.")));
 
             builder.Services.AddControllers();  
 
-            builder.Services.AddIdentity<AppUser, AppRole>().AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<Business_PlatformContext>();
+            builder.Services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<Business_PlatformContext>().AddDefaultTokenProviders();
 
              builder.Services.AddControllers().AddNewtonsoftJson(opt =>
             {
@@ -35,15 +34,14 @@ namespace Business_Platform
 
             //builder.Services.AddAuthorization(options => options.AddPolicy("OfficeBranchAdmin", policy => policy.RequireClaim("OfficeCompanyBranchId")));
 
-            builder.Services.AddAuthorization(options =>{options.AddPolicy("OfficeBranchAdminPolicy", policy =>
+            builder.Services.AddAuthorization(options => { options.AddPolicy("OfficeBranchAdminPolicy", policy =>
                 {
-                    policy.RequireRole("OfficeBranchAdmin"); 
-                    policy.RequireClaim("OfficeCompanyId");
+                    //policy.RequireClaim("CompanyCategoryId");
+                    //policy.RequireClaim("OfficeCompanyId");
                     policy.RequireClaim("OfficeBranchId");
-                    policy.RequireClaim("CompanyCategoryId");
+                    policy.RequireRole("OfficeBranchAdmin");
                 });
             });
-
 
             builder.Services.AddAuthorization(options => options.AddPolicy("OfficeCompanyAdmin", policy => policy.RequireClaim("OfficeCompanyId")));
 
@@ -66,6 +64,7 @@ namespace Business_Platform
             builder.Services.AddAuthorization(options => options.AddPolicy("RestBranchAdmin", policy => policy.RequireClaim("RestaurantBranchId")));
 
             builder.Services.AddScoped<RoleManager<AppRole>>();
+            builder.Services.AddScoped<UserManager<AppUser>>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
