@@ -38,20 +38,26 @@ namespace Business_Platform.Controller
 
         // GET: api/Likes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Like>> GetLike(int id)
+        public async Task<ActionResult<List<LikeGetDto>>> GetUserLikes(int id)
         {
-          if (_context.Likes == null)
-          {
-              return NotFound();
-          }
-            var like = await _context.Likes.FindAsync(id);
+         
+            var userLikes = await _context.Likes!.Where(like => like.AppUserId == id).ToListAsync();
 
-            if (like == null)
+            if (userLikes == null || userLikes.Count == 0)
             {
                 return NotFound();
             }
+      
+            var likeDtos = userLikes.Select(like => new LikeGetDto
+            {             
+                OfficeCompanyName = like.OfficeCompany!.Name,
+                OfficeProductName = like.OfficeProdBranchProduct!.Name,
+                FoodCompanyName = like.FoodCompany!.Name,
+                FoodProductName = like.RestaurantBranchFood!.Name
 
-            return like;
+            }).ToList();
+
+            return likeDtos;
         }
 
         // POST: api/Likes
@@ -92,13 +98,13 @@ namespace Business_Platform.Controller
             }
             else if (likePostDto.ProductType == "Food")
             {
-                var product = await _context.RestaurantFoods!.FindAsync(likePostDto.ProductId);
+                var product = await _context.RestaurantBranchFoods!.FindAsync(likePostDto.ProductId);
                 if (product == null)
                 {
                     return NotFound();
                 }
 
-                like.RestaurantFoodId = product.Id;
+                like.RestaurantBranchFoodId = product.Id;
                 like.FoodCompanyId = product.FoodCompanyId;
             }
             else

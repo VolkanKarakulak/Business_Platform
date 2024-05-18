@@ -22,7 +22,7 @@ namespace Business_Platform.Model
         public int? OfficeProdBranchProductId { get; set; }
 
         [ForeignKey("OfficeProdBranchProductId")]
-        public OfficeProdBranchProduct? ProductProduct { get; set; }
+        public OfficeProdBranchProduct? OfficeProdBranchProduct { get; set; }
         public int? OfficeCompanyId { get; set; }
 
         [ForeignKey("OfficeCompanyId")]
@@ -32,9 +32,13 @@ namespace Business_Platform.Model
         [ForeignKey("FoodCompanyId")]
         public FoodCompany? FoodCompany { get; set; }
 
-        public int? RestaurantFoodId { get; set; }
+        //public int? RestaurantFoodId { get; set; }
 
-        [ForeignKey("RestaurantFoodId")]
-        public RestaurantFood? RestaurantFood { get; set; }
+        //[ForeignKey("RestaurantFoodId")]
+        //public RestaurantFood? RestaurantFood { get; set; }
+
+        public int RestaurantBranchFoodId {  get; set; }
+
+        public RestaurantBranchFood? RestaurantBranchFood { get; set; }
     }
 }

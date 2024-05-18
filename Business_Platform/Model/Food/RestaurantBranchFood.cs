@@ -20,6 +20,11 @@ namespace Business_Platform.Model.Food
         [ForeignKey("FoodCategoryId")]
         public FoodCategory? FoodCategory { get; set; }
 
+        public int FoodCompanyId {  get; set; }
+
+        [ForeignKey("FoodCompanyId")]
+        public FoodCompany? FoodCompany { get; set; }
+
 
     }
 }
