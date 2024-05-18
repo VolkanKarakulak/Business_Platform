@@ -9,6 +9,7 @@ using Business_Platform.Data;
 using Business_Platform.Model.Identity;
 using Microsoft.AspNetCore.Identity;
 using Business_Platform.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Business_Platform.Controller
 {
@@ -27,6 +28,7 @@ namespace Business_Platform.Controller
 
         [HttpPost]
         [Route("RoleAssignWithRoleId")]
+        [Authorize(Roles = "MainCompanyAdmin")]
         public async Task<IActionResult> AssignRoleToUserWithName(AssignRole model)
         {
             // Kullanıcıyı bul
@@ -57,6 +59,7 @@ namespace Business_Platform.Controller
 
         [HttpPost]
         [Route("RoleAssignWithRoleName")]
+        [Authorize(Roles = "MainCompanyAdmin")]
         public async Task<IActionResult> AssignRoleToUserWithId(AssignRole model)
         {
             // Kullanıcıyı bul

@@ -70,6 +70,7 @@ namespace Business_Platform.Controller
         // PUT: api/FoodCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "MainCompanyAdmin, FoodCompanyAdmin")]
         public async Task<IActionResult> PutFoodCategory(int id, FoodCategoryPut foodCategoryPut)
         {
             if (id != foodCategoryPut.Id)
@@ -111,6 +112,7 @@ namespace Business_Platform.Controller
         // POST: api/FoodCategories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "MainCompanyAdmin, FoodCompanyAdmin")]
         public async Task<ActionResult<FoodCategory>> PostFoodCategory(FoodCategoryPost foodCategoryPost)
         {
           if (_context.FoodCategories == null)
@@ -134,6 +136,7 @@ namespace Business_Platform.Controller
 
         // DELETE: api/FoodCategories/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "MainCompanyAdmin, FoodCompanyAdmin")]
         public async Task<IActionResult> DeleteFoodCategory(int id)
         {
             if (_context.FoodCategories == null)

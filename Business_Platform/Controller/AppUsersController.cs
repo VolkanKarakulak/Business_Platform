@@ -40,7 +40,7 @@ namespace Business_Platform.Controller
         }
         // GET: api/AppUsers
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "MainCompanyAdmin")]
         public ActionResult<List<UserGet>> GetUsers()
         {
             var users = _signInManager.UserManager.Users.Select(user => new UserGet
@@ -62,7 +62,7 @@ namespace Business_Platform.Controller
 
         // GET: api/AppUsers/5
         [HttpGet("{id}")]
-        //[Authorize]
+        [Authorize(Roles = "MainCompanyAdmin")]
         public ActionResult<UserGet> GetAppUser(long id)
         {
             var user = _signInManager.UserManager.Users
@@ -98,7 +98,7 @@ namespace Business_Platform.Controller
         // PUT: api/AppUsers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        //[Authorize]
+        [Authorize(Roles = "MainCompanyAdmin")]
         public ActionResult PutAppUser(int id, [FromBody] UserPut model)
         {
             var user = _signInManager.UserManager.Users.FirstOrDefault(u => u.Id == id);
@@ -126,6 +126,7 @@ namespace Business_Platform.Controller
         // POST: api/AppUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "MainCompanyAdmin")]
         public ActionResult<string> PostAppUser(UserPost userPost)
         {
 
@@ -160,7 +161,7 @@ namespace Business_Platform.Controller
         }
 
         [HttpPost("ChangePassword")]
-        //[Authorize]
+        [Authorize]
         public ActionResult<string> ChangePassword(ChangePasswordModel changePasswordModel)
         {
             AppUser? appUser = _signInManager.UserManager.FindByNameAsync(changePasswordModel.UserName).Result;
@@ -178,7 +179,7 @@ namespace Business_Platform.Controller
 
         // DELETE: api/AppUsers/5
         [HttpDelete("{id}")]
-        //[Authorize]
+        [Authorize(Roles = "MainCompanyAdmin")]
         public ActionResult<string> DeleteAppUser(long id)
         {
             AppUser? user = null;
@@ -244,7 +245,7 @@ namespace Business_Platform.Controller
         }
 
         [HttpPost("Logout")]
-        //[Authorize]
+        [Authorize]
         public ActionResult LogOut()
         {
             _signInManager.SignOutAsync().Wait();
