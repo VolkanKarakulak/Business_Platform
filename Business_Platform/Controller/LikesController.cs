@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model;
-using Business_Platform.DTOs;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Business_Platform.DTOs.LikeDtos;
+using Microsoft.CodeAnalysis;
 
 namespace Business_Platform.Controller
 {
@@ -55,37 +56,55 @@ namespace Business_Platform.Controller
 
         // POST: api/Likes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
         [Authorize]
+        [HttpPost]
         public async Task<ActionResult<Like>> PostLike(LikePostDto likePostDto)
         {
-          if (_context.Likes == null)
-          {
-              return Problem("Entity set 'Business_PlatformContext.Likes'  is null.");
-          }
+            if (_context.Likes == null)
+            {
+                return Problem("Entity set 'Business_PlatformContext.Likes' is null.");
+            }
 
-            var userIdstring = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (userIdstring == null)
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userIdString == null)
             {
                 return Unauthorized();
             }
 
-            if (!long.TryParse(userIdstring, out var userId))
+            if (!long.TryParse(userIdString, out var userId))
             {
-                return Problem("Kullanıcı kimliği geçersiz.");
+                return Problem();
             }
 
-            Like like = new Like
+            Like like = new Like { AppUserId = userId };
+
+            if (likePostDto.ProductType == "Office")
             {
-                
-                OfficeCompanyId = likePostDto.OfficeCompanyId,
-                OfficeProductId = likePostDto.OfficeProductId,
-                OfficeProdBranchProduct = likePostDto.OfficeProdBranchProduct,
-                FoodCompanyId = likePostDto.FoodCompanyId,
-                RestaurantFoodId = likePostDto.RestaurantFoodId,
-                AppUserId = userId
-            };
+                var product = await _context.OfficeProdBranchProducts!.FindAsync(likePostDto.ProductId);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                like.OfficeProductId = product.Id;
+                like.OfficeCompanyId = product.OfficeCompanyId;
+                like.OfficeProdBranchProductId = product.Id;
+            }
+            else if (likePostDto.ProductType == "Food")
+            {
+                var product = await _context.RestaurantFoods!.FindAsync(likePostDto.ProductId);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                like.RestaurantFoodId = product.Id;
+                like.FoodCompanyId = product.FoodCompanyId;
+            }
+            else
+            {
+                return BadRequest();
+            }
 
             _context.Likes.Add(like);
             await _context.SaveChangesAsync();

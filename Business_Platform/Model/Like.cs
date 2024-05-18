@@ -19,9 +19,9 @@ namespace Business_Platform.Model
         [ForeignKey("ProductId")]
         public OfficeProduct? Product { get; set; }
 
-        public int? OfficeProdBranchProduct { get; set; }
+        public int? OfficeProdBranchProductId { get; set; }
 
-        [ForeignKey("OfficeProdBranchProduct")]
+        [ForeignKey("OfficeProdBranchProductId")]
         public OfficeProdBranchProduct? ProductProduct { get; set; }
         public int? OfficeCompanyId { get; set; }
 

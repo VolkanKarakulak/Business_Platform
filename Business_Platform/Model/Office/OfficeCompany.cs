@@ -23,5 +23,6 @@ namespace Business_Platform.Model.Office
 
         public List<OfficeCompanyBranch>? Branches { get; set; }
         public List<AppUser>? AppUsers { get; set; }
+        public List<OfficeProdBranchProduct>? ProductsBranchProducts { get; set;}
     }
 }
