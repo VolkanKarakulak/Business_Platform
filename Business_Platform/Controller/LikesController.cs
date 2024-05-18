@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Business_Platform.DTOs.LikeDtos;
 using Microsoft.CodeAnalysis;
+using System.Security.Policy;
 
 namespace Business_Platform.Controller
 {
@@ -26,15 +27,15 @@ namespace Business_Platform.Controller
         }
 
         // GET: api/Likes
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Like>>> GetLikes()
-        {
-          if (_context.Likes == null)
-          {
-              return NotFound();
-          }
-            return await _context.Likes.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Like>>> GetLikes()
+        //{
+        //  if (_context.Likes == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    return await _context.Likes.ToListAsync();
+        //}
 
         // GET: api/Likes/5
         [HttpGet("{id}")]
@@ -115,11 +116,12 @@ namespace Business_Platform.Controller
             _context.Likes.Add(like);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLike", new { id = like.Id }, like);
+            return Ok("The product has been added to the favorites list");
         }
 
         // DELETE: api/Likes/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteLike(int id)
         {
             if (_context.Likes == null)
@@ -132,15 +134,22 @@ namespace Business_Platform.Controller
                 return NotFound();
             }
 
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userIdString == null || !long.TryParse(userIdString, out var userId))
+            {
+                return Unauthorized();
+            }
+            
+            if (like.AppUserId != userId)
+            {
+                return Forbid();
+            }      
+
             _context.Likes.Remove(like);
             await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
-
-        private bool LikeExists(int id)
-        {
-            return (_context.Likes?.Any(e => e.Id == id)).GetValueOrDefault();
+            return Ok("The product has been removed from the favorites list");
         }
     }
 }
