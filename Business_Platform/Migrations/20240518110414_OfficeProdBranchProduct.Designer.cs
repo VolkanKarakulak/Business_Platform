@@ -4,6 +4,7 @@ using Business_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    partial class Business_PlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20240518110414_OfficeProdBranchProduct")]
+    partial class OfficeProdBranchProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -457,12 +459,6 @@ namespace Business_Platform.Migrations
                     b.Property<long>("AppUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("FoodCompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OfficeCompanyId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("OfficeProdBranchProduct")
                         .HasColumnType("int");
 
@@ -478,10 +474,6 @@ namespace Business_Platform.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("FoodCompanyId");
-
-                    b.HasIndex("OfficeCompanyId");
 
                     b.HasIndex("OfficeProdBranchProduct");
 
@@ -1224,16 +1216,6 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Business_Platform.Model.Food.FoodCompany", "FoodCompany")
-                        .WithMany()
-                        .HasForeignKey("FoodCompanyId");
-
-                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", "OfficeCompany")
-                        .WithMany()
-                        .HasForeignKey("OfficeCompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Business_Platform.Model.Office.OfficeProdBranchProduct", "ProductProduct")
                         .WithMany()
                         .HasForeignKey("OfficeProdBranchProduct");
@@ -1247,10 +1229,6 @@ namespace Business_Platform.Migrations
                         .HasForeignKey("RestaurantFoodId");
 
                     b.Navigation("AppUser");
-
-                    b.Navigation("FoodCompany");
-
-                    b.Navigation("OfficeCompany");
 
                     b.Navigation("Product");
 

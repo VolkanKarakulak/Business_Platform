@@ -14,12 +14,25 @@ namespace Business_Platform.Model
         [ForeignKey("AppUserId")]
         public AppUser? AppUser { get; set; }
 
-        public int OfficeProductId { get; set; }
+        public int? OfficeProductId { get; set; }
 
         [ForeignKey("ProductId")]
-        public virtual OfficeProduct? Product { get; set; }
+        public OfficeProduct? Product { get; set; }
 
-        public int RestaurantFoodId { get; set; }
+        public int? OfficeProdBranchProduct { get; set; }
+
+        [ForeignKey("OfficeProdBranchProduct")]
+        public OfficeProdBranchProduct? ProductProduct { get; set; }
+        public int? OfficeCompanyId { get; set; }
+
+        [ForeignKey("OfficeCompanyId")]
+        public OfficeCompany? OfficeCompany { get; set; }
+        public int? FoodCompanyId { get; set; }
+
+        [ForeignKey("FoodCompanyId")]
+        public FoodCompany? FoodCompany { get; set; }
+
+        public int? RestaurantFoodId { get; set; }
 
         [ForeignKey("RestaurantFoodId")]
         public RestaurantFood? RestaurantFood { get; set; }

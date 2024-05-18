@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model;
+using Business_Platform.DTOs;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Business_Platform.Controller
 {
@@ -50,46 +53,40 @@ namespace Business_Platform.Controller
             return like;
         }
 
-        // PUT: api/Likes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLike(int id, Like like)
-        {
-            if (id != like.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(like).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LikeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: api/Likes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Like>> PostLike(Like like)
+        [Authorize]
+        public async Task<ActionResult<Like>> PostLike(LikePostDto likePostDto)
         {
           if (_context.Likes == null)
           {
               return Problem("Entity set 'Business_PlatformContext.Likes'  is null.");
           }
+
+            var userIdstring = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userIdstring == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!long.TryParse(userIdstring, out var userId))
+            {
+                return Problem("Kullanıcı kimliği geçersiz.");
+            }
+
+            Like like = new Like
+            {
+                
+                OfficeCompanyId = likePostDto.OfficeCompanyId,
+                OfficeProductId = likePostDto.OfficeProductId,
+                OfficeProdBranchProduct = likePostDto.OfficeProdBranchProduct,
+                FoodCompanyId = likePostDto.FoodCompanyId,
+                RestaurantFoodId = likePostDto.RestaurantFoodId,
+                AppUserId = userId
+            };
+
             _context.Likes.Add(like);
             await _context.SaveChangesAsync();
 
