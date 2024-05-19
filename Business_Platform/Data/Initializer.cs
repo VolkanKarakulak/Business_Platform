@@ -126,7 +126,7 @@ namespace Business_Platform.Data
                         restaurantBranch = new RestaurantBranch();
                         restaurantBranch.Address = "adres";
                         restaurantBranch.EMail = "abc@def.com";
-                        restaurantBranch.Name = "OfficeCompany";
+                        restaurantBranch.Name = "RestaurantBranch1";
                         restaurantBranch.PostalCode = "12345";
                         restaurantBranch.RegisterDate = DateTime.Today;
                         restaurantBranch.StateId = 1;
