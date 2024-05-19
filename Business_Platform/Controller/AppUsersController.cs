@@ -40,7 +40,7 @@ namespace Business_Platform.Controller
         }
         // GET: api/AppUsers
         [HttpGet]
-        [Authorize(Roles = "MainCompanyAdmin")]
+        //[Authorize(Roles = "MainCompanyAdmin")]
         public ActionResult<List<UserGet>> GetUsers()
         {
             var users = _signInManager.UserManager.Users.Select(user => new UserGet
