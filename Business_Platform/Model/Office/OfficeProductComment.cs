@@ -1,9 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Business_Platform.Model.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Business_Platform.Model.Office
 {
     public class OfficeProductComment
     {
+
+        public long UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public AppUser? AppUser { get; set; }
         public int Id { get; set; }
 
         [Column(TypeName = "nvarchar(200)")]

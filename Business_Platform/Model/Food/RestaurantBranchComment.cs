@@ -1,10 +1,15 @@
-﻿using Business_Platform.Model.Office;
+﻿using Business_Platform.Model.Identity;
+using Business_Platform.Model.Office;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Business_Platform.Model.Food
 {
     public class RestaurantBranchComment
     {
+        public long UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public AppUser? AppUser { get; set; }
         public int Id { get; set; }
 
         [Column(TypeName = "nvarchar(200)")]
