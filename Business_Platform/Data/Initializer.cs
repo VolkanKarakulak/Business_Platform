@@ -92,7 +92,7 @@ namespace Business_Platform.Data
                         officeCompanyBranch = new OfficeCompanyBranch();
                         officeCompanyBranch.Address = "adres";
                         officeCompanyBranch.EMail = "abc@def.com";
-                        officeCompanyBranch.Name = "OfficeCompany";
+                        officeCompanyBranch.Name = "OfficeCompanyBranch1";
                         officeCompanyBranch.PostalCode = "12345";
                         officeCompanyBranch.RegisterDate = DateTime.Today;
                         officeCompanyBranch.StateId = 1;

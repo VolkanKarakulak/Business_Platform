@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Food;
+using Business_Platform.DTOs.RestaurantBranchDtos;
 
 namespace Business_Platform.Controller
 {
@@ -84,12 +85,27 @@ namespace Business_Platform.Controller
         // POST: api/RestaurantBranches
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<RestaurantBranch>> PostRestaurantBranch(RestaurantBranch restaurantBranch)
+        public async Task<ActionResult<RestaurantBranch>> PostRestaurantBranch(RestaurantBranchPost restaurantBranchpost)
         {
           if (_context.RestaurantBranches == null)
           {
               return Problem("Entity set 'Business_PlatformContext.RestaurantBranches'  is null.");
           }
+
+            RestaurantBranch restaurantBranch = new RestaurantBranch
+            {
+                Name = restaurantBranchpost.Name,
+                Address = restaurantBranchpost.Address,
+                RegisterDate = restaurantBranchpost.RegisterDate,
+                PostalCode = restaurantBranchpost.PostalCode,
+                PhoneNumber = restaurantBranchpost.PhoneNumber,
+                EMail = restaurantBranchpost.EMail,
+                City = restaurantBranchpost.City,
+                BranchCode = restaurantBranchpost.BranchCode,
+                StateId = restaurantBranchpost.StateId,
+                FoodCompanyId = restaurantBranchpost.FoodCompanyId,
+            };
+
             _context.RestaurantBranches.Add(restaurantBranch);
             await _context.SaveChangesAsync();
 
