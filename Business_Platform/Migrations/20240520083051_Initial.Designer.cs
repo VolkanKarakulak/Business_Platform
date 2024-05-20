@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    [Migration("20240514120926_companycategoryaddappuser")]
-    partial class companycategoryaddappuser
+    [Migration("20240520083051_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -199,9 +199,14 @@ namespace Business_Platform.Migrations
                     b.Property<int>("RestaurantBranchId")
                         .HasColumnType("int");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RestaurantBranchId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("RestaurantBranchComments");
                 });
@@ -215,6 +220,9 @@ namespace Business_Platform.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("FoodCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FoodCompanyId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageFileName")
@@ -238,6 +246,8 @@ namespace Business_Platform.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FoodCategoryId");
+
+                    b.HasIndex("FoodCompanyId");
 
                     b.HasIndex("RestaurantBranchId");
 
@@ -275,7 +285,7 @@ namespace Business_Platform.Migrations
                     b.Property<int>("FoodCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FoodCompanyId")
+                    b.Property<int>("FoodCompanyId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageFileName")
@@ -459,22 +469,37 @@ namespace Business_Platform.Migrations
                     b.Property<long>("AppUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("OfficeProductId")
+                    b.Property<int?>("FoodCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OfficeCompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OfficeProdBranchProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OfficeProductId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RestaurantFoodId")
+                    b.Property<int>("RestaurantBranchFoodId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
+                    b.HasIndex("FoodCompanyId");
+
+                    b.HasIndex("OfficeCompanyId");
+
+                    b.HasIndex("OfficeProdBranchProductId");
+
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("RestaurantFoodId");
+                    b.HasIndex("RestaurantBranchFoodId");
 
                     b.ToTable("Likes");
                 });
@@ -736,6 +761,9 @@ namespace Business_Platform.Migrations
                     b.Property<int>("OfficeCompanyBranchId")
                         .HasColumnType("int");
 
+                    b.Property<int>("OfficeCompanyId")
+                        .HasColumnType("int");
+
                     b.Property<int>("OfficeProductId")
                         .HasColumnType("int");
 
@@ -745,6 +773,8 @@ namespace Business_Platform.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OfficeCompanyBranchId");
+
+                    b.HasIndex("OfficeCompanyId");
 
                     b.HasIndex("OfficeProductId");
 
@@ -829,9 +859,14 @@ namespace Business_Platform.Migrations
                     b.Property<int>("OfficeProductId")
                         .HasColumnType("int");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OfficeProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("OfficeProductComment");
                 });
@@ -1081,6 +1116,14 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
                     b.Navigation("RestaurantBranch");
                 });
 
@@ -1089,6 +1132,12 @@ namespace Business_Platform.Migrations
                     b.HasOne("Business_Platform.Model.Food.FoodCategory", "FoodCategory")
                         .WithMany()
                         .HasForeignKey("FoodCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Food.FoodCompany", "FoodCompany")
+                        .WithMany()
+                        .HasForeignKey("FoodCompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1105,6 +1154,8 @@ namespace Business_Platform.Migrations
                         .IsRequired();
 
                     b.Navigation("FoodCategory");
+
+                    b.Navigation("FoodCompany");
 
                     b.Navigation("RestaurantBranch");
 
@@ -1137,9 +1188,11 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Business_Platform.Model.Food.FoodCompany", null)
+                    b.HasOne("Business_Platform.Model.Food.FoodCompany", "FoodCompany")
                         .WithMany("RestaurantFoods")
-                        .HasForeignKey("FoodCompanyId");
+                        .HasForeignKey("FoodCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Business_Platform.Model.Food.RestaurantBranch", null)
                         .WithMany("RestaurantFoods")
@@ -1152,6 +1205,8 @@ namespace Business_Platform.Migrations
                         .IsRequired();
 
                     b.Navigation("FoodCategory");
+
+                    b.Navigation("FoodCompany");
 
                     b.Navigation("State");
                 });
@@ -1179,7 +1234,7 @@ namespace Business_Platform.Migrations
                         .HasForeignKey("OfficeCompanyId");
 
                     b.HasOne("Business_Platform.Model.Food.RestaurantBranch", "RestaurantBranch")
-                        .WithMany()
+                        .WithMany("AppUsers")
                         .HasForeignKey("RestaurantBranchId");
 
                     b.HasOne("Business_Platform.Model.State", "State")
@@ -1211,21 +1266,39 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Business_Platform.Model.Food.FoodCompany", "FoodCompany")
+                        .WithMany()
+                        .HasForeignKey("FoodCompanyId");
+
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", "OfficeCompany")
+                        .WithMany()
+                        .HasForeignKey("OfficeCompanyId");
+
+                    b.HasOne("Business_Platform.Model.Office.OfficeProdBranchProduct", "OfficeProdBranchProduct")
+                        .WithMany()
+                        .HasForeignKey("OfficeProdBranchProductId");
+
                     b.HasOne("Business_Platform.Model.Office.OfficeProduct", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
 
-                    b.HasOne("Business_Platform.Model.Food.RestaurantFood", "RestaurantFood")
+                    b.HasOne("Business_Platform.Model.Food.RestaurantBranchFood", "RestaurantBranchFood")
                         .WithMany()
-                        .HasForeignKey("RestaurantFoodId")
+                        .HasForeignKey("RestaurantBranchFoodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AppUser");
 
+                    b.Navigation("FoodCompany");
+
+                    b.Navigation("OfficeCompany");
+
+                    b.Navigation("OfficeProdBranchProduct");
+
                     b.Navigation("Product");
 
-                    b.Navigation("RestaurantFood");
+                    b.Navigation("RestaurantBranchFood");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.MainCompany", b =>
@@ -1352,11 +1425,19 @@ namespace Business_Platform.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Business_Platform.Model.Office.OfficeCompany", "OfficeCompany")
+                        .WithMany("ProductsBranchProducts")
+                        .HasForeignKey("OfficeCompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Business_Platform.Model.Office.OfficeProduct", "OfficeProduct")
                         .WithMany("OfficeProdBranchProducts")
                         .HasForeignKey("OfficeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("OfficeCompany");
 
                     b.Navigation("OfficeCompanyBranch");
 
@@ -1411,6 +1492,14 @@ namespace Business_Platform.Migrations
                         .HasForeignKey("OfficeProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Business_Platform.Model.Identity.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
 
                     b.Navigation("OfficeProduct");
                 });
@@ -1515,6 +1604,8 @@ namespace Business_Platform.Migrations
 
             modelBuilder.Entity("Business_Platform.Model.Food.RestaurantBranch", b =>
                 {
+                    b.Navigation("AppUsers");
+
                     b.Navigation("FoodCategories");
 
                     b.Navigation("RestaurantBranchComments");
@@ -1541,6 +1632,8 @@ namespace Business_Platform.Migrations
                     b.Navigation("Offers");
 
                     b.Navigation("Products");
+
+                    b.Navigation("ProductsBranchProducts");
                 });
 
             modelBuilder.Entity("Business_Platform.Model.Office.OfficeCompanyBranch", b =>

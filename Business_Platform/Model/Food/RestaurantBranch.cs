@@ -10,12 +10,7 @@ namespace Business_Platform.Model.Food
         public byte StateId { get; set; }
 
         [ForeignKey("StateId")]
-        public State? State { get; set; }
-        //public long AppUserId { get; set; }
-
-        //[ForeignKey("AppUserId")]
-        //public AppUser? AppUser { get; set; }
-       
+        public State? State { get; set; }   
         public int FoodCompanyId { get; set; }
 
         [ForeignKey("FoodCompanyId")]
@@ -23,7 +18,6 @@ namespace Business_Platform.Model.Food
         public List<RestaurantFood>? RestaurantFoods { get; set; }
         public List<FoodCategory>? FoodCategories { get; set; }
         public List<RestaurantBranchComment>? RestaurantBranchComments { get; set; }
-
-
+        public virtual List<AppUser>? AppUsers { get; set; }
     }
 }

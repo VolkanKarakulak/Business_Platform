@@ -24,31 +24,76 @@ namespace Business_Platform.Controller
 
         // GET: api/RestaurantBranches
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RestaurantBranch>>> GetRestaurantBranches()
+        public async Task<ActionResult<IEnumerable<RestaurantBranchGet>>> GetRestaurantBranches()
         {
-          if (_context.RestaurantBranches == null)
-          {
-              return NotFound();
-          }
-            return await _context.RestaurantBranches.ToListAsync();
-        }
-
-        // GET: api/RestaurantBranches/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<RestaurantBranch>> GetRestaurantBranch(int id)
-        {
-          if (_context.RestaurantBranches == null)
-          {
-              return NotFound();
-          }
-            var restaurantBranch = await _context.RestaurantBranches.FindAsync(id);
-
-            if (restaurantBranch == null)
+            if (_context.RestaurantBranches == null)
             {
                 return NotFound();
             }
 
-            return restaurantBranch;
+            var restaurantBranches = await _context.RestaurantBranches!.Select(u => new RestaurantBranchGet
+            {
+              Id = u.Id,
+              Name = u.Name,
+              Address = u.Address,
+              PhoneNumber = u.PhoneNumber,
+              EMail = u.EMail,
+              PostalCode = u.PostalCode,
+              RegisterDate = u.RegisterDate,
+              BranchCode = u.BranchCode,
+              State = u.State!.Name,
+              FoodCompanyId = u.FoodCompanyId,
+              FoodCompany = u.FoodCompany!.Name,
+              RestaurantFoodNames = u.RestaurantFoods!.Select(k => k.Name).ToList(),
+              FoodCategoryNames = u.FoodCategories!.Select(l => l.Name).ToList(),
+              RestaurantBranchComments = u.RestaurantBranchComments!.Select(m => m.Comment).ToList()
+            }).ToListAsync();
+
+            if (restaurantBranches == null)
+            {
+                return NotFound();
+            }
+
+            return restaurantBranches;
+        }
+
+        // GET: api/RestaurantBranches/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RestaurantBranchGet>> GetRestaurantBranch(int id)
+        {        
+            var restaurantBranch = await _context.RestaurantBranches!
+                .Include(u => u.State)
+                .Include(u => u.FoodCompany)
+                .Include(u => u.RestaurantFoods)
+                .Include(u => u.FoodCategories)
+                .Include(u => u.FoodCategories)
+                .Include(u => u.RestaurantBranchComments).FirstOrDefaultAsync(u => u.Id == id);
+
+          if (restaurantBranch == null)
+          {
+              return NotFound();
+          }
+
+            var restaurantBranchDto = new RestaurantBranchGet
+            {
+                Id = restaurantBranch!.Id,
+                Name = restaurantBranch.Name,
+                Address = restaurantBranch.Address,
+                City = restaurantBranch.City,
+                BranchCode = restaurantBranch.BranchCode,
+                PhoneNumber = restaurantBranch.PhoneNumber,
+                EMail = restaurantBranch.EMail,
+                PostalCode = restaurantBranch.PostalCode,
+                RegisterDate = restaurantBranch.RegisterDate,
+                State = restaurantBranch.State?.Name,
+                FoodCompany = restaurantBranch.FoodCompany?.Name,
+                FoodCompanyId = restaurantBranch.FoodCompanyId,
+                RestaurantFoodNames = restaurantBranch.RestaurantFoods?.Select(u => u.Name).ToList(),
+                FoodCategoryNames = restaurantBranch.FoodCategories?.Select(u => u.Name).ToList(),
+                RestaurantBranchComments = restaurantBranch.RestaurantBranchComments?.Select(u => u.Comment).ToList()
+            };
+
+            return restaurantBranchDto;
         }
 
         // PUT: api/RestaurantBranches/5

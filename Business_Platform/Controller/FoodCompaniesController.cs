@@ -26,8 +26,7 @@ namespace Business_Platform.Controller
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FoodCompanyGet>>> GetFoodCompanies()
         {
-            var foodCompanies = await _context.FoodCompanies!
-            .Select(u => new FoodCompanyGet
+            var foodCompanies = await _context.FoodCompanies!.Select(u => new FoodCompanyGet
             {
                 Id = u.Id, // u, burada foodCompanies'i temsil ediyor
                 Name = u.Name,
@@ -54,6 +53,7 @@ namespace Business_Platform.Controller
         [HttpGet("{id}")]
         public async Task<ActionResult<FoodCompanyGet>> GetFoodCompany(int id)
         {
+
           var foodCompany = await _context.FoodCompanies!
             .Include(fc => fc.CompanyCategory)
             .Include(fc => fc.State)

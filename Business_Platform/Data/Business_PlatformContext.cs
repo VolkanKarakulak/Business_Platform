@@ -34,8 +34,8 @@ namespace Business_Platform.Data
         public DbSet<RestaurantBranchUser>? RestaurantBranchUsers { get; set; }
         public DbSet<RestaurantFood>? RestaurantFoods { get; set; }
         public DbSet<RestaurantBranchFood>? RestaurantBranchFoods { get; set; }
+        public DbSet<OfficeProductComment>? OfficeProductComment { get; set; }
 
-        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -65,7 +65,5 @@ namespace Business_Platform.Data
             base.OnModelCreating(modelBuilder);
         }
 
-        
-        public DbSet<Business_Platform.Model.Office.OfficeProductComment>? OfficeProductComment { get; set; }
     }
 }

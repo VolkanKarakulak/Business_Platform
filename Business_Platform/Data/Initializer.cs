@@ -152,6 +152,7 @@ namespace Business_Platform.Data
                         roleManager.CreateAsync(appRole).Wait();
                     }
                 }
+
                 if (userManager != null)
                 {
                     if (userManager.Users.Count() == 0)
