@@ -9,7 +9,5 @@
         public int OfficeCompanyBranchId { get; set; }
         public string OfficeCompanyBranchName { get; set; } = "";
 
-
-
     }
 }
