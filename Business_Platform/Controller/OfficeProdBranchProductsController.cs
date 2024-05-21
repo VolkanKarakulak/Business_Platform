@@ -105,12 +105,27 @@ namespace Business_Platform.Controller
         // POST: api/OfficeProdBranchProducts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<OfficeProdBranchProduct>> PostOfficeProdBranchProduct(OfficeProdBranchProduct officeProdBranchProduct)
+        public async Task<ActionResult<OfficeProdBranchProduct>> PostOfficeProdBranchProduct(OfficeProdBranchProductPost officeProdBranchProductPost)
         {
           if (_context.OfficeProdBranchProducts == null)
           {
               return Problem("Entity set 'Business_PlatformContext.OfficeProdBranchProducts'  is null.");
           }
+
+            OfficeProdBranchProduct officeProdBranchProduct = new OfficeProdBranchProduct
+            {
+                Name = officeProdBranchProductPost.Name,
+                Quantity = officeProdBranchProductPost.Quantity,
+                Price = officeProdBranchProductPost.Price,
+                Color = officeProdBranchProductPost.Color,
+                Material = officeProdBranchProductPost.Material,
+                StateId = officeProdBranchProductPost.StateId,
+                OfficeProductTypeId = officeProdBranchProductPost.OfficeProductTypeId,
+                OfficeCompanyId = officeProdBranchProductPost.OfficeCompanyId,
+                OfficeProductId = officeProdBranchProductPost.OfficeProductId,
+                OfficeCompanyBranchId = officeProdBranchProductPost.OfficeCompanyBranchId
+            };
+
             _context.OfficeProdBranchProducts.Add(officeProdBranchProduct);
             await _context.SaveChangesAsync();
 
