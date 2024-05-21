@@ -10,6 +10,23 @@ namespace Business_Platform.Model.Office
 
         public int Quantity { get; set; }
 
+        public int Price { get; set; }
+
+        public string Color { get; set; } = ""; 
+
+        public string Material { get; set; } = "";
+        [Column(TypeName = "nvarchar(200)")]
+        public string? Description { get; set; }
+        public byte StateId { get; set; }
+
+        [ForeignKey("StateId")]
+        public State? State { get; set; }
+
+        public int? ProductTypeId { get; set; }
+
+        [ForeignKey("ProductTypeId")]
+        public OfficeProductType? OfficeProductType { get; set; }
+
         public int OfficeCompanyId { get; set; }
 
         [ForeignKey("OfficeCompanyId")]
