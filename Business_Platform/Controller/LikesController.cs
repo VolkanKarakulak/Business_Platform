@@ -13,6 +13,7 @@ using Business_Platform.DTOs.LikeDtos;
 using Microsoft.CodeAnalysis;
 using System.Security.Policy;
 using Business_Platform.Model.Office;
+using Business_Platform.Model.Identity;
 
 namespace Business_Platform.Controller
 {
@@ -40,26 +41,34 @@ namespace Business_Platform.Controller
 
         // GET: api/Likes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<LikeGetDto>>> GetUserLikes(int id)
+        public async Task<ActionResult<LikeGetDto>> GetUserLikes(int id)
         {
          
-            var userLikes = await _context.Likes!.Where(like => like.AppUserId == id).ToListAsync();
+            var like = await _context.Likes!.Where(like => like.Id == id)
+                .Include(u => u.AppUser)
+                .Include(u => u.OfficeCompany)
+                .Include(u => u.OfficeProdBranchProduct)
+                .Include(u => u.RestaurantBranchFood)
+                .Include(u => u.CompanyCategory)
+                .FirstOrDefaultAsync();
 
-            if (userLikes == null || userLikes.Count == 0)
+            if (like == null)
             {
                 return NotFound();
             }
-      
-            var likeDtos = userLikes.Select(like => new LikeGetDto
-            {             
-                OfficeCompanyName = like.OfficeCompany!.Name,
-                OfficeProductName = like.OfficeProdBranchProduct!.Name,
-                FoodCompanyName = like.FoodCompany!.Name,
-                FoodProductName = like.RestaurantBranchFood!.Name
 
-            }).ToList();
+            var likeDto = new LikeGetDto
+            {
+                AppUserId = like.AppUserId,
+                UserName = like.AppUser!.Name,
+                OfficeCompanyName = like.OfficeCompany?.Name,
+                OfficeProductName = like.OfficeProdBranchProduct?.Name,
+                FoodCompanyName = like.FoodCompany?.Name,
+                FoodProductName = like.RestaurantBranchFood?.Name,
+                CompanyCategoryName = like.CompanyCategory!.Name
+            };
 
-            return likeDtos;
+            return likeDto;
         }
 
         // POST: api/Likes
@@ -91,7 +100,7 @@ namespace Business_Platform.Controller
             if (officeBranchProduct != null && officeBranchProduct.CompanyCategoryId == categoryId)
             {
                 like.OfficeProdBranchProductId = likePostDto.OfficeProdBranchProductId;
-                like.CompanyCategoryId = (await _context.CompanyCategories.FirstOrDefaultAsync(c => c.Name == "OfficeProductCompany")).Id;
+                like.CompanyCategoryId = (await _context.CompanyCategories?.FirstOrDefaultAsync(c => c.Name == "OfficeProductCompany")).Id;
             }
             else
             {
