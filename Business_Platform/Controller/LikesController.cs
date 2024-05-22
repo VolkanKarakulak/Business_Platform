@@ -82,20 +82,19 @@ namespace Business_Platform.Controller
                 return Problem("Entity set 'Business_PlatformContext.Likes' is null.");
             }
 
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userIdString == null)
+            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (user == null)
             {
                 return Unauthorized();
             }
 
-            if (!long.TryParse(userIdString, out var userId))
+            if (!long.TryParse(user, out var userId))
             {
                 return Problem();
             }
 
             Like like = new Like { AppUserId = userId };
 
-            // Ürün kategorisini belirlemek için ürün tablosunu sorguluyoruz
             var officeBranchProduct = await _context.OfficeProdBranchProducts!.FindAsync(likePostDto.OfficeProdBranchProductId);
             if (officeBranchProduct != null && officeBranchProduct.CompanyCategoryId == categoryId)
             {

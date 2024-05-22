@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Office;
+using Business_Platform.DTOs.OfficeProductCommentDtos;
+using System.Security.Claims;
 
 namespace Business_Platform.Controller
 {
@@ -23,13 +25,24 @@ namespace Business_Platform.Controller
 
         // GET: api/OfficeProductComments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OfficeProductComment>>> GetOfficeProductComment()
+        public async Task<ActionResult<IEnumerable<OfficeProductCommentGet>>> GetOfficeProductComment()
         {
-          if (_context.OfficeProductComment == null)
+            var officeProductComment = await _context.OfficeProductComment!.Select(u => new OfficeProductCommentGet
+            {
+                Id = u.Id,
+                AppUserId = u.AppUserId,
+                AppUserName = u.AppUser!.Name,
+                Comment = u.Comment,
+                CommentDate = u.CommmentDate,
+                OfficeProdBranchProductId = u.OfficeProdBranchProductId,
+                OfficeProdBranchName = u.OfficeProdBranchProduct!.Name
+            }).ToListAsync();
+
+          if (officeProductComment == null)
           {
               return NotFound();
           }
-            return await _context.OfficeProductComment.ToListAsync();
+            return officeProductComment;
         }
 
         // GET: api/OfficeProductComments/5
@@ -84,12 +97,32 @@ namespace Business_Platform.Controller
         // POST: api/OfficeProductComments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<OfficeProductComment>> PostOfficeProductComment(OfficeProductComment officeProductComment)
+        public async Task<ActionResult<OfficeProductComment>> PostOfficeProductComment(OfficeProductCommentPost officeProductCommentPost)
         {
           if (_context.OfficeProductComment == null)
           {
               return Problem("Entity set 'Business_PlatformContext.OfficeProductComment'  is null.");
           }
+
+            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!long.TryParse(user, out var userId))
+            {
+                return Problem();
+            }
+
+            OfficeProductComment officeProductComment = new OfficeProductComment
+            {
+                AppUserId = userId,
+                Comment = officeProductCommentPost.Comment,
+                CommmentDate = officeProductCommentPost.CommentDate,
+                OfficeProdBranchProductId = officeProductCommentPost.OfficeProdBranchProductId
+            };
+            
             _context.OfficeProductComment.Add(officeProductComment);
             await _context.SaveChangesAsync();
 
