@@ -12,6 +12,7 @@
         public int OfficeCompanyId { get; set; }
         public int? OfficeProductId { get; set; }
         public int OfficeCompanyBranchId { get; set; }
+        public int CompanyCategoryId { get; set; }
 
     }
 }

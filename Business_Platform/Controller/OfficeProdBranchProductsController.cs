@@ -123,7 +123,8 @@ namespace Business_Platform.Controller
                 OfficeProductTypeId = officeProdBranchProductPost.OfficeProductTypeId,
                 OfficeCompanyId = officeProdBranchProductPost.OfficeCompanyId,
                 OfficeProductId = officeProdBranchProductPost.OfficeProductId,
-                OfficeCompanyBranchId = officeProdBranchProductPost.OfficeCompanyBranchId
+                OfficeCompanyBranchId = officeProdBranchProductPost.OfficeCompanyBranchId,
+                CompanyCategoryId = officeProdBranchProductPost.CompanyCategoryId
             };
 
             _context.OfficeProdBranchProducts.Add(officeProdBranchProduct);

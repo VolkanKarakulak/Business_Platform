@@ -4,6 +4,7 @@ using Business_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Business_Platform.Migrations
 {
     [DbContext(typeof(Business_PlatformContext))]
-    partial class Business_PlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20240522102945_likemodelupdate")]
+    partial class likemodelupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -472,7 +474,10 @@ namespace Business_Platform.Migrations
                     b.Property<long>("AppUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("CompanyCategoryId")
+                    b.Property<int?>("CompanyCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompmanyCategoryId")
                         .HasColumnType("int");
 
                     b.Property<int?>("FoodCompanyId")
@@ -1313,9 +1318,7 @@ namespace Business_Platform.Migrations
 
                     b.HasOne("Business_Platform.Model.CompanyCategory", "CompanyCategory")
                         .WithMany()
-                        .HasForeignKey("CompanyCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CompanyCategoryId");
 
                     b.HasOne("Business_Platform.Model.Food.FoodCompany", "FoodCompany")
                         .WithMany()

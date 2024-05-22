@@ -8,6 +8,10 @@ namespace Business_Platform.Model
     public class Like
     {
         public int Id { get; set; }
+        public int CompanyCategoryId { get; set; }
+
+        [ForeignKey("CompanyCategoryId")]
+        public CompanyCategory? CompanyCategory { get; set; }
 
         public long AppUserId { get; set; }
 
@@ -37,8 +41,9 @@ namespace Business_Platform.Model
         //[ForeignKey("RestaurantFoodId")]
         //public RestaurantFood? RestaurantFood { get; set; }
 
-        public int RestaurantBranchFoodId {  get; set; }
+        public int? RestaurantBranchFoodId {  get; set; }
 
+        [ForeignKey("RestaurantBranchFoodId")]
         public RestaurantBranchFood? RestaurantBranchFood { get; set; }
     }
 }

@@ -17,6 +17,11 @@ namespace Business_Platform.Model.Office
         public string? Material { get; set; } = "";
         [Column(TypeName = "nvarchar(200)")]
         public string? Description { get; set; }
+
+        public int CompanyCategoryId { get; set; }
+
+        [ForeignKey("CompanyCategoryId")]
+        public CompanyCategory? CompanyCategory { get; set; }
         public byte StateId { get; set; }
 
         [ForeignKey("StateId")]

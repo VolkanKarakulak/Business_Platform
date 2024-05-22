@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Business_Platform.DTOs.LikeDtos;
 using Microsoft.CodeAnalysis;
 using System.Security.Policy;
+using Business_Platform.Model.Office;
 
 namespace Business_Platform.Controller
 {
@@ -62,10 +63,10 @@ namespace Business_Platform.Controller
         }
 
         // POST: api/Likes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize]
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754     
         [HttpPost]
-        public async Task<ActionResult<Like>> PostLike(LikePostDto likePostDto)
+        [Authorize]
+        public async Task<ActionResult<Like>> PostLike(int categoryId, LikePostDto likePostDto)
         {
             if (_context.Likes == null)
             {
@@ -85,32 +86,25 @@ namespace Business_Platform.Controller
 
             Like like = new Like { AppUserId = userId };
 
-            if (likePostDto.ProductType == "Office")
+            // Ürün kategorisini belirlemek için ürün tablosunu sorguluyoruz
+            var officeBranchProduct = await _context.OfficeProdBranchProducts!.FindAsync(likePostDto.OfficeProdBranchProductId);
+            if (officeBranchProduct != null && officeBranchProduct.CompanyCategoryId == categoryId)
             {
-                var product = await _context.OfficeProdBranchProducts!.FindAsync(likePostDto.ProductId);
-                if (product == null)
-                {
-                    return NotFound();
-                }
-
-                like.OfficeProductId = product.Id;
-                like.OfficeCompanyId = product.OfficeCompanyId;
-                like.OfficeProdBranchProductId = product.Id;
-            }
-            else if (likePostDto.ProductType == "Food")
-            {
-                var product = await _context.RestaurantBranchFoods!.FindAsync(likePostDto.ProductId);
-                if (product == null)
-                {
-                    return NotFound();
-                }
-
-                like.RestaurantBranchFoodId = product.Id;
-                like.FoodCompanyId = product.FoodCompanyId;
+                like.OfficeProdBranchProductId = likePostDto.OfficeProdBranchProductId;
+                like.CompanyCategoryId = (await _context.CompanyCategories.FirstOrDefaultAsync(c => c.Name == "OfficeProductCompany")).Id;
             }
             else
             {
-                return BadRequest();
+                var restaurantBranchFood = await _context.RestaurantBranchFoods!.FindAsync(likePostDto.RestaurantBranchFoodId);
+                if (restaurantBranchFood != null && restaurantBranchFood.CompanyCategoryId == categoryId)
+                {
+                    like.RestaurantBranchFoodId = likePostDto.RestaurantBranchFoodId;
+                    like.CompanyCategoryId = (await _context.CompanyCategories.FirstOrDefaultAsync(c => c.Name == "FoodCompany")).Id;
+                }
+                else
+                {
+                    return NotFound("Product not found");
+                }
             }
 
             _context.Likes.Add(like);

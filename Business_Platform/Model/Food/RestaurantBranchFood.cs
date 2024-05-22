@@ -9,6 +9,10 @@ namespace Business_Platform.Model.Food
 
         [ForeignKey("StateId")]
         public State? State { get; set; }
+        public int CompanyCategoryId { get; set; }
+
+        [ForeignKey("CompanyCategoryId")]
+        public CompanyCategory? CompanyCategory { get; set; }
 
         public int RestaurantBranchId { get; set; }
 

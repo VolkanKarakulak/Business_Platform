@@ -2,8 +2,12 @@
 {
     public class LikePostDto
     {
-        public int ProductId { get; set; }
-        public int OfficeProdBranchProductId { get; set; }
-        public string? ProductType { get; set; }
+        public int CompanyCategoryId { get; set; }
+        public int? ProductId { get; set; }
+        public int? OfficeProdBranchProductId { get; set; }
+        public int? FoodCompanyId { get; set; }
+        public int? RestaurantBranchFoodId { get; set; }
+
+        //public string? ProductType { get; set; }
     }
 }
