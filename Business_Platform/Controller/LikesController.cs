@@ -28,16 +28,31 @@ namespace Business_Platform.Controller
             _context = context;
         }
 
-        // GET: api/Likes
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Like>>> GetLikes()
-        //{
-        //  if (_context.Likes == null)
-        //  {
-        //      return NotFound();
-        //  }
-        //    return await _context.Likes.ToListAsync();
-        //}
+        //GET: api/Likes
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Like>>> GetLikes()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!long.TryParse(userId, out var longUserId))
+            {
+                return Problem();
+            }
+
+            if (_context.Likes == null)
+            {
+                return NotFound();
+            }
+            var likes = await _context.Likes.Where(like => like.AppUserId == longUserId).ToListAsync();
+
+            return likes;
+        }
 
         // GET: api/Likes/5
         [HttpGet("{id}")]
