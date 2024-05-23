@@ -47,20 +47,27 @@ namespace Business_Platform.Controller
 
         // GET: api/OfficeProductComments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<OfficeProductComment>> GetOfficeProductComment(int id)
+        public async Task<ActionResult<OfficeProductCommentGet>> GetOfficeProductComment(int id)
         {
-          if (_context.OfficeProductComment == null)
+          var officeProductComment = await _context.OfficeProductComment!.Include(u => u.OfficeProdBranchProduct).Include(u => u.AppUser).FirstOrDefaultAsync(u => u.Id == id);
+
+          if (officeProductComment == null)
           {
               return NotFound();
           }
-            var officeProductComment = await _context.OfficeProductComment.FindAsync(id);
 
-            if (officeProductComment == null)
+            var officeProductCommentGet = new OfficeProductCommentGet
             {
-                return NotFound();
-            }
+                Id = officeProductComment.Id,
+                AppUserId = officeProductComment.AppUserId,
+                AppUserName = officeProductComment.AppUser!.Name,
+                Comment = officeProductComment.Comment,
+                CommentDate = officeProductComment.CommmentDate,
+                OfficeProdBranchProductId = officeProductComment.OfficeProdBranchProductId,
+                OfficeProdBranchName = officeProductComment.OfficeProdBranchProduct?.Name
+            };
 
-            return officeProductComment;
+            return officeProductCommentGet;
         }
 
         // PUT: api/OfficeProductComments/5
