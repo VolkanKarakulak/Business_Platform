@@ -9,6 +9,7 @@ using Business_Platform.Data;
 using Business_Platform.Model.Office;
 using Business_Platform.DTOs.OfficeProductCommentDtos;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Business_Platform.Controller
 {
@@ -73,12 +74,32 @@ namespace Business_Platform.Controller
         // PUT: api/OfficeProductComments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOfficeProductComment(int id, OfficeProductComment officeProductComment)
+        [Authorize]
+        public async Task<IActionResult> PutOfficeProductComment(int id, OfficeProductCommentPut officeProductCommentPut)
         {
-            if (id != officeProductComment.Id)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(userId == null)
             {
-                return BadRequest();
+                return Unauthorized();
             }
+            if (!long.TryParse(userId, out var stringUserId))
+            {
+                return Problem();
+            }
+
+            OfficeProductComment? officeProductComment = await _context.OfficeProductComment!.FindAsync(id);
+
+            if ( officeProductComment == null)
+            {
+                return NotFound();
+            }
+
+            if(officeProductComment.AppUserId != stringUserId)
+            {
+                return Forbid();
+            }
+
+            officeProductComment.Comment = officeProductCommentPut.Comment;
 
             _context.Entry(officeProductComment).State = EntityState.Modified;
 
