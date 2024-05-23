@@ -10,6 +10,7 @@ using Business_Platform.Model.Office;
 using Business_Platform.DTOs.OfficeProductCommentDtos;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Business_Platform.Controller
 {
@@ -125,6 +126,7 @@ namespace Business_Platform.Controller
         // POST: api/OfficeProductComments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<OfficeProductComment>> PostOfficeProductComment(OfficeProductCommentPost officeProductCommentPost)
         {
           if (_context.OfficeProductComment == null)
@@ -159,6 +161,7 @@ namespace Business_Platform.Controller
 
         // DELETE: api/OfficeProductComments/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteOfficeProductComment(int id)
         {
             if (_context.OfficeProductComment == null)
@@ -169,6 +172,20 @@ namespace Business_Platform.Controller
             if (officeProductComment == null)
             {
                 return NotFound();
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            if (!long.TryParse(userId, out var longUserId)) 
+            {
+                return Problem();
+            }
+            if (officeProductComment.AppUserId != longUserId)
+            {
+                return Forbid();
             }
 
             _context.OfficeProductComment.Remove(officeProductComment);
