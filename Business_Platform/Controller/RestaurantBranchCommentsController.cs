@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Business_Platform.Data;
 using Business_Platform.Model.Food;
+using Business_Platform.DTOs.RestaurantBranchComment;
+using System.Security.Claims;
 
 namespace Business_Platform.Controller
 {
@@ -84,16 +86,35 @@ namespace Business_Platform.Controller
         // POST: api/RestaurantBranchComments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<RestaurantBranchComment>> PostRestaurantBranchComment(RestaurantBranchComment restaurantBranchComment)
+        public async Task<ActionResult<RestaurantBranchComment>> PostRestaurantBranchComment(RestaurantBranchCommentPost restaurantBranchCommentPost)
         {
           if (_context.RestaurantBranchComments == null)
           {
               return Problem("Entity set 'Business_PlatformContext.RestaurantBranchComments'  is null.");
           }
-            _context.RestaurantBranchComments.Add(restaurantBranchComment);
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            if (!long.TryParse(userId, out var longUserId))
+            {
+                return Problem();
+            }
+
+            RestaurantBranchComment comment = new RestaurantBranchComment
+            {
+                UserId = longUserId,
+                Comment = restaurantBranchCommentPost.Comment,
+                CommmentDate = restaurantBranchCommentPost.CommentDate,
+                RestaurantBranchId = restaurantBranchCommentPost.RestaurantBranchId
+            };
+
+            _context.RestaurantBranchComments.Add(comment);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRestaurantBranchComment", new { id = restaurantBranchComment.Id }, restaurantBranchComment);
+            return CreatedAtAction("GetRestaurantBranchComment", new { id = comment.Id }, comment);
         }
 
         // DELETE: api/RestaurantBranchComments/5

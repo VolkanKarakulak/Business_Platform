@@ -13,7 +13,7 @@ namespace Business_Platform.Model.Food
         public int Id { get; set; }
 
         [Column(TypeName = "nvarchar(200)")]
-        public string? Comment { get; set; }
+        public string Comment { get; set; } = "";
         public DateTime CommmentDate { get; set; }
 
         public int RestaurantBranchId { get; set; }
