@@ -9,6 +9,7 @@ using Business_Platform.Data;
 using Business_Platform.Model.Food;
 using Business_Platform.DTOs.RestaurantBranchComment;
 using System.Security.Claims;
+using Business_Platform.Model.Office;
 
 namespace Business_Platform.Controller
 {
@@ -168,6 +169,19 @@ namespace Business_Platform.Controller
                 return NotFound();
             }
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            if (!long.TryParse(userId, out var longUserId))
+            {
+                return Problem();
+            }
+            if (restaurantBranchComment.UserId != longUserId)
+            {
+                return Forbid();
+            }
             _context.RestaurantBranchComments.Remove(restaurantBranchComment);
             await _context.SaveChangesAsync();
 
