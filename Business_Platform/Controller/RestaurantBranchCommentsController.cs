@@ -46,20 +46,30 @@ namespace Business_Platform.Controller
 
         // GET: api/RestaurantBranchComments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<RestaurantBranchComment>> GetRestaurantBranchComment(int id)
+        public async Task<ActionResult<RestaurantBranchCommentGet>> GetRestaurantBranchComment(int id)
         {
-          if (_context.RestaurantBranchComments == null)
+          var restaurantBranchCommnet = await  _context.RestaurantBranchComments!.Include(u => u.AppUser).Include(u => u.RestaurantBranch).FirstOrDefaultAsync(u  => u.Id == id);
+
+          if (restaurantBranchCommnet == null)
           {
               return NotFound();
           }
-            var restaurantBranchComment = await _context.RestaurantBranchComments.FindAsync(id);
+            var restaurantBranchCommentGet = new RestaurantBranchCommentGet
+            {
+                UserId = restaurantBranchCommnet.UserId,
+                UserName = restaurantBranchCommnet.AppUser!.Name,
+                Comment = restaurantBranchCommnet.Comment,
+                CommentDate = restaurantBranchCommnet.CommmentDate,
+                RestaurantBranchId = restaurantBranchCommnet.RestaurantBranchId,
+                RestaurantBranchName = restaurantBranchCommnet.RestaurantBranch!.Name
+            };
 
-            if (restaurantBranchComment == null)
+            if (restaurantBranchCommentGet == null)
             {
                 return NotFound();
             }
 
-            return restaurantBranchComment;
+            return restaurantBranchCommentGet;
         }
 
         // PUT: api/RestaurantBranchComments/5
