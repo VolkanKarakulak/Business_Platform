@@ -6,11 +6,11 @@ namespace Business_Platform.Model.Food
 {
     public class RestaurantBranchComment
     {
+        public int Id { get; set; }
         public long UserId { get; set; }
 
         [ForeignKey("UserId")]
         public AppUser? AppUser { get; set; }
-        public int Id { get; set; }
 
         [Column(TypeName = "nvarchar(200)")]
         public string Comment { get; set; } = "";

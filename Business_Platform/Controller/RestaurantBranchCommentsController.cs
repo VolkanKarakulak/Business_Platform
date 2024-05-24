@@ -75,12 +75,29 @@ namespace Business_Platform.Controller
         // PUT: api/RestaurantBranchComments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRestaurantBranchComment(int id, RestaurantBranchComment restaurantBranchComment)
+        public async Task<IActionResult> PutRestaurantBranchComment(int id, RestaurantBranchCommentPut restaurantBranchCommentPut)
         {
-            if (id != restaurantBranchComment.Id)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(userId == null) 
             {
-                return BadRequest();
+                return NotFound(); 
             }
+            if (!long.TryParse(userId,out var longUserId))
+            {
+                return Problem();
+            }
+
+            RestaurantBranchComment? restaurantBranchComment = await _context.RestaurantBranchComments!.FindAsync(id);
+            if (restaurantBranchComment == null) 
+            {
+                return NotFound();
+            }
+            if(restaurantBranchComment.UserId != longUserId)
+            {
+                return Forbid();
+            }
+
+            restaurantBranchComment.Comment = restaurantBranchCommentPut.Commnet;
 
             _context.Entry(restaurantBranchComment).State = EntityState.Modified;
 

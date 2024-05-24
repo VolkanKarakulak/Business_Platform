@@ -83,7 +83,7 @@ namespace Business_Platform.Controller
             {
                 return Unauthorized();
             }
-            if (!long.TryParse(userId, out var stringUserId))
+            if (!long.TryParse(userId, out var longUserId))
             {
                 return Problem();
             }
@@ -95,7 +95,7 @@ namespace Business_Platform.Controller
                 return NotFound();
             }
 
-            if(officeProductComment.AppUserId != stringUserId)
+            if(officeProductComment.AppUserId != longUserId)
             {
                 return Forbid();
             }
