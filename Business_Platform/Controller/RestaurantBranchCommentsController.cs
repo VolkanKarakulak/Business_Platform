@@ -25,13 +25,23 @@ namespace Business_Platform.Controller
 
         // GET: api/RestaurantBranchComments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RestaurantBranchComment>>> GetRestaurantBranchComments()
+        public async Task<ActionResult<IEnumerable<RestaurantBranchCommentGet>>> GetRestaurantBranchComments()
         {
-          if (_context.RestaurantBranchComments == null)
+          var restaurantBranchComment = await _context.RestaurantBranchComments!.Select(u => new RestaurantBranchCommentGet
+          {
+              UserId = u.UserId,
+              UserName = u.AppUser!.Name,
+              Comment = u.Comment,
+              CommentDate = u.CommmentDate,
+              RestaurantBranchId = u.RestaurantBranchId,
+              RestaurantBranchName = u.RestaurantBranch!.Name
+          }).ToListAsync();
+
+          if (restaurantBranchComment == null)
           {
               return NotFound();
           }
-            return await _context.RestaurantBranchComments.ToListAsync();
+            return restaurantBranchComment;
         }
 
         // GET: api/RestaurantBranchComments/5
