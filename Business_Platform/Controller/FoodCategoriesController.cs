@@ -69,14 +69,11 @@ namespace Business_Platform.Controller
 
         // PUT: api/FoodCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        [Authorize(Roles = "MainCompanyAdmin, FoodCompanyAdmin")]
-        public async Task<IActionResult> PutFoodCategory(int id, FoodCategoryPut foodCategoryPut)
+        [HttpPut]
+        //[Authorize(Roles = "MainCompanyAdmin, FoodCompanyAdmin")]
+        public async Task<IActionResult> PutFoodCategory(FoodCategoryPut foodCategoryPut)
         {
-            if (id != foodCategoryPut.Id)
-            {
-                return BadRequest();
-            }
+            int id = foodCategoryPut.Id;
 
             FoodCategory? foodCategory = await _context.FoodCategories!.FindAsync(id);
 
