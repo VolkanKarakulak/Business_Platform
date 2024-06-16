@@ -92,13 +92,17 @@ namespace Business_Platform.Controller
 
         // PUT: api/ManageOffers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutManageOffer(int id, ManageOffer manageOffer)
+        [HttpPut]
+        public async Task<IActionResult> PutManageOffer(ManageOffer manageOffer)
         {
-            if (id != manageOffer.Id)
+            int id = manageOffer.Id;
+
+            ManageOffer? manageOff = await _context.ManageOffers!.FindAsync(id);
+
+            if (manageOff == null) 
             {
-                return BadRequest();
-            }
+                return NotFound();
+            }  
 
             _context.Entry(manageOffer).State = EntityState.Modified;
 

@@ -88,13 +88,10 @@ namespace Business_Platform.Controller
 
         // PUT: api/FoodCompanies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFoodCompany(int id, FoodCompanyPut foodCompanyPut)
+        [HttpPut]
+        public async Task<IActionResult> PutFoodCompany(FoodCompanyPut foodCompanyPut)
         {
-            if (id != foodCompanyPut.Id)
-            {
-                return BadRequest();
-            }
+            var id = foodCompanyPut.Id;
 
             FoodCompany? foodCompany = await _context.FoodCompanies!.FindAsync(id);
 
