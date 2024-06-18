@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Business_Platform.Model.BaseModel
 {
-    public class BaseBranchModel
+    public abstract class BaseBranchModel
     {
         public int Id { get; set; }
 

@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace Business_Platform.Model.BaseModel
 {
-    public class BaseProductModel
+    public abstract class BaseProductModel
     {
         public int Id { get; set; }
 
